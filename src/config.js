@@ -1,0 +1,62 @@
+export const config = {
+    API_URL: 'https://dev-api-gon.omniflix.studio',
+    RPC_URL: 'https://rpc.gon-flixnet.omniflix.io',
+    REST_URL: 'https://rest.gon-flixnet.omniflix.io',
+    DATA_LAYER: 'https://data-layer-gon.omniflix.studio',
+    CHAIN_ID: 'gon-flixnet-1',
+    CHAIN_NAME: 'OmniFlix GON',
+    COIN_DENOM: 'FLIX',
+    COIN_MINIMAL_DENOM: 'uflix',
+    COIN_DECIMALS: 6,
+    PREFIX: 'omniflix',
+};
+
+export const chainId = config.CHAIN_ID;
+export const chainName = config.CHAIN_NAME;
+export const coinDenom = config.COIN_DENOM;
+export const coinMinimalDenom = config.COIN_MINIMAL_DENOM;
+export const coinDecimals = config.COIN_DECIMALS;
+export const prefix = config.PREFIX;
+
+export const chainConfig = {
+    chainId: chainId,
+    chainName,
+    rpc: config.RPC_URL,
+    rest: config.REST_URL,
+    stakeCurrency: {
+        coinDenom,
+        coinMinimalDenom,
+        coinDecimals,
+    },
+    bip44: {
+        coinType: 118,
+    },
+    bech32Config: {
+        bech32PrefixAccAddr: `${prefix}`,
+        bech32PrefixAccPub: `${prefix}pub`,
+        bech32PrefixValAddr: `${prefix}valoper`,
+        bech32PrefixValPub: `${prefix}valoperpub`,
+        bech32PrefixConsAddr: `${prefix}valcons`,
+        bech32PrefixConsPub: `${prefix}valconspub`,
+    },
+    currencies: [
+        {
+            coinDenom,
+            coinMinimalDenom,
+            coinDecimals,
+        },
+    ],
+    feeCurrencies: [
+        {
+            coinDenom,
+            coinMinimalDenom,
+            coinDecimals,
+            gasPriceStep: {
+                low: 0.001,
+                average: 0.0025,
+                high: 0.025,
+            },
+        },
+    ],
+    coinType: 118,
+};
