@@ -1,4 +1,4 @@
-import { AppBar, Tab } from '@material-ui/core';
+import { AppBar, Tab } from '@mui/material';
 import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

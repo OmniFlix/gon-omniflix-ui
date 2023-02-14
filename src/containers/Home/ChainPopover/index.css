@@ -49,6 +49,7 @@
     align-items: center;
     justify-content: center;
     background: #22222C;
+    padding: 6px 0;
 }
 
 .chain_popover div .select_popover > div img {

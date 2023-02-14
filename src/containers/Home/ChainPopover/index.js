@@ -6,13 +6,8 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import CosmosIcon from '../../../assets/chains/cosmos.svg';
-import IrisIcon from '../../../assets/chains/iris.svg';
-import OmniIcon from '../../../assets/chains/omniflix.svg';
-import StargazeIcon from '../../../assets/chains/stargaze.svg';
-import JunoIcon from '../../../assets/chains/juno.svg';
-import OsmoIcon from '../../../assets/chains/osmo.svg';
 import { setChainValue } from '../../../actions/home';
+import { list } from '../../../utils/defaultOptions';
 
 const MenuProps = {
     PaperProps: {
@@ -29,26 +24,6 @@ const ChainPopover = (props) => {
     const handleChange = (event) => {
         props.setChainValue(event.target.value);
     };
-
-    const list = [{
-        icon: CosmosIcon,
-        name: 'Cosmos',
-    }, {
-        icon: IrisIcon,
-        name: 'IrisNet',
-    }, {
-        icon: OmniIcon,
-        name: 'OmniFlix Hub',
-    }, {
-        icon: StargazeIcon,
-        name: 'Stargaze',
-    }, {
-        icon: JunoIcon,
-        name: 'Juno',
-    }, {
-        icon: OsmoIcon,
-        name: 'Osmosis',
-    }];
 
     return (
         <Box className="chain_popover" sx={{ minWidth: 120 }}>
