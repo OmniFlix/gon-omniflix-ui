@@ -15,6 +15,10 @@ body {
     overflow: hidden;
 }
 
+body > iframe {
+    display: none;
+}
+
 p {
     margin: unset;
 }

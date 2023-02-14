@@ -33,7 +33,7 @@ export const fetchBalance = (address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchBalanceSuccess(res.data && res.data.result));
+            dispatch(fetchBalanceSuccess(res.data && res.data.balances));
         })
         .catch((error) => {
             dispatch(fetchBalanceError(
