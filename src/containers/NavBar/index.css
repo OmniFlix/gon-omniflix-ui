@@ -8,10 +8,6 @@
     margin: 20px;
 }
 
-.navbar .left_section {
-
-}
-
 .navbar .right_section {
     display: flex;
     align-items: center;
@@ -80,10 +76,6 @@
     justify-content: space-evenly;
     padding: 4px 10px;
     height: 40px;
-}
-
-.navbar .right_section .connected_account .tokens {
-    margin: 0;
 }
 
 .navbar .right_section .connected_account > div {
