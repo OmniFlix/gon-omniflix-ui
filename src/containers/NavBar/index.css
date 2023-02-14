@@ -38,6 +38,7 @@
     align-items: center;
     justify-content: flex-end;
     height: 40px;
+    margin-left: 16px;
 }
 
 .navbar .right_section .connect_button {
@@ -56,7 +57,6 @@
     text-transform: unset;
     padding: 10px 20px;
     height: 40px;
-    margin-left: 10px;
 }
 
 .navbar .right_section .connected_account {

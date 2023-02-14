@@ -14,7 +14,7 @@ const Router = () => {
     return (
         <div className="main_content">
             <Suspense fallback={<CircularProgress/>}>
-                <NavBar />
+                <NavBar/>
                 <div className="content_div scroll_bar">
                     <Routes>
                         {routes.map((route) =>

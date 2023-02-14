@@ -37,7 +37,7 @@ const ChainPopover = (props) => {
                 >
                     {list.map((item, index) => (
                         <MenuItem key={index} className="list_item" value={item.name}>
-                            <img alt={item.icon} src={item.icon} />
+                            <img alt={item.icon} src={item.icon}/>
                             {item.name}
                         </MenuItem>
                     ))}

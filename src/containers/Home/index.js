@@ -12,12 +12,12 @@ const Home = (props) => {
         <div className="home scroll_bar">
             <div className="header">
                 <div className="left_section">
-                    <ChainPopover />
+                    <ChainPopover/>
                     <p className="border"/>
-                    <Tabs />
+                    <Tabs/>
                 </div>
                 <div className="right_section">
-                    <SearchTextField />
+                    <SearchTextField/>
                 </div>
             </div>
             <div className="page_section">

@@ -1,6 +1,6 @@
 import { BALANCE_FETCH_ERROR, BALANCE_FETCH_IN_PROGRESS, BALANCE_FETCH_SUCCESS } from '../../constants/wallet';
 import Axios from 'axios';
-import { urlFetchBalance } from '../../constants/restURL';
+import { urlFetchBalance } from '../../constants/url';
 
 const fetchBalanceInProgress = () => {
     return {
@@ -33,7 +33,7 @@ export const fetchBalance = (address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchBalanceSuccess(res.data && res.data.result));
+            dispatch(fetchBalanceSuccess(res.data && res.data.balances));
         })
         .catch((error) => {
             dispatch(fetchBalanceError(
