@@ -3,10 +3,13 @@ import './index.css';
 import ChainPopover from './ChainPopover';
 import Tabs from './Tabs';
 import SearchTextField from './SearchTextField';
+import * as PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import CollectionsTable from './Tables/CollectionsTable';
 
-const Home = () => {
+const Home = (props) => {
     return (
-        <div className="home">
+        <div className="home scroll_bar">
             <div className="header">
                 <div className="left_section">
                     <ChainPopover/>
@@ -17,8 +20,25 @@ const Home = () => {
                     <SearchTextField/>
                 </div>
             </div>
+            <div className="page_section">
+                {props.tabValue === 'collections' &&
+                    <div className="data_table"><CollectionsTable /></div>}
+            </div>
         </div>
     );
 };
 
-export default Home;
+Home.propTypes = {
+    inProgress: PropTypes.bool.isRequired,
+    lang: PropTypes.string.isRequired,
+    tabValue: PropTypes.string.isRequired,
+};
+
+const stateToProps = (state) => {
+    return {
+        lang: state.language,
+        tabValue: state.home.tabValue.value,
+    };
+};
+
+export default connect(stateToProps)(Home);
