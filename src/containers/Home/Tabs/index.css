@@ -1,0 +1,39 @@
+.home .horizontal_tabs {
+    background-color: unset;
+    box-shadow: unset;
+}
+
+.horizontal_tabs .tabs_content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.horizontal_tabs .tabs_content .tab {
+    background: #292935;
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #757575;
+    min-width: unset;
+    padding: 4px 16px;
+    margin-right: 10px;
+    text-transform: capitalize;
+    height: 42px;
+    min-height: 42px;
+    opacity: 1;
+}
+
+.horizontal_tabs .tabs_content .tab.active_tab {
+    background: #4F4F4F;
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FFFFFF;
+}
