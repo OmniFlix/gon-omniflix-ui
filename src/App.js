@@ -5,7 +5,7 @@ import Snackbar from './containers/Snackbar';
 
 function App () {
     return (
-        <div className="App">
+        <div className="app">
             <Router/>
             <Snackbar/>
         </div>
