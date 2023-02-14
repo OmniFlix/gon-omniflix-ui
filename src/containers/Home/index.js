@@ -9,12 +9,12 @@ const Home = () => {
         <div className="home">
             <div className="header">
                 <div className="left_section">
-                    <ChainPopover />
+                    <ChainPopover/>
                     <p className="border"/>
-                    <Tabs />
+                    <Tabs/>
                 </div>
                 <div className="right_section">
-                    <SearchTextField />
+                    <SearchTextField/>
                 </div>
             </div>
         </div>

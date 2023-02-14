@@ -12,12 +12,12 @@ const NavBar = (props) => {
     return (
         <div className="navbar">
             <div className="left_section">
-                <StudioLogo />
+                <StudioLogo/>
             </div>
             <div className="right_section">
                 <Button className="create_button">
                     {variables[props.lang].create}
-                    <CreateIcon />
+                    <CreateIcon/>
                 </Button>
                 <div className="connect_account">
                     <Button className="connect_button">
