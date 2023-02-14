@@ -1,0 +1,94 @@
+.navbar {
+    background: #22222C;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin: 20px;
+}
+
+.navbar .right_section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.navbar .right_section .create_button {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    padding: 10px;
+    height: 40px;
+}
+
+.navbar .right_section .create_button svg {
+    margin-left: 10px;
+}
+
+.navbar .right_section .connect_account {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 40px;
+}
+
+.navbar .right_section .connect_button {
+    background: #141414;
+    border-radius: 28px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    font-feature-settings: 'salt' on, 'ss02' on;
+    color: #FFFFFF;
+    text-transform: unset;
+    padding: 10px 20px;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.navbar .right_section .connected_account {
+    background: #141414;
+    border-radius: 28px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: right;
+    font-feature-settings: 'salt' on, 'ss02' on;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-evenly;
+    padding: 4px 10px;
+    height: 40px;
+}
+
+.navbar .right_section .connected_account > div {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: #B7B7B7;
+    max-width: 100px;
+}
+
+.navbar .right_section .connected_account > div p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
