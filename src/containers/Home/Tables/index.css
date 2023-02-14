@@ -1,0 +1,30 @@
+.data_table .collection_info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.data_table .collection_info img {
+    width: 60px !important;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.data_table .table_actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.data_table .table_actions .bulk_mint {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    padding: 8px 20px;
+}

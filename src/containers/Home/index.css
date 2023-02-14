@@ -1,7 +1,9 @@
 .home {
     background: #22222C;
     border-radius: 20px;
-    margin: 20px;
+    margin: 0 20px 20px;
+    height: calc(100vh - 80px);
+    padding-bottom: 40px;
 }
 
 .home .header {
@@ -45,4 +47,8 @@
     align-items: center;
     color: #757575;
     padding: 13px 20px 13px 4px;
+}
+
+.home .page_section {
+    margin: 0 30px 30px 30px;
 }
