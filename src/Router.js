@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import CircularProgress from './components/CircularProgress';
 
 const Home = lazy(() => import('./containers/Home').then().catch());
+const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 
 const routes = [{
     path: '/',
@@ -13,6 +14,7 @@ const Router = () => {
     return (
         <div className="main_content">
             <Suspense fallback={<CircularProgress/>}>
+                <NavBar/>
                 <div className="content_div scroll_bar">
                     <Routes>
                         {routes.map((route) =>
