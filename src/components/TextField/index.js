@@ -59,11 +59,11 @@ const TextField = (props) => {
             label={props.label ? props.label : null}
             margin="normal"
             maxRows={props.maxRows ? props.maxRows : null}
+            minRows={props.multiline ? 5 : null}
             multiline={props.multiline ? props.multiline : false}
             name={props.name}
             placeholder={props.placeholder ? props.placeholder : ''}
             required={props.required ? props.required : false}
-            rows={props.multiline ? 5 : null}
             type={props.type ? props.type : 'text'}
             value={props.value}
             variant={props.variant ? props.variant : 'filled'}
