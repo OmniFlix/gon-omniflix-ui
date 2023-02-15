@@ -25,7 +25,6 @@ const collectionSList = (state = {
                         value: action.value,
                         skip: action.skip,
                         limit: action.limit,
-                        search: action.search,
                         total: action.total,
                     },
                 },

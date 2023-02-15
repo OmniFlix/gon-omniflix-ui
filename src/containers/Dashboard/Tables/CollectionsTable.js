@@ -2,17 +2,19 @@ import React from 'react';
 import DataTable from '../../../components/DataTable';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
-import thumbnail from '../../../assets/thumbnail.svg';
 import { Button } from '@mui/material';
 import CircularProgress from '../../../components/CircularProgress';
 import variables from '../../../utils/variables';
+import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
 
 const CollectionsTable = (props) => {
     const options = {
         textLabels: {
             body: {
-                noMatch: <div className="no_data_table"> No data found </div>,
+                noMatch: props.inProgress
+                    ? <CircularProgress/>
+                    : <div className="no_data_table"> No data found </div>,
                 toolTip: 'Sort',
             },
             viewColumns: {
@@ -39,20 +41,8 @@ const CollectionsTable = (props) => {
             customBodyRender: function (value) {
                 return (
                     <div className="collection_info">
-                        <img alt="thumbnail" src={thumbnail} />
-                        <div className="table_value collection_name">{value}</div>
-                    </div>
-                );
-            },
-        },
-    }, {
-        name: 'nfts',
-        label: 'NFTs',
-        options: {
-            customBodyRender: function (value) {
-                return (
-                    <div className="table_value">
-                        {value}
+                        <ImageOnLoad alt="thumbnail" src={value.preview_uri}/>
+                        <div className="table_value collection_name">{value.name}</div>
                     </div>
                 );
             },
@@ -74,16 +64,18 @@ const CollectionsTable = (props) => {
         },
     }];
 
-    const tableData =
-        [...Array(5)].map((item, index) => ([
-            'Soulja BoyZ', '2564', '',
-        ]));
+    const list = props.list && props.list[props.chainValue];
+    const tableData = list && list.value && list.value.length
+        ? list.value.map((item, index) => [
+            item,
+            item,
+        ]) : [];
 
     return (
         <>
             <DataTable
                 columns={columns}
-                data={props.inProgress ? <CircularProgress /> : tableData}
+                data={tableData}
                 name=""
                 options={options}/>
         </>
@@ -91,13 +83,18 @@ const CollectionsTable = (props) => {
 };
 
 CollectionsTable.propTypes = {
+    chainValue: PropTypes.string.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    list: PropTypes.object.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
+        chainValue: state.dashboard.chainValue.value,
+        inProgress: state.collections.collectionSList.inProgress,
         lang: state.language,
+        list: state.collections.collectionSList.value,
     };
 };
 

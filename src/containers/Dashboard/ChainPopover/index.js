@@ -16,8 +16,8 @@ const ChainPopover = (props) => {
             {list.map((item, index) => (
                 <Button
                     key={index}
-                    className={props.chain === item.name ? 'active_item list_item' : 'list_item'}
-                    onClick={() => handleChange(item.name)}>
+                    className={props.chain === item.value ? 'active_item list_item' : 'list_item'}
+                    onClick={() => handleChange(item.value)}>
                     <img alt={item.icon} src={item.icon}/>
                     {item.name}
                 </Button>))}

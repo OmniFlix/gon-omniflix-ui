@@ -1,5 +1,5 @@
 import { NFT_S_FETCH_ERROR, NFT_S_FETCH_IN_PROGRESS, NFT_S_FETCH_SUCCESS } from '../constants/nfts';
-import { Axios } from 'axios';
+import Axios from 'axios';
 import { urlFetchNFTS } from '../chains/nfts';
 
 const fetchNftSInProgress = () => {
@@ -37,10 +37,10 @@ export const fetchNftS = (address, chain, skip, limit, search, cb) => (dispatch)
         },
     })
         .then((res) => {
-            dispatch(fetchNftSSuccess(res.data && res.data.result && res.data.result.list,
-                chain, skip, limit, search, res && res.data && res.data.result && res.data.result.count));
+            dispatch(fetchNftSSuccess(res.data && res.data.nfts, chain, skip, limit,
+                res.data && res.data.pagination && res.data.pagination.total));
             if (cb) {
-                cb(res.data && res.data.result && res.data.result.list, res && res.data && res.data.result && res.data.result.count);
+                cb(res.data && res.data.nfts, res && res.data && res.data.pagination && res.data.pagination.total);
             }
         })
         .catch((error) => {
