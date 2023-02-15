@@ -1,5 +1,9 @@
 .chain_popover {
     min-width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 30px 20px;
 }
 
 .chain_popover div .select_popover {
@@ -77,28 +81,56 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 18px;
-    color: #757575 !important;
+    color: #BDBDBD;
     background: #292935;
-    border-radius: 5px !important;
-    padding: 8px 14px !important;
+    border-radius: 50px;
+    padding: 10px 14px;
     text-align: left;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    margin-right: 10px;
 }
 
 .list_item:last-child {
-    margin-bottom: 0 !important;
-}
-
-.list_item:hover,
-.list_item.selected {
-    color: #FFFFFF !important;
-    background: #33333F !important;
-    border-radius: 5px !important;
+    margin-right: 0;
 }
 
 .list_item img {
     margin-right: 10px;
 }
+
+.list_item:hover,
+.list_item.active_item {
+    color: #FFFFFF;
+    background: #1B1B1B;
+    z-index: 0;
+    position: relative;
+}
+
+.list_item:hover:before,
+.list_item.active_item:before {
+    content: '';
+    position: absolute;
+    background: #1B1B1B;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 50px;
+}
+
+.list_item:hover:after,
+.list_item.active_item:after {
+    content: '';
+    background: linear-gradient(180deg, #D61D6A 0%, #7645FF 100%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -2;
+    border-radius: 50px;
+}
+

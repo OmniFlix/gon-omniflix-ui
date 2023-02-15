@@ -1,7 +1,5 @@
 .home {
     background: #22222C;
-    border-radius: 20px;
-    margin: 0 20px 20px;
     height: calc(100vh - 80px);
     padding-bottom: 40px;
 }
@@ -10,43 +8,65 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 30px;
+    padding: 20px 30px 30px;
 }
 
 .home .header .left_section {
     display: flex;
 }
 
-.home .header .left_section .border {
-    border: 0.5px solid #757575;
-    transform: rotate(180deg);
+.home > .border {
+    border: 0.5px solid #33333F;
+    transform: rotate(0deg);
     margin: 0 14px;
+    height: 1px;
 }
 
-.home .header .right_section .text_field {
-    margin: auto;
+.home .header .right_section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.home .header .right_section .text_field > div {
-    background: #292935;
-    border-radius: 50px;
-    border: unset;
-}
-
-.home .header .right_section .text_field > div > div {
-    margin-top: 0;
-}
-
-.home .header .right_section .text_field input {
+.home .header .right_section button {
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 13px;
+    line-height: 16px;
     display: flex;
     align-items: center;
-    color: #757575;
-    padding: 13px 20px 13px 4px;
+    color: #FFFFFF;
+    border-radius: 50px;
+    z-index: 0;
+    position: relative;
+    text-transform: capitalize;
+    padding: 10px 20px;
+    margin-left: 20px;
+}
+
+.home .header .right_section button:before {
+    content: '';
+    position: absolute;
+    background: #22222c;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 50px;
+}
+
+.home .header .right_section button:after {
+    content: '';
+    background: linear-gradient(180deg, #D61D6A 0%, #7645FF 100%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -2;
+    border-radius: 50px;
 }
 
 .home .page_section {

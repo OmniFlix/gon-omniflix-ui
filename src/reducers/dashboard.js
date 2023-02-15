@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { CHAIN_VALUE_SET, SEARCH_VALUE_SET, TAB_VALUE_SET } from '../constants/home';
+import { CHAIN_VALUE_SET, TAB_VALUE_SET } from '../constants/dashboard';
 
 const chainValue = (state = {
     value: 'Cosmos',
@@ -17,7 +17,7 @@ const chainValue = (state = {
 };
 
 const tabValue = (state = {
-    value: 'collections',
+    value: 'nfts',
 }, action) => {
     switch (action.type) {
     case TAB_VALUE_SET:
@@ -31,23 +31,7 @@ const tabValue = (state = {
     }
 };
 
-const searchValue = (state = {
-    value: '',
-}, action) => {
-    switch (action.type) {
-    case SEARCH_VALUE_SET:
-        return {
-            ...state,
-            value: action.value,
-        };
-
-    default:
-        return state;
-    }
-};
-
 export default combineReducers({
     chainValue,
     tabValue,
-    searchValue,
 });

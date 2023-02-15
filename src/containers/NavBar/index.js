@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './index.css';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
-import { ReactComponent as StudioLogo } from '../../assets/studio_logo.svg';
+import { ReactComponent as Logo } from '../../assets/logo.svg';
+import { ReactComponent as FaucetIcon } from '../../assets/navBar/faucet.svg';
 import { ReactComponent as CreateIcon } from '../../assets/navBar/create.svg';
 import { Button } from '@mui/material';
 import variables from '../../utils/variables';
@@ -63,13 +64,19 @@ class NavBar extends Component {
         return (
             <div className="navbar">
                 <div className="left_section">
-                    <StudioLogo/>
+                    <Logo/>
                 </div>
-                <Tabs />
+                {this.props.address !== '' &&
+                <Tabs />}
                 <div className="right_section">
+                    {this.props.address !== '' &&
+                    <Button className="claim_button">
+                        <FaucetIcon/>
+                        {variables[this.props.lang]['claim_faucet']}
+                    </Button>}
                     <Button className="create_button">
                         {variables[this.props.lang].create}
-                        <CreateIcon/>
+                        <CreateIcon />
                     </Button>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')

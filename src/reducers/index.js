@@ -4,7 +4,7 @@ import snackbar from './snackbar';
 import account from './account';
 import nfts from './nfts';
 import collections from './collections';
-import home from './home';
+import dashboard from './dashboard';
 import navBar from './navBar';
 
 export default combineReducers({
@@ -13,6 +13,6 @@ export default combineReducers({
     snackbar,
     nfts,
     collections,
-    home,
+    dashboard,
     navBar,
 });

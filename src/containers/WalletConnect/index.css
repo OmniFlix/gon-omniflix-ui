@@ -1,0 +1,57 @@
+.wallet_connect {
+    background: #1B1B1B;
+    border-radius: 20px;
+    margin: 30px;
+    padding: 100px 40px;
+}
+
+.wallet_connect .section1 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 44px;
+    color: #FFFFFF;
+}
+
+.wallet_connect .section2 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #757575;
+    margin: 50px 0;
+}
+
+.wallet_connect .section3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wallet_connect .section3 button {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    text-transform: unset;
+    padding: 10px 12px;
+    height: 40px;
+}
+
+.wallet_connect .section4 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #2D9CDB;
+    margin-top: 10px;
+}

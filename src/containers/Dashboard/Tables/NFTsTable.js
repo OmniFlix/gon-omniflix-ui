@@ -35,22 +35,6 @@ const NFTsTable = (props) => {
 
     const address = 'omniflix1rh3t2ptfpzm75tcfcp46vnkk992hqrt2z50glp';
     const columns = [{
-        name: 'nft_id',
-        label: 'NFT ID',
-        options: {
-            customBodyRender: function (value) {
-                return (
-                    <div className="nft_id">
-                        <div className="hash_text">
-                            <p>{address}</p>
-                            <span>{address && address.slice(address.length - 6, address.length)}</span>
-                        </div>
-                        <CopyButton data={address}/>
-                    </div>
-                );
-            },
-        },
-    }, {
         name: 'nft_title',
         label: 'NFT Title',
         options: {
@@ -62,6 +46,22 @@ const NFTsTable = (props) => {
                             <p className="nft_name">Omni Owl</p>
                             <p className="table_value collection_name">{value}</p>
                         </div>
+                    </div>
+                );
+            },
+        },
+    }, {
+        name: 'nft_id',
+        label: 'NFT ID',
+        options: {
+            customBodyRender: function () {
+                return (
+                    <div className="nft_id">
+                        <div className="hash_text">
+                            <p>{address}</p>
+                            <span>{address && address.slice(address.length - 6, address.length)}</span>
+                        </div>
+                        <CopyButton data={address}/>
                     </div>
                 );
             },
@@ -113,7 +113,7 @@ const NFTsTable = (props) => {
 
     const tableData =
         [...Array(5)].map((item, index) => ([
-            '', 'OMNI OWL(Green) #14', 'Native NFT', '',
+            'OMNI OWL(Green) #14', '', 'Native NFT', '',
         ]));
 
     return (

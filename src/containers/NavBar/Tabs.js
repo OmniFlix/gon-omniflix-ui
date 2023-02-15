@@ -17,12 +17,12 @@ class NavTabs extends Component {
     componentDidMount () {
         const route = this.props.router.location && this.props.router.location.pathname &&
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
-        console.log('samdjgaskdas', route);
 
         if (route === '') {
             this.props.router.navigate('/about');
-        }
-        if (this.props.tabValue !== route) {
+            this.props.setNavTabs('about');
+        } else if (this.props.tabValue !== route) {
+            this.props.router.navigate('/' + route);
             this.props.setNavTabs(route);
         }
     }

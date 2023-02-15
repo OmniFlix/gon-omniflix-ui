@@ -1,3 +1,2 @@
 export const CHAIN_VALUE_SET = 'CHAIN_VALUE_SET';
 export const TAB_VALUE_SET = 'TAB_VALUE_SET';
-export const SEARCH_VALUE_SET = 'SEARCH_VALUE_SET';

@@ -1,21 +1,21 @@
-.data_table > div:first-child table thead tr th {
-    border-bottom: unset;
-}
-
 .data_table > div:first-child table thead tr th:first-child > div {
     justify-content: flex-start;
     padding-left: 20px;
 }
 
 .data_table > div:first-child table thead tr th:first-child {
-    border-radius: 10px 0 0 0;
+    border-radius: 5px 0 0 0;
     text-align: left;
     justify-content: flex-start;
+    border: 1px solid #33333F;
+    border-right: unset;
 }
 
 .data_table > div:first-child table thead tr th:last-child {
-    border-radius: 0 10px 0 0;
+    border-radius: 0 5px 0 0;
     justify-content: flex-end;
+    border: 1px solid #33333F;
+    border-left: unset;
 }
 
 .data_table > div:first-child table thead tr th:last-child > div {
@@ -27,6 +27,8 @@
     background: #1B1B1B;
     backdrop-filter: blur(2px);
     padding: 8px 16px;
+    border-top: 1px solid #33333F;
+    border-bottom: 1px solid #33333F;
 }
 
 .data_table table thead tr th:nth-child(1) span {
@@ -49,6 +51,11 @@
     justify-content: center;
 }
 
+.data_table tbody {
+    border: 1px solid #33333F;
+    border-top: none;
+}
+
 .data_table table tbody tr td {
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
@@ -62,6 +69,10 @@
     padding: 8px 16px;
 }
 
+.data_table table tbody tr:hover {
+    background: rgba(20, 20, 20, 0.9);
+}
+
 .data_table table tbody tr:last-child td {
     border-bottom: unset;
 }
@@ -73,7 +84,7 @@
 .data_table table tfoot tr td {
     background: #1B1B1B;
     backdrop-filter: blur(2px);
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 5px 5px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -95,7 +106,8 @@
 }
 
 .data_table > div:first-child table tfoot tr td {
-    border: unset;
+    border: 1px solid #33333F;
+    border-top: unset;
 }
 
 .data_table table tfoot tr td svg {

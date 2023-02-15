@@ -1,11 +1,10 @@
 .navbar {
-    background: #22222C;
+    background: rgba(20, 20, 20, 0.9);
     border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    margin: 20px;
 }
 
 .navbar .right_section {
@@ -13,6 +12,26 @@
     align-items: center;
     justify-content: flex-end;
     padding: 10px 0;
+}
+
+.navbar .right_section .claim_button {
+    background: #2D9CDB;
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    padding: 10px;
+    height: 40px;
+    text-transform: capitalize;
+}
+
+.navbar .right_section .claim_button svg {
+    margin-right: 10px;
 }
 
 .navbar .right_section .create_button {
@@ -26,8 +45,9 @@
     display: flex;
     align-items: center;
     color: #FFFFFF;
-    padding: 10px;
+    padding: 10px 12px;
     height: 40px;
+    margin-left: 20px;
 }
 
 .navbar .right_section .create_button svg {
@@ -43,25 +63,23 @@
 }
 
 .navbar .right_section .connect_button {
-    background: #141414;
-    border-radius: 28px;
-    font-family: 'Inter', sans-serif;
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 13px;
-    line-height: 15px;
+    line-height: 16px;
     display: flex;
     align-items: center;
-    text-align: right;
-    font-feature-settings: 'salt' on, 'ss02' on;
     color: #FFFFFF;
     text-transform: unset;
-    padding: 10px 20px;
+    padding: 10px 12px;
     height: 40px;
 }
 
 .navbar .right_section .connected_account {
-    background: #141414;
+    background: #1B1B1B;
     border-radius: 28px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -78,6 +96,20 @@
     padding: 6px 20px;
 }
 
+.connected_account .tokens {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    font-feature-settings: 'salt' on, 'ss02' on;
+    color: #FFFFFF;
+    margin-bottom: 2px;
+}
+
 .navbar .right_section .connected_account > div {
     display: flex;
     align-items: center;
@@ -85,6 +117,12 @@
     color: #B7B7B7;
     max-width: 100px;
     text-transform: initial;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    font-feature-settings: 'salt' on, 'ss02' on;
 }
 
 .navbar .right_section .connected_account > div p {
@@ -146,7 +184,7 @@
     display: flex;
     align-items: center;
     color: #757575;
-    border-bottom: 3px solid #22222c;
+    border-bottom: 3px solid rgba(20, 20, 20, 0.9);
     min-width: unset;
     margin-right: 10px;
     text-transform: capitalize;
