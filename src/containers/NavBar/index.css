@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 0 20px;
     margin: 20px;
 }
 
@@ -12,6 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    padding: 10px 0;
 }
 
 .navbar .right_section .create_button {
@@ -74,8 +75,7 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-evenly;
-    padding: 4px 10px;
-    height: 40px;
+    padding: 6px 20px;
 }
 
 .navbar .right_section .connected_account > div {
@@ -84,6 +84,7 @@
     text-align: right;
     color: #B7B7B7;
     max-width: 100px;
+    text-transform: initial;
 }
 
 .navbar .right_section .connected_account > div p {
@@ -91,4 +92,80 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: -1px;
+}
+
+.profile_popover > div:nth-child(3) {
+    background: #292935;
+    border-radius: 10px;
+    padding: 10px;
+    min-width: 150px;
+    min-height: 100px;
+}
+
+.profile_popover .profile_actions {
+    display: flex;
+    align-items: flex-end;
+    width: auto;
+    min-height: 100px;
+}
+
+.profile_popover .profile_actions button {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #FFFFFF;
+    padding: 8px 10px;
+    width: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%)
+}
+
+/* Tabs */
+.navbar .horizontal_tabs {
+    background-color: unset;
+    box-shadow: unset;
+    width: auto;
+}
+
+.navbar .horizontal_tabs .tabs_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar .horizontal_tabs .tabs_content .tab {
+    background: unset;
+    border-radius: unset;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    color: #757575;
+    border-bottom: 3px solid #22222c;
+    min-width: unset;
+    margin-right: 10px;
+    text-transform: capitalize;
+    opacity: 1;
+    padding: 10px 16px;
+    height: 60px;
+    min-height: 60px;
+}
+
+.navbar .horizontal_tabs .tabs_content .tab.active_tab {
+    background: unset;
+    border-radius: unset;
+    color: #FFFFFF;
+    border-bottom: 3px solid #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
 }

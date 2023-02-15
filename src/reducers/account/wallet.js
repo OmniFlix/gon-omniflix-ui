@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import {
     CONNECT_KEPLR_ACCOUNT_ERROR,
     CONNECT_KEPLR_ACCOUNT_IN_PROGRESS,
-    CONNECT_KEPLR_ACCOUNT_SUCCESS,
+    CONNECT_KEPLR_ACCOUNT_SUCCESS, DISCONNECT_SET,
     KEPLR_ACCOUNT_KEYS_SET,
     TX_SIGN_AND_BROAD_CAST_ERROR,
     TX_SIGN_AND_BROAD_CAST_IN_PROGRESS,
@@ -39,6 +39,11 @@ const connection = (state = {
         return {
             ...state,
             keys: action.value,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            address: '',
         };
     default:
         return state;

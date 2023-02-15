@@ -20,7 +20,7 @@
     justify-content: center;
 }
 
-.data_table > div:first-child table thead tr th:last-child > div {
+.data_table.nfts_table > div:first-child table thead tr th:last-child > div {
     justify-content: center;
 }
 

@@ -3,6 +3,9 @@ const variables = {
         // NavBar
         connect: 'Connect',
         create: 'Create',
+        disconnect: 'Disconnect',
+        about: 'About',
+        dashboard: 'Dashboard',
 
         // Home
         collections: 'Collections',

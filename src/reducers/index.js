@@ -5,6 +5,7 @@ import account from './account';
 import nfts from './nfts';
 import collections from './collections';
 import home from './home';
+import navBar from './navBar';
 
 export default combineReducers({
     account,
@@ -13,4 +14,5 @@ export default combineReducers({
     nfts,
     collections,
     home,
+    navBar,
 });

@@ -9,7 +9,7 @@ import CollectionsTable from './Tables/CollectionsTable';
 import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
 
-const Home = (props) => {
+const Dashboard = (props) => {
     return (
         <div className="home scroll_bar">
             <div className="header">
@@ -34,7 +34,7 @@ const Home = (props) => {
     );
 };
 
-Home.propTypes = {
+Dashboard.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     tabValue: PropTypes.string.isRequired,
@@ -47,4 +47,4 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(Home);
+export default connect(stateToProps)(Dashboard);

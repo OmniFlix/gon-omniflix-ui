@@ -6,7 +6,7 @@ import './index.css';
 import { setTabValue } from '../../../actions/home';
 import variables from '../../../utils/variables';
 
-class NavTabs extends Component {
+class HeaderTabs extends Component {
     constructor (props) {
         super(props);
 
@@ -56,7 +56,7 @@ class NavTabs extends Component {
     }
 }
 
-NavTabs.propTypes = {
+HeaderTabs.propTypes = {
     lang: PropTypes.string.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
@@ -73,4 +73,4 @@ const actionsToProps = {
     setTabValue,
 };
 
-export default connect(stateToProps, actionsToProps)(NavTabs);
+export default connect(stateToProps, actionsToProps)(HeaderTabs);
