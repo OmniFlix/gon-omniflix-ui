@@ -3,7 +3,7 @@ import {
     COLLECTIONS_FETCH_IN_PROGRESS,
     COLLECTIONS_FETCH_SUCCESS,
 } from '../constants/collections';
-import { Axios } from 'axios';
+import Axios from 'axios';
 import { urlFetchCollections } from '../chains/collections';
 
 const fetchCollectionsInProgress = () => {
@@ -12,14 +12,13 @@ const fetchCollectionsInProgress = () => {
     };
 };
 
-const fetchCollectionsSuccess = (value, chain, skip, limit, search, total) => {
+const fetchCollectionsSuccess = (value, chain, skip, limit, total) => {
     return {
         type: COLLECTIONS_FETCH_SUCCESS,
         value,
         chain,
         skip,
         limit,
-        search,
         total,
     };
 };
@@ -31,20 +30,20 @@ const fetchCollectionsError = (message) => {
     };
 };
 
-export const fetchCollections = (chain, address, skip, limit, search, cb) => (dispatch) => {
+export const fetchCollections = (chain, address, skip, limit, cb) => (dispatch) => {
     dispatch(fetchCollectionsInProgress());
 
-    const url = urlFetchCollections(chain, address, skip, limit, search);
+    const url = urlFetchCollections(chain, address, skip, limit);
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
         },
     })
         .then((res) => {
-            dispatch(fetchCollectionsSuccess(res.data && res.data.result && res.data.result.list,
-                chain, skip, limit, search, res.data && res.data.result && res.data.result.count));
+            dispatch(fetchCollectionsSuccess(res.data && res.data.denoms, chain, skip, limit,
+                res.data && res.data.pagination && res.data.pagination.total));
             if (cb) {
-                cb(res.data && res.data.result && res.data.result.list, res.data && res.data.result && res.data.result.count);
+                cb(res.data && res.data.denoms, res.data && res.data.pagination && res.data.pagination.total);
             }
         })
         .catch((error) => {

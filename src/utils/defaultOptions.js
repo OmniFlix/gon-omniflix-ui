@@ -8,19 +8,25 @@ import OsmoIcon from '../assets/chains/osmo.svg';
 export const list = [{
     icon: CosmosIcon,
     name: 'Cosmos',
+    value: 'cosmos',
 }, {
     icon: IrisIcon,
     name: 'IrisNet',
+    value: 'iris',
 }, {
     icon: OmniIcon,
     name: 'OmniFlix Hub',
+    value: 'omniflix',
 }, {
     icon: StargazeIcon,
     name: 'Stargaze',
+    value: 'stargaze',
 }, {
     icon: JunoIcon,
     name: 'Juno',
+    value: 'juno',
 }, {
     icon: OsmoIcon,
     name: 'Osmosis',
+    value: 'osmosis',
 }];

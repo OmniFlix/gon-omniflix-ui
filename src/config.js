@@ -11,6 +11,9 @@ export const config = {
     PREFIX: 'omniflix',
 };
 
+export const IPFS_URL = 'https://ipfs.omniflix.studio/ipfs';
+export const IPFS_REFERENCE_PATH = 'ipfs://';
+
 export const chainId = config.CHAIN_ID;
 export const chainName = config.CHAIN_NAME;
 export const coinDenom = config.COIN_DENOM;
