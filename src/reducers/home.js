@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { CHAIN_VALUE_SET, SEARCH_VALUE_SET, TAB_VALUE_SET } from '../constants/home';
 
 const chainValue = (state = {
-    value: 'Cosmos',
+    value: 'omniflix',
 }, action) => {
     switch (action.type) {
     case CHAIN_VALUE_SET:

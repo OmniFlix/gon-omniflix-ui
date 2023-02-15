@@ -33,10 +33,9 @@ const ChainPopover = (props) => {
                     className="select_popover"
                     id="demo-simple-select"
                     value={props.chain}
-                    onChange={handleChange}
-                >
+                    onChange={handleChange}>
                     {list.map((item, index) => (
-                        <MenuItem key={index} className="list_item" value={item.name}>
+                        <MenuItem key={index} className="list_item" value={item.value}>
                             <img alt={item.icon} src={item.icon}/>
                             {item.name}
                         </MenuItem>
