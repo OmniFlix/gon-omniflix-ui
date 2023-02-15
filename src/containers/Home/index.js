@@ -6,6 +6,8 @@ import SearchTextField from './SearchTextField';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CollectionsTable from './Tables/CollectionsTable';
+import NFTsTable from './Tables/NFTsTable';
+import IBCNFTsTable from './Tables/IBCNFTsTable';
 
 const Home = (props) => {
     return (
@@ -23,6 +25,10 @@ const Home = (props) => {
             <div className="page_section">
                 {props.tabValue === 'collections' &&
                     <div className="data_table"><CollectionsTable /></div>}
+                {props.tabValue === 'nfts' &&
+                    <div className="data_table nfts_table"><NFTsTable /></div>}
+                {props.tabValue === 'ibc_nfts' &&
+                    <div className="data_table nfts_table"><IBCNFTsTable /></div>}
             </div>
         </div>
     );
