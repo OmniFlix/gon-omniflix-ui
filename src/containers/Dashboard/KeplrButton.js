@@ -31,7 +31,7 @@ const KeplrButton = (props) => {
 
                 props.aminoSignTx(tx, address[0].address, (result) => {
                     if (result) {
-                        props.router.navigate('/home');
+                        props.router.navigate('/dashboard');
                     }
                 });
             }

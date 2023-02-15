@@ -91,7 +91,7 @@ CollectionsTable.propTypes = {
 
 const stateToProps = (state) => {
     return {
-        chainValue: state.home.chainValue.value,
+        chainValue: state.dashboard.chainValue.value,
         inProgress: state.collections.collectionSList.inProgress,
         lang: state.language,
         list: state.collections.collectionSList.value,

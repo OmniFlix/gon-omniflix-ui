@@ -1,4 +1,4 @@
-import { CHAIN_VALUE_SET, SEARCH_VALUE_SET, TAB_VALUE_SET } from '../constants/home';
+import { CHAIN_VALUE_SET, TAB_VALUE_SET } from '../constants/dashboard';
 
 export const setChainValue = (value) => {
     return {
@@ -10,13 +10,6 @@ export const setChainValue = (value) => {
 export const setTabValue = (value) => {
     return {
         type: TAB_VALUE_SET,
-        value,
-    };
-};
-
-export const setSearchValue = (value) => {
-    return {
-        type: SEARCH_VALUE_SET,
         value,
     };
 };

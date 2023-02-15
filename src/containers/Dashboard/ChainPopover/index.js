@@ -2,47 +2,26 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import './index.css';
-import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { setChainValue } from '../../../actions/home';
+import { setChainValue } from '../../../actions/dashboard';
 import { list } from '../../../utils/defaultOptions';
-
-const MenuProps = {
-    PaperProps: {
-        style: {
-            width: 170,
-            background: '#292935',
-            borderRadius: '10px',
-            padding: '10px',
-        },
-    },
-};
+import { Button } from '@mui/material';
 
 const ChainPopover = (props) => {
-    const handleChange = (event) => {
-        props.setChainValue(event.target.value);
+    const handleChange = (value) => {
+        props.setChainValue(value);
     };
 
     return (
-        <Box className="chain_popover" sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-                <Select
-                    MenuProps={MenuProps}
-                    className="select_popover"
-                    id="demo-simple-select"
-                    value={props.chain}
-                    onChange={handleChange}>
-                    {list.map((item, index) => (
-                        <MenuItem key={index} className="list_item" value={item.value}>
-                            <img alt={item.icon} src={item.icon}/>
-                            {item.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </Box>
+        <div className="chain_popover">
+            {list.map((item, index) => (
+                <Button
+                    key={index}
+                    className={props.chain === item.value ? 'active_item list_item' : 'list_item'}
+                    onClick={() => handleChange(item.value)}>
+                    <img alt={item.icon} src={item.icon}/>
+                    {item.name}
+                </Button>))}
+        </div>
     );
 };
 
@@ -55,7 +34,7 @@ ChainPopover.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        chain: state.home.chainValue.value,
+        chain: state.dashboard.chainValue.value,
     };
 };
 

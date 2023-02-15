@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import './index.css';
 import ChainPopover from './ChainPopover';
 import Tabs from './Tabs';
-import SearchTextField from './SearchTextField';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CollectionsTable from './Tables/CollectionsTable';
 import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
+import { Button } from '@mui/material';
+import variables from '../../utils/variables';
 import { fetchCollections } from '../../actions/collections';
 import { DEFAULT_SKIP } from '../../constants/url';
 
@@ -28,14 +29,19 @@ class Dashboard extends Component {
     render () {
         return (
             <div className="home scroll_bar">
+                <ChainPopover/>
+                <p className="border"/>
                 <div className="header">
                     <div className="left_section">
-                        <ChainPopover/>
-                        <p className="border"/>
                         <Tabs/>
                     </div>
                     <div className="right_section">
-                        <SearchTextField/>
+                        <Button>
+                            {variables[this.props.lang]['create_collection']}
+                        </Button>
+                        <Button>
+                            {variables[this.props.lang]['create_nft']}
+                        </Button>
                     </div>
                 </div>
                 <div className="page_section">
@@ -65,12 +71,12 @@ Dashboard.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
-        chainValue: state.home.chainValue.value,
+        chainValue: state.dashboard.chainValue.value,
         collections: state.collections.collectionSList.value,
         collectionsInProgress: state.collections.collectionSList.inProgress,
         keys: state.account.wallet.connection.keys,
         lang: state.language,
-        tabValue: state.home.tabValue.value,
+        tabValue: state.dashboard.tabValue.value,
     };
 };
 

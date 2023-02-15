@@ -74,7 +74,7 @@ const ConnectButton = (props) => {
 
     return (
         <Button className="connect_button" onClick={handleClick}>
-            {variables[props.lang].connect}
+            {variables[props.lang]['connect_wallet']}
         </Button>
     );
 };

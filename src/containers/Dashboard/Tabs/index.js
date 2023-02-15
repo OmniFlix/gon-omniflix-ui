@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './index.css';
-import { setTabValue } from '../../../actions/home';
+import { setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 
 class HeaderTabs extends Component {
@@ -33,22 +33,22 @@ class HeaderTabs extends Component {
             <AppBar className="horizontal_tabs" position="static">
                 <div className="tabs_content">
                     <Tab
-                        className={'tab ' + (this.props.tabValue === 'collections' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang].collections}</p>}
-                        value="collections"
-                        onClick={() => this.handleChange('collections')}
-                        {...a11yProps(0)} />
-                    <Tab
                         className={'tab ' + (this.props.tabValue === 'nfts' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang].nfts}</p>}
+                        label={<p className="text">{variables[this.props.lang]['native_nfts']}</p>}
                         value="nfts"
                         onClick={() => this.handleChange('nfts')}
-                        {...a11yProps(1)} />
+                        {...a11yProps(0)} />
                     <Tab
                         className={'tab ' + (this.props.tabValue === 'ibc_nfts' ? 'active_tab' : '')}
                         label={<p className="text">{variables[this.props.lang]['ibc_nfts']}</p>}
                         value="ibc_nfts"
                         onClick={() => this.handleChange('ibc_nfts')}
+                        {...a11yProps(1)} />
+                    <Tab
+                        className={'tab ' + (this.props.tabValue === 'collections' ? 'active_tab' : '')}
+                        label={<p className="text">{variables[this.props.lang].collections}</p>}
+                        value="collections"
+                        onClick={() => this.handleChange('collections')}
                         {...a11yProps(2)} />
                 </div>
             </AppBar>
@@ -65,7 +65,7 @@ HeaderTabs.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        tabValue: state.home.tabValue.value,
+        tabValue: state.dashboard.tabValue.value,
     };
 };
 
