@@ -7,10 +7,10 @@ import { ReactComponent as CreateIcon } from '../../assets/navBar/create.svg';
 import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import ConnectButton from './ConnectButton';
-import DotsLoading from '../../components/DotsLoading';
-import { config } from '../../config';
 import { initializeChain, setDisconnect } from '../../actions/account/wallet';
 import { fetchBalance } from '../../actions/account/BCDetails';
+import ConnectedAccount from './ConnectedAccount';
+import Tabs from './Tabs';
 
 class NavBar extends Component {
     componentDidMount () {
@@ -60,14 +60,12 @@ class NavBar extends Component {
     }
 
     render () {
-        let balance = this.props.balance && this.props.balance.length && this.props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-        balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
-
         return (
             <div className="navbar">
                 <div className="left_section">
                     <StudioLogo/>
                 </div>
+                <Tabs />
                 <div className="right_section">
                     <Button className="create_button">
                         {variables[this.props.lang].create}
@@ -76,23 +74,7 @@ class NavBar extends Component {
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
                             ? <ConnectButton/>
-                            : <div className="connected_account">
-                                {this.props.balanceInProgress || this.props.connectInProgress
-                                    ? <DotsLoading/>
-                                    : balance
-                                        ? <p className="tokens">
-                                            {balance} {config.COIN_DENOM}
-                                        </p>
-                                        : <p className="tokens">
-                                            0 {config.COIN_DENOM}
-                                        </p>}
-                                {this.props.inProgress && this.props.address === ''
-                                    ? <DotsLoading/>
-                                    : <div className="hash_text">
-                                        <p>{this.props.address}</p>
-                                        <span>{this.props.address && this.props.address.slice(this.props.address.length - 6, this.props.address.length)}</span>
-                                    </div>}
-                            </div>}
+                            : <ConnectedAccount />}
                     </div>
                 </div>
             </div>
@@ -104,9 +86,7 @@ NavBar.propTypes = {
     address: PropTypes.string.isRequired,
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
-    connectInProgress: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
-    inProgress: PropTypes.bool.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setDisconnect: PropTypes.func.isRequired,
@@ -117,8 +97,6 @@ const stateToProps = (state) => {
         address: state.account.wallet.connection.address,
         balance: state.account.bc.balance.value,
         balanceInProgress: state.account.bc.balance.inProgress,
-        connectInProgress: state.account.connect,
-        inProgress: state.account.wallet.connection.inProgress,
         lang: state.language,
     };
 };

@@ -2,12 +2,16 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CircularProgress from './components/CircularProgress';
 
-const Home = lazy(() => import('./containers/Home').then().catch());
+const Dashboard = lazy(() => import('./containers/Dashboard').then().catch());
 const NavBar = lazy(() => import('./containers/NavBar').then().catch());
+const About = lazy(() => import('./containers/About').then().catch());
 
 const routes = [{
-    path: '/',
-    component: Home,
+    path: '/about',
+    component: About,
+}, {
+    path: '/dashboard',
+    component: Dashboard,
 }];
 
 const Router = () => {
@@ -26,7 +30,7 @@ const Router = () => {
                         )}
                         <Route
                             exact
-                            element={<Home/>}
+                            element={<About/>}
                             path="*"/>
                     </Routes>
                 </div>

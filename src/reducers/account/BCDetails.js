@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import {
     BALANCE_FETCH_ERROR,
     BALANCE_FETCH_IN_PROGRESS,
-    BALANCE_FETCH_SUCCESS,
+    BALANCE_FETCH_SUCCESS, DISCONNECT_SET,
     TX_HASH_FETCH_IN_PROGRESS,
     TX_HASH_FETCH_SUCCESS,
     TX_HASH_IN_PROGRESS_FALSE_SET,
@@ -31,6 +31,11 @@ const balance = (state = {
         return {
             ...state,
             inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            value: [],
         };
     default:
         return state;

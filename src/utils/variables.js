@@ -3,6 +3,9 @@ const variables = {
         // NavBar
         connect: 'Connect',
         create: 'Create',
+        disconnect: 'Disconnect',
+        about: 'About',
+        dashboard: 'Dashboard',
 
         // Home
         collections: 'Collections',
@@ -10,6 +13,13 @@ const variables = {
         ibc_nfts: 'IBC NFTs',
         search: 'Search',
         bulk_mint: 'Bulk Mint',
+        actions: 'Actions',
+        nft_id: 'NFT ID',
+        nft_title: 'NFT Title',
+        nft_type: 'NFT Type',
+        origin_chain: 'Origin Chain',
+        transfer: 'Transfer',
+        burn: 'Burn',
     },
 };
 

@@ -1,0 +1,103 @@
+.data_table .collection_info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.data_table .collection_info img {
+    width: 60px !important;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.data_table .table_actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.data_table.nfts_table .center_actions {
+    justify-content: center;
+}
+
+.data_table.nfts_table > div:first-child table thead tr th:last-child > div {
+    justify-content: center;
+}
+
+.data_table .table_actions .primary_button {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    padding: 8px 20px;
+}
+
+.data_table .nft_id {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.data_table .nft_id .hash_text {
+    max-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-transform: initial;
+}
+
+.data_table .nft_id .hash_text p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.data_table .copy_button.copy_icon_button {
+    box-shadow: unset;
+    background: unset;
+    margin-left: 8px;
+    margin-top: 2px;
+    padding: 0;
+}
+
+.data_table .nft_info > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: max-content;
+}
+
+.data_table .nft_name {
+    color: #757575;
+    margin-bottom: 4px;
+}
+
+.data_table .origin_chain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.data_table .origin_chain img {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.data_table .burn_button {
+    border: 1px solid #EB5757;
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #EB5757;
+    margin-left: 10px;
+}
