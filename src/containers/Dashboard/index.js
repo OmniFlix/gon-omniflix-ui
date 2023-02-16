@@ -7,11 +7,8 @@ import { connect } from 'react-redux';
 import CollectionsTable from './Tables/CollectionsTable';
 import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
-import { Button } from '@mui/material';
-import variables from '../../utils/variables';
 import { fetchCollections } from '../../actions/collections';
 import { DEFAULT_SKIP } from '../../constants/url';
-import SingleCollection from './SingleCollection';
 
 class Dashboard extends Component {
     componentDidMount () {
@@ -36,24 +33,14 @@ class Dashboard extends Component {
                     <div className="left_section">
                         <Tabs/>
                     </div>
-                    <div className="center_section">
-                        <span>
-                            {this.props.tabValue && this.props.tabValue.replace(/_/g, ' ')}
-                            {'    /  '}
-                        </span>
-                        <p>Collection Name</p>
-                    </div>
-                    <div className="right_section">
-                        <Button>
-                            {variables[this.props.lang]['create_collection']}
-                        </Button>
-                        <Button>
-                            {variables[this.props.lang]['create_nft']}
-                        </Button>
-                    </div>
-                </div>
-                <div>
-                    <SingleCollection />
+                    {/* <div className="right_section"> */}
+                    {/*    <Button> */}
+                    {/*        {variables[this.props.lang]['create_collection']} */}
+                    {/*    </Button> */}
+                    {/*    <Button> */}
+                    {/*        {variables[this.props.lang]['create_nft']} */}
+                    {/*    </Button> */}
+                    {/* </div> */}
                 </div>
                 <div className="page_section">
                     {this.props.tabValue === 'my_collections' &&

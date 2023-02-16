@@ -6,6 +6,7 @@ const WalletConnect = lazy(() => import('./containers/WalletConnect').then().cat
 const Dashboard = lazy(() => import('./containers/Dashboard').then().catch());
 const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 const About = lazy(() => import('./containers/About').then().catch());
+const SingleCollection = lazy(() => import('./containers/SingleCollection').then().catch());
 
 const routes = [{
     path: '/',
@@ -16,6 +17,9 @@ const routes = [{
 }, {
     path: '/dashboard',
     component: Dashboard,
+}, {
+    path: '/collection/:id',
+    component: SingleCollection,
 }];
 
 const Router = () => {

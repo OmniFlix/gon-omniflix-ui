@@ -1,8 +1,8 @@
 import React from 'react';
 import './index.css';
-import thumbnail from '../../../assets/dashboard/collections.svg';
-import verifiedIcon from '../../../assets/dashboard/verified.svg';
-import variables from '../../../utils/variables';
+import thumbnail from '../../assets/dashboard/collections.svg';
+import verifiedIcon from '../../assets/dashboard/verified.svg';
+import variables from '../../utils/variables';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 
