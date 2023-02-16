@@ -1,0 +1,97 @@
+.single_collection {
+    margin: 0 30px;
+}
+
+.single_collection .collection_section {
+    background: #292935;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+}
+
+.single_collection .collection_section .section1 {
+    border-radius: 500px;
+    width: 174px;
+    height: 174px;
+}
+
+.single_collection .collection_section .section1 img {
+    width: 100%;
+    height: 100%;
+    border-radius: 500px;
+}
+
+.single_collection .collection_section .section2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 20px;
+    flex: 1;
+}
+
+.single_collection .collection_section .section2 .row1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.single_collection .collection_section .section2 .row1 > p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+.single_collection .collection_section .section2 .row1 img {
+    margin-left: 10px;
+}
+
+.single_collection .collection_section .section2 .row2 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #757575;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.single_collection .collection_section .section2 .row2 .hash_text {
+    max-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-transform: initial;
+    margin-left: 10px;
+}
+
+.single_collection .collection_section .section2 .row2 .hash_text p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.single_collection .collection_section .section2 .row3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #FFFFFF;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 20px;
+    text-align: left;
+}

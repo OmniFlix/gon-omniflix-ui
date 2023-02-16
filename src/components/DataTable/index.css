@@ -24,11 +24,12 @@
 }
 
 .data_table table thead tr th {
-    background: #1B1B1B;
-    backdrop-filter: blur(2px);
     padding: 8px 16px;
     border-top: 1px solid #33333F;
     border-bottom: 1px solid #33333F;
+
+    background: linear-gradient(180deg, #444458 0%, #2E2E3D 100%);
+    backdrop-filter: blur(2px);
 }
 
 .data_table table thead tr th:nth-child(1) span {
@@ -82,8 +83,9 @@
 }
 
 .data_table table tfoot tr td {
-    background: #1B1B1B;
+    background: linear-gradient(180deg, #444458 0%, #2E2E3D 100%);
     backdrop-filter: blur(2px);
+
     border-radius: 0 0 5px 5px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
@@ -117,6 +119,10 @@
 .data_table > div {
     background: unset;
     box-shadow: unset;
+}
+
+.data_table > div > div:nth-child(2) {
+    border-radius: 5px;
 }
 
 .data_table > div > div:nth-child(3)::-webkit-scrollbar-thumb {

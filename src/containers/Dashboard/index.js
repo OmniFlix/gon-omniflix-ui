@@ -11,10 +11,11 @@ import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import { fetchCollections } from '../../actions/collections';
 import { DEFAULT_SKIP } from '../../constants/url';
+import SingleCollection from './SingleCollection';
 
 class Dashboard extends Component {
     componentDidMount () {
-        if (this.props.tabValue === 'collections' && !this.props.collectionsInProgress && this.props.chainValue &&
+        if (this.props.tabValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
             this.props.fetchCollections(this.props.chainValue, this.props.address, DEFAULT_SKIP, 500);
         }
@@ -35,6 +36,13 @@ class Dashboard extends Component {
                     <div className="left_section">
                         <Tabs/>
                     </div>
+                    <div className="center_section">
+                        <span>
+                            {this.props.tabValue && this.props.tabValue.replace(/_/g, ' ')}
+                            {'    /  '}
+                        </span>
+                        <p>Collection Name</p>
+                    </div>
                     <div className="right_section">
                         <Button>
                             {variables[this.props.lang]['create_collection']}
@@ -44,8 +52,11 @@ class Dashboard extends Component {
                         </Button>
                     </div>
                 </div>
+                <div>
+                    <SingleCollection />
+                </div>
                 <div className="page_section">
-                    {this.props.tabValue === 'collections' &&
+                    {this.props.tabValue === 'my_collections' &&
                         <div className="data_table"><CollectionsTable/></div>}
                     {this.props.tabValue === 'nfts' &&
                         <div className="data_table nfts_table"><NFTsTable/></div>}

@@ -10,6 +10,8 @@ const variables = {
         claim_faucet: 'Claim Faucet',
 
         // Home
+        all_collections: 'All Collections',
+        my_collections: 'My Collections',
         collections: 'Collections',
         nfts: 'NFTs',
         native_nfts: 'Native  NFTs',
@@ -26,6 +28,8 @@ const variables = {
 
         create_collection: 'Create collection',
         create_nft: 'Create NFT',
+
+        created_by: 'Created by',
     },
 };
 
