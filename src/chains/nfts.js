@@ -1,11 +1,12 @@
 import { ChainsList } from './index';
 
-export const urlFetchNFTS = (chain, address, skip, limit) => {
+export const urlFetchNFTS = (chain, address, denomId, skip, limit) => {
     let url = ChainsList[chain] && ChainsList[chain].NFT_S_OWNED_URL && (ChainsList[chain].REST_URL + ChainsList[chain].NFT_S_OWNED_URL);
     if (!url) {
         return;
     }
 
+    url = url.replace(':denomId', denomId);
     url = url.replace(':address', address);
 
     const params = ['pagination.countTotal=true'];

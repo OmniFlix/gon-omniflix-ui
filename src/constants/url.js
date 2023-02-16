@@ -14,3 +14,6 @@ export const ACCESS_TOKEN_URL = `${API_URL}/user/auth/refresh-token`;
 
 export const urlVerifyAccount = (userId) => `${API_URL}/users/${userId}/verify-bc-account`;
 export const urlFetchBalance = (address) => `${URL}/cosmos/bank/v1beta1/balances/${address}`;
+export const urlFetchTimeoutHeight = (url, channel) => {
+    return `${url}/ibc/core/channel/v1/channels/${channel}/ports/transfer`;
+};

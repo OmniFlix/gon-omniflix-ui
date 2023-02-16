@@ -8,7 +8,7 @@ export const ChainsList = {
         COIN_MINIMAL_DENOM: 'uflix',
         COIN_DECIMALS: 6,
         PREFIX: 'omniflix',
-        NFT_S_OWNED_URL: '/onft/owners/:address',
+        NFT_S_OWNED_URL: '/omniflix/onft/v1beta1/onfts/:denomId/:address',
         COLLECTIONS_OWNED_URL: '/omniflix/onft/v1beta1/denoms?owner=:address',
     },
     // iris: {
