@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { ReactComponent as FaucetIcon } from '../../assets/navBar/faucet.svg';
-import { ReactComponent as CreateIcon } from '../../assets/navBar/create.svg';
+// import { ReactComponent as CreateIcon } from '../../assets/navBar/create.svg';
 import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import ConnectButton from './ConnectButton';
@@ -12,6 +12,7 @@ import { initializeChain, setDisconnect } from '../../actions/account/wallet';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import ConnectedAccount from './ConnectedAccount';
 import Tabs from './Tabs';
+import CreatePopover from './CreatePopover';
 
 class NavBar extends Component {
     componentDidMount () {
@@ -67,17 +68,14 @@ class NavBar extends Component {
                     <Logo/>
                 </div>
                 {this.props.address !== '' &&
-                <Tabs />}
+                    <Tabs />}
                 <div className="right_section">
                     {this.props.address !== '' &&
-                    <Button className="claim_button">
-                        <FaucetIcon/>
-                        {variables[this.props.lang]['claim_faucet']}
-                    </Button>}
-                    <Button className="create_button">
-                        {variables[this.props.lang].create}
-                        <CreateIcon />
-                    </Button>
+                        <Button className="claim_button">
+                            <FaucetIcon/>
+                            {variables[this.props.lang]['claim_faucet']}
+                        </Button>}
+                    <CreatePopover/>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
                             ? <ConnectButton/>
