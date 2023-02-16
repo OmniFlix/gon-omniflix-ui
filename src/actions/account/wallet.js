@@ -4,6 +4,9 @@ import {
     CONNECT_KEPLR_ACCOUNT_SUCCESS,
     DISCONNECT_SET,
     KEPLR_ACCOUNT_KEYS_SET,
+    PROTO_BUF_SIGN_ERROR,
+    PROTO_BUF_SIGN_IN_PROGRESS,
+    PROTO_BUF_SIGN_SUCCESS,
     TX_HASH_FETCH_ERROR,
     TX_HASH_FETCH_IN_PROGRESS,
     TX_HASH_FETCH_SUCCESS,
@@ -16,9 +19,16 @@ import {
     TX_SIGN_SUCCESS,
 } from '../../constants/wallet';
 import { chainConfig, chainId, config } from '../../config';
-import { SigningStargateClient } from '@cosmjs/stargate';
-import { makeSignDoc } from '@cosmjs/amino';
+import { defaultRegistryTypes, SigningStargateClient } from '@cosmjs/stargate';
+import { encodePubkey, makeSignDoc, Registry } from '@cosmjs/proto-signing';
+import { makeSignDoc as AminoMakeSignDoc } from '@cosmjs/amino';
+import { customRegistry, customTypes } from '../../registry';
+import { encodeSecp256k1Pubkey } from '@cosmjs/amino/build/encoding';
+import { AuthInfo, TxBody, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import Axios from 'axios';
+import { convertToCamelCase } from '../../utils/strings';
+import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx';
+import { fromBase64, toBase64 } from '@cosmjs/encoding';
 
 const connectKeplrAccountInProgress = () => {
     return {
@@ -135,7 +145,7 @@ export const aminoSignTx = (tx, address, cb) => (dispatch) => {
                 account.sequence = 0;
             }
 
-            const signDoc = makeSignDoc(
+            const signDoc = AminoMakeSignDoc(
                 tx.msgs ? tx.msgs : [tx.msg],
                 tx.fee,
                 config.CHAIN_ID,
@@ -156,6 +166,155 @@ export const aminoSignTx = (tx, address, cb) => (dispatch) => {
             });
         } catch (e) {
             dispatch(signTxError(e && e.message));
+        }
+    })();
+};
+
+const protoBufSigningInProgress = () => {
+    return {
+        type: PROTO_BUF_SIGN_IN_PROGRESS,
+    };
+};
+
+const protoBufSigningSuccess = (value) => {
+    return {
+        type: PROTO_BUF_SIGN_SUCCESS,
+        value,
+    };
+};
+
+const protoBufSigningError = (message) => {
+    return {
+        type: PROTO_BUF_SIGN_ERROR,
+        message,
+        variant: 'error',
+    };
+};
+
+export const protoBufSigning = (tx, address, cb) => (dispatch) => {
+    dispatch(protoBufSigningInProgress());
+    (async () => {
+        await window.keplr && window.keplr.enable(config.CHAIN_ID);
+        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(config.CHAIN_ID);
+        const myRegistry = new Registry([...defaultRegistryTypes, ...customRegistry]);
+        if (tx && tx.fee && tx.fee.granter && window.keplr) {
+            window.keplr.defaultOptions = {
+                sign: {
+                    disableBalanceCheck: true,
+                },
+            };
+        } else if (window.keplr) {
+            window.keplr.defaultOptions = {};
+        }
+
+        try {
+            const client = await SigningStargateClient.connectWithSigner(
+                config.RPC_URL,
+                offlineSigner,
+                { registry: myRegistry },
+            );
+
+            let account = {};
+            try {
+                account = await client.getAccount(address);
+            } catch (e) {
+                account.accountNumber = 0;
+                account.sequence = 0;
+            }
+            const accounts = await offlineSigner.getAccounts();
+
+            let pubkey = accounts && accounts.length && accounts[0] &&
+                accounts[0].pubkey && encodeSecp256k1Pubkey(accounts[0].pubkey);
+            pubkey = accounts && accounts.length && accounts[0] &&
+                accounts[0].pubkey && pubkey && pubkey.value &&
+                encodePubkey(pubkey);
+
+            let authInfo = {
+                signerInfos: [{
+                    publicKey: pubkey,
+                    modeInfo: {
+                        single: {
+                            mode: 1,
+                        },
+                    },
+                    sequence: account && account.sequence,
+                }],
+                fee: { ...tx.fee },
+            };
+            authInfo = AuthInfo.encode(AuthInfo.fromPartial(authInfo)).finish();
+
+            const messages = [];
+            if (tx.msgs && tx.msgs.length) {
+                tx.msgs.map((val) => {
+                    let msgValue = val.value;
+                    msgValue = msgValue && convertToCamelCase(msgValue);
+                    let typeUrl = val.typeUrl;
+
+                    if (tx.msgType) {
+                        const type = customTypes[tx.msgType].type;
+                        typeUrl = customTypes[tx.msgType].typeUrl;
+                        msgValue = type.encode(type.fromPartial(msgValue)).finish();
+                    } else if (typeUrl === '/ibc.applications.transfer.v1.MsgTransfer') {
+                        msgValue = MsgTransfer.encode(MsgTransfer.fromPartial(msgValue)).finish();
+                    }
+
+                    messages.push({
+                        typeUrl: typeUrl,
+                        value: msgValue,
+                    });
+
+                    return null;
+                });
+            } else {
+                let msgValue = tx.msg && tx.msg.value;
+                msgValue = msgValue && convertToCamelCase(msgValue);
+                let typeUrl = tx.msg && tx.msg.typeUrl;
+
+                if (tx.msgType) {
+                    const type = customTypes[tx.msgType].type;
+                    typeUrl = customTypes[tx.msgType].typeUrl;
+                    msgValue = type.encode(type.fromPartial(msgValue)).finish();
+                } else if (typeUrl === '/ibc.applications.transfer.v1.MsgTransfer') {
+                    msgValue = MsgTransfer.encode(MsgTransfer.fromPartial(msgValue)).finish();
+                }
+
+                messages.push({
+                    typeUrl: typeUrl,
+                    value: msgValue,
+                });
+            }
+
+            let bodyBytes = {
+                messages: messages,
+                memo: tx.memo,
+            };
+            bodyBytes = TxBody.encode(TxBody.fromPartial(bodyBytes)).finish();
+
+            const signDoc = makeSignDoc(
+                bodyBytes,
+                authInfo,
+                config.CHAIN_ID,
+                account && account.accountNumber,
+            );
+
+            offlineSigner.signDirect(address, signDoc).then((result) => {
+                const txRaw = TxRaw.fromPartial({
+                    bodyBytes: result.signed.bodyBytes,
+                    authInfoBytes: result.signed.authInfoBytes,
+                    signatures: [fromBase64(result.signature.signature)],
+                });
+                const txBytes = TxRaw.encode(txRaw).finish();
+                if (result && result.code !== undefined && result.code !== 0) {
+                    dispatch(protoBufSigningError(result.log || result.rawLog));
+                } else {
+                    dispatch(protoBufSigningSuccess(result));
+                    cb(result, toBase64(txBytes));
+                }
+            }).catch((error) => {
+                dispatch(protoBufSigningError(error && error.message));
+            });
+        } catch (e) {
+            dispatch(protoBufSigningError(e && e.message));
         }
     })();
 };
@@ -183,7 +342,7 @@ const txSignAndBroadCastError = (message) => {
 export const txSignAndBroadCast = (data, cb) => (dispatch) => {
     dispatch(txSignAndBroadCastInProgress());
 
-    const url = config.REST_URL + '/txs';
+    const url = config.REST_URL + '/cosmos/tx/v1beta1/txs';
     Axios.post(url, data, {
         headers: {
             Accept: 'application/json, text/plain, */*',
@@ -234,7 +393,7 @@ const fetchTxHashError = (message) => {
 export const fetchTxHash = (hash, cb) => (dispatch) => {
     dispatch(fetchTxHashInProgress());
 
-    const url = config.REST_URL + '/txs/' + hash;
+    const url = config.REST_URL + '/cosmos/tx/v1beta1/txs/' + hash;
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
