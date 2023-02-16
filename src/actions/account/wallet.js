@@ -370,6 +370,39 @@ export const txSignAndBroadCast = (data, cb) => (dispatch) => {
         });
 };
 
+export const txSignAndBroadCastAminoSign = (data, cb) => (dispatch) => {
+    dispatch(txSignAndBroadCastInProgress());
+
+    const url = config.REST_URL + '/txs';
+    Axios.post(url, data, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+            Connection: 'keep-alive',
+        },
+    })
+        .then((res) => {
+            if (res.data && res.data.code !== undefined && (res.data.code !== 0)) {
+                dispatch(txSignAndBroadCastError(res.data.logs || res.data.raw_log));
+                cb(null);
+            } else {
+                const message = 'Transaction Success, Waiting for the tx to be included in block';
+                dispatch(txSignAndBroadCastSuccess(res.data, message, 'processing',
+                    res.data && res.data.txhash));
+                cb(res.data);
+            }
+        })
+        .catch((error) => {
+            dispatch(txSignAndBroadCastError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            cb(null);
+        });
+};
+
 const fetchTxHashInProgress = () => {
     return {
         type: TX_HASH_FETCH_IN_PROGRESS,
