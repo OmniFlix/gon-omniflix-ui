@@ -24,3 +24,14 @@ export const urlFetchTimeoutHeight = (url, channel) => {
 export const urlFetchCollectionInfo = (ID) => {
     return `${URL}/omniflix/onft/v1beta1/denoms/${ID}`;
 };
+export const urlFetchCollectionNFTS = (ID, skip, limit) => {
+    const params = ['pagination.countTotal=true'];
+    if (skip) {
+        params.push(`pagination.offset=${skip}`);
+    }
+    if (limit) {
+        params.push(`pagination.limit=${limit}`);
+    }
+
+    return `${URL}/omniflix/onft/v1beta1/collections/${ID}?${params.join('&')}`;
+};

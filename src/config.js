@@ -14,11 +14,11 @@ export const config = {
 export const IPFS_URL = 'https://ipfs.omniflix.studio/ipfs';
 export const IPFS_REFERENCE_PATH = 'ipfs://';
 
-export const DEFAULT_TOTAL = 20;
+export const DEFAULT_TOTAL = 10;
 export const DEFAULT_SORT_BY = 'created_at';
 export const DEFAULT_ORDER = 'desc';
 export const DEFAULT_SKIP = 0;
-export const DEFAULT_LIMIT = 20;
+export const DEFAULT_LIMIT = 10;
 export const DEFAULT_SEARCH = null;
 export const DEFAULT_LAZY_FETCH_HEIGHT = 256;
 export const TRANSACTION_SET_TIME_OUT = 3000;
