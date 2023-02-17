@@ -1,7 +1,11 @@
 import { BALANCE_FETCH_ERROR, BALANCE_FETCH_IN_PROGRESS, BALANCE_FETCH_SUCCESS } from '../../constants/wallet';
 import Axios from 'axios';
 import { urlFetchAllowances, urlFetchBalance } from '../../constants/url';
-import { ALLOWANCES_FETCH_ERROR, ALLOWANCES_FETCH_IN_PROGRESS, ALLOWANCES_FETCH_SUCCESS } from '../../constants/account';
+import {
+    ALLOWANCES_FETCH_ERROR,
+    ALLOWANCES_FETCH_IN_PROGRESS,
+    ALLOWANCES_FETCH_SUCCESS,
+} from '../../constants/account';
 
 const fetchBalanceInProgress = () => {
     return {

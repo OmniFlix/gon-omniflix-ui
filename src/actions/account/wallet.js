@@ -325,10 +325,13 @@ const txSignAndBroadCastInProgress = () => {
     };
 };
 
-const txSignAndBroadCastSuccess = (value) => {
+const txSignAndBroadCastSuccess = (value, message, variant, hash) => {
     return {
         type: TX_SIGN_AND_BROAD_CAST_SUCCESS,
         value,
+        message,
+        variant,
+        hash,
     };
 };
 
@@ -336,6 +339,7 @@ const txSignAndBroadCastError = (message) => {
     return {
         type: TX_SIGN_AND_BROAD_CAST_ERROR,
         message,
+        variant: 'error',
     };
 };
 
@@ -350,12 +354,16 @@ export const txSignAndBroadCast = (data, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            if (res.data && res.data.code !== undefined && res.data.code !== 0) {
-                dispatch(txSignAndBroadCastError(res.data.logs || res.data.raw_log));
+            if (res.data && res.data.tx_response && (res.data.tx_response.code !== undefined) && (res.data.tx_response.code !== 0)) {
+                dispatch(txSignAndBroadCastError(res.data.tx_response.logs && res.data.tx_response.logs.length
+                    ? res.data.tx_response.logs
+                    : res.data.tx_response.raw_log));
                 cb(null);
             } else {
-                dispatch(txSignAndBroadCastSuccess(res.data));
-                cb(res.data);
+                const message = 'Transaction Success, Waiting for the tx to be included in block';
+                dispatch(txSignAndBroadCastSuccess(res.data && res.data.tx_response, message, 'processing',
+                    res.data && res.data.tx_response && res.data.tx_response.txhash));
+                cb(res.data && res.data.tx_response);
             }
         })
         .catch((error) => {
@@ -409,10 +417,12 @@ const fetchTxHashInProgress = () => {
     };
 };
 
-const fetchTxHashSuccess = (message) => {
+const fetchTxHashSuccess = (message, hash) => {
     return {
         type: TX_HASH_FETCH_SUCCESS,
         message,
+        variant: 'success',
+        hash,
     };
 };
 
@@ -438,7 +448,7 @@ export const fetchTxHash = (hash, cb) => (dispatch) => {
                 dispatch(fetchTxHashError(res.data.logs || res.data.raw_log));
                 cb(res.data);
             } else {
-                dispatch(fetchTxHashSuccess('success'));
+                dispatch(fetchTxHashSuccess('success', hash));
                 cb(res.data);
             }
         })

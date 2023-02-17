@@ -28,10 +28,6 @@ class NavTabs extends Component {
     }
 
     handleChange (newValue) {
-        if (newValue === this.props.tabValue) {
-            return;
-        }
-
         this.props.router.navigate('/' + newValue);
         this.props.setNavTabs(newValue);
     }
@@ -44,17 +40,20 @@ class NavTabs extends Component {
             };
         };
 
+        const route = this.props.router.location && this.props.router.location.pathname &&
+            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
+
         return (
             <AppBar className="horizontal_tabs" position="static">
                 <div className="tabs_content">
                     <Tab
-                        className={'tab ' + (this.props.tabValue === 'about' ? 'active_tab' : '')}
+                        className={'tab ' + (route === 'about' ? 'active_tab' : '')}
                         label={variables[this.props.lang].about}
                         value="about"
                         onClick={() => this.handleChange('about')}
                         {...a11yProps(0)} />
                     <Tab
-                        className={'tab ' + (this.props.tabValue === 'dashboard' ? 'active_tab' : '')}
+                        className={'tab ' + (route === 'dashboard' ? 'active_tab' : '')}
                         label={variables[this.props.lang].dashboard}
                         value="dashboard"
                         onClick={() => this.handleChange('dashboard')}

@@ -20,6 +20,9 @@ const routes = [{
 }, {
     path: '/create-collection',
     component: CreateCollection,
+}, {
+    path: '/create-collection/:collectionID',
+    component: CreateCollection,
 }];
 
 const Router = () => {

@@ -19,17 +19,17 @@ const CollectionConfirmDialog = (props) => {
             open={props.open}
             onClose={props.handleClose}>
             <DialogContent className="collection_confirm_dialog_content">
-                {props.match && props.match.params && props.match.params.collectionID
+                {props.router && props.router.params && props.router.params.collectionID
                     ? <h3>{variables[props.lang].update_collection_confirmation}</h3>
                     : <h3>{variables[props.lang].mint_collection_confirmation}</h3>}
                 <div className="section">
                     <div className="row">
                         <p className="label">{variables[props.lang].message_type}</p>
-                        {props.match && props.match.params && props.match.params.collectionID
+                        {props.router && props.router.params && props.router.params.collectionID
                             ? <p className="value">{customTypes.UpdateDenom && customTypes.UpdateDenom.typeUrl}</p>
                             : <p className="value">{customTypes.CreateDenom && customTypes.CreateDenom.typeUrl}</p>}
                     </div>
-                    {props.match && props.match.params && props.match.params.collectionID
+                    {props.router && props.router.params && props.router.params.collectionID
                         ? null
                         : <div className="row">
                             <p className="label">{(variables[props.lang].collection_symbol).toLowerCase()}</p>
@@ -39,13 +39,13 @@ const CollectionConfirmDialog = (props) => {
                         <p className="label">{(variables[props.lang].collection_name).toLowerCase()}</p>
                         <p className="value">{props.name}</p>
                     </div>
-                    {props.match && props.match.params && props.match.params.collectionID
+                    {props.router && props.router.params && props.router.params.collectionID
                         ? null
                         : <div className="row">
                             <p className="label">{variables[props.lang].schema_property}</p>
                             <p className="value">{props.jsonSchema ? 'Yes' : 'No'}</p>
                         </div>}
-                    {props.match && props.match.params && props.match.params.collectionID && props.imageUrl !== ''
+                    {props.router && props.router.params && props.router.params.collectionID && props.imageUrl !== ''
                         ? <div className="row">
                             <p className="label">{variables[props.lang].collection_avatar}</p>
                             <p className="value">{props.imageUrl}</p>
@@ -58,7 +58,7 @@ const CollectionConfirmDialog = (props) => {
                         onClick={props.handleClose}>
                         {variables[props.lang].cancel}
                     </Button>
-                    {props.match && props.match.params && props.match.params.collectionID
+                    {props.router && props.router.params && props.router.params.collectionID
                         ? <UpdateCollectionButton/>
                         : <MintCollectionButton/>}
                 </div>
@@ -72,14 +72,14 @@ CollectionConfirmDialog.propTypes = {
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    router: PropTypes.shape({
+        params: PropTypes.shape({
+            collectionID: PropTypes.string,
+        }).isRequired,
+    }).isRequired,
     symbol: PropTypes.string.isRequired,
     imageUrl: PropTypes.any,
     jsonSchema: PropTypes.string,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            collectionID: PropTypes.string.isRequired,
-        }),
-    }),
     value: PropTypes.object,
 };
 

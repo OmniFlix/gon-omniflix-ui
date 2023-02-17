@@ -68,7 +68,7 @@ class NavBar extends Component {
                     <Logo/>
                 </div>
                 {this.props.address !== '' &&
-                    <Tabs />}
+                    <Tabs/>}
                 <div className="right_section">
                     {this.props.address !== '' &&
                         <Button className="claim_button">
@@ -79,7 +79,7 @@ class NavBar extends Component {
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
                             ? <ConnectButton/>
-                            : <ConnectedAccount />}
+                            : <ConnectedAccount/>}
                     </div>
                 </div>
             </div>

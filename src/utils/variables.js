@@ -8,6 +8,10 @@ const variables = {
         about: 'About',
         dashboard: 'Dashboard',
         claim_faucet: 'Claim Faucet',
+        nft_collection: 'NFT Collection',
+        nft_collection_info: 'create a collection of NFTs',
+        asset_via_upload: 'Asset via File Upload',
+        asset_via_upload_info: 'create audio, video, document NFTs by uploading files',
 
         // Home
         collections: 'Collections',
@@ -16,6 +20,7 @@ const variables = {
         ibc_nfts: 'IBC NFTs',
         search: 'Search',
         bulk_mint: 'Bulk Mint',
+        edit: 'Edit',
         actions: 'Actions',
         nft_id: 'NFT ID',
         nft_title: 'NFT Title',
@@ -25,6 +30,7 @@ const variables = {
         burn: 'Burn',
 
         create_collection: 'Create collection',
+        update_collection: 'Update collection',
         create_nft: 'Create NFT',
 
         // Create Collection
@@ -80,6 +86,9 @@ const variables = {
         create_new_collection: 'Create New Collection',
         enter_collection_name: 'Enter Collection Name',
         enter_collection_symbol: 'Enter Collection Symbol',
+        cancel: 'Cancel',
+        confirm: 'Confirm',
+        approval_pending: 'APPROVAL PENDING',
     },
 };
 

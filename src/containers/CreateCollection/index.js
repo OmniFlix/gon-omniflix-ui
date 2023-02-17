@@ -1,13 +1,19 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component, Suspense } from 'react';
 import './index.css';
 import {
-    addCollection,
-    fetchCollections,
+    fetchCollection,
     setCollectionJsonSchema,
     setCollectionName,
-    setCollectionSymbol, showCollectionConfirmDialog,
+    setCollectionSymbol,
+    setUpdateCollection,
+    showCollectionConfirmDialog,
 } from '../../actions/collections';
-import { fetchTxHash, protoBufSigning, setTxHashInProgressFalse, txSignAndBroadCast } from '../../actions/account/wallet';
+import {
+    fetchTxHash,
+    protoBufSigning,
+    setTxHashInProgressFalse,
+    txSignAndBroadCast,
+} from '../../actions/account/wallet';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import { showMessage } from '../../actions/snackbar';
 import withRouter from '../../components/WithRouter';
@@ -24,106 +30,134 @@ import { Button } from '@mui/material';
 import CircularProgress from '../../components/CircularProgress';
 import CollectionConfirmDialog from './CollectionConfirmDialog';
 
-const CreateCollection = (props) => {
-    const handleClick = () => {
-        props.showCollectionConfirmDialog();
-    };
+class CreateCollection extends Component {
+    constructor (props) {
+        super(props);
 
-    const inProgress = props.inProgress || props.signInProgress || props.broadCastInProgress || props.txHashInProgress;
-    const disable = props.symbol === '' || props.value === '' || inProgress;
-    const updateDisable = disable || (props.collection &&
-        (props.value === props.collection.name &&
-            (!props.collection.description ? props.description === '' : props.description === props.collection.description) &&
-            (!props.collection.preview_uri ? props.imageUrl === '' : props.imageUrl === props.collection.preview_uri)));
+        this.handleClick = this.handleClick.bind(this);
+    }
 
-    return (
-        <div className="create_collection scroll_bar">
-            <div className="header">
-                {props.match && props.match.params && props.match.params.collectionID
-                    ? <h2>{variables[props.lang]['update_collection']}</h2>
-                    : <h2>{variables[props.lang]['create_collection']}</h2>}
-            </div>
-            <Suspense fallback={<CircularProgress/>}>
-                <div className="collection_content">
-                    <form
-                        noValidate
-                        autoComplete="off">
-                        {props.match && props.match.params && props.match.params.collectionID
-                            ? null
-                            : <div className="row">
+    componentDidMount () {
+        if (this.props.router && this.props.router.params && this.props.router.params.collectionID) {
+            this.props.fetch(this.props.router.params.collectionID, (result) => {
+                if (result) {
+                    const obj = result;
+                    if (obj.schema) {
+                        try {
+                            obj.schema = JSON.parse(obj.schema);
+                        } catch (e) {
+                            obj.schema = {};
+                        }
+
+                        obj.schema = JSON.stringify(obj.schema, undefined, 4);
+                    }
+                    this.props.setUpdateCollection(obj);
+                }
+            });
+        }
+    }
+
+    handleClick () {
+        this.props.showCollectionConfirmDialog();
+    }
+
+    render () {
+        const inProgress = this.props.signInProgress || this.props.broadCastInProgress || this.props.txHashInProgress;
+        const disable = this.props.symbol === '' || this.props.value === '' || inProgress;
+        const updateDisable = disable || (this.props.collection &&
+            (this.props.value === this.props.collection.name &&
+                (!this.props.collection.description ? this.props.description === '' : this.props.description === this.props.collection.description) &&
+                (!this.props.collection.preview_uri ? this.props.imageUrl === '' : this.props.imageUrl === this.props.collection.preview_uri)));
+
+        return (
+            <div className="create_collection scroll_bar">
+                <div className="header">
+                    {this.props.router && this.props.router.params && this.props.router.params.collectionID
+                        ? <h2>{variables[this.props.lang]['update_collection']}</h2>
+                        : <h2>{variables[this.props.lang]['create_collection']}</h2>}
+                </div>
+                <Suspense fallback={<CircularProgress/>}>
+                    <div className="collection_content">
+                        <form
+                            noValidate
+                            autoComplete="off">
+                            {this.props.router && this.props.router.params && this.props.router.params.collectionID
+                                ? null
+                                : <div className="row">
+                                    <div className="label_info">
+                                        <p className="title">
+                                            {(variables[this.props.lang]['collection_symbol']).toLowerCase()}
+                                            <span className="text_required">*</span>
+                                        </p>
+                                        <p className="title_info">{variables[this.props.lang]['collection_symbol_info']}</p>
+                                    </div>
+                                    <CollectionSymbolTextField/>
+                                </div>}
+                            <div className="row">
                                 <div className="label_info">
                                     <p className="title">
-                                        {(variables[props.lang]['collection_symbol']).toLowerCase()}
+                                        {(variables[this.props.lang]['collection_name']).toLowerCase()}
                                         <span className="text_required">*</span>
                                     </p>
-                                    <p className="title_info">{variables[props.lang]['collection_symbol_info']}</p>
+                                    <p className="title_info">{variables[this.props.lang]['collection_name_info']}</p>
                                 </div>
-                                <CollectionSymbolTextField/>
-                            </div>}
-                        <div className="row">
-                            <div className="label_info">
-                                <p className="title">
-                                    {(variables[props.lang]['collection_name']).toLowerCase()}
-                                    <span className="text_required">*</span>
-                                </p>
-                                <p className="title_info">{variables[props.lang]['collection_name_info']}</p>
+                                <CollectionNameTextField/>
                             </div>
-                            <CollectionNameTextField/>
-                        </div>
-                        <div className="row row_reverse description_section">
-                            <div className="label_info">
-                                <p className="title">
-                                    {variables[props.lang]['collection_description']}
-                                    <span className="text_next">{variables[props.lang]['max_characters']}</span>
+                            <div className="row row_reverse description_section">
+                                <div className="label_info">
+                                    <p className="title">
+                                        {variables[this.props.lang]['collection_description']}
+                                        <span
+                                            className="text_next">{variables[this.props.lang]['max_characters']}</span>
+                                    </p>
+                                </div>
+                                <DescriptionTextField/>
+                                <p className="description_characters">
+                                    {this.props.description && this.props.description.length > 0 ? this.props.description.length : 0} /
+                                    240
                                 </p>
                             </div>
-                            <DescriptionTextField/>
-                            <p className="description_characters">
-                                {props.description && props.description.length > 0 ? props.description.length : 0} / 240
-                            </p>
-                        </div>
-                        <div className="row al_flx_start">
-                            <div className="label_info">
-                                <p className="title">{variables[props.lang]['collection_avatar']}</p>
-                                <p className="title_info">{variables[props.lang]['collection_avatar_info']}</p>
+                            <div className="row al_flx_start">
+                                <div className="label_info">
+                                    <p className="title">{variables[this.props.lang]['collection_avatar']}</p>
+                                    <p className="title_info">{variables[this.props.lang]['collection_avatar_info']}</p>
+                                </div>
+                                <div className="upload_avatar">
+                                    <CollectionImageUrlTextField/>
+                                    <Upload/>
+                                </div>
                             </div>
-                            <div className="upload_avatar">
-                                <CollectionImageUrlTextField/>
-                                <Upload/>
-                            </div>
-                        </div>
-                        {props.match && props.match.params && props.match.params.collectionID
-                            ? null
-                            : <div className="row row_reverse">
-                                <JsonSchemaTextField/>
-                            </div>}
-                        {props.match && props.match.params && props.match.params.collectionID
-                            ? <Button
-                                className="primary_button"
-                                disabled={updateDisable}
-                                variant="contained"
-                                onClick={handleClick}>
-                                {variables[props.lang]['update_collection']}
-                            </Button>
-                            : <Button
-                                className="primary_button"
-                                disabled={disable}
-                                variant="contained"
-                                onClick={handleClick}>
-                                {variables[props.lang]['mint_collection']}
-                            </Button>}
-                    </form>
-                    {inProgress && <CircularProgress className="full_screen"/>}
-                    <CollectionConfirmDialog/>
-                </div>
-            </Suspense>
-        </div>
-
-    );
-};
+                            {this.props.router && this.props.router.params && this.props.router.params.collectionID
+                                ? null
+                                : <div className="row row_reverse">
+                                    <JsonSchemaTextField/>
+                                </div>}
+                            {this.props.router && this.props.router.params && this.props.router.params.collectionID
+                                ? <Button
+                                    className="primary_button"
+                                    disabled={updateDisable}
+                                    variant="contained"
+                                    onClick={this.handleClick}>
+                                    {variables[this.props.lang]['update_collection']}
+                                </Button>
+                                : <Button
+                                    className="primary_button"
+                                    disabled={disable}
+                                    variant="contained"
+                                    onClick={this.handleClick}>
+                                    {variables[this.props.lang]['mint_collection']}
+                                </Button>}
+                        </form>
+                        {inProgress && <CircularProgress className="full_screen"/>}
+                        <CollectionConfirmDialog/>
+                    </div>
+                </Suspense>
+            </div>
+        );
+    }
+}
 
 CreateCollection.propTypes = {
-    addCollection: PropTypes.func.isRequired,
     address: PropTypes.string.isRequired,
     allowances: PropTypes.array.isRequired,
     balance: PropTypes.array.isRequired,
@@ -132,11 +166,16 @@ CreateCollection.propTypes = {
     fetch: PropTypes.func.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
-    inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        params: PropTypes.shape({
+            collectionID: PropTypes.string,
+        }).isRequired,
+    }).isRequired,
     setCollectionJsonSchema: PropTypes.func.isRequired,
     setCollectionSymbol: PropTypes.func.isRequired,
     setTxHashInProgressFalse: PropTypes.func.isRequired,
+    setUpdateCollection: PropTypes.func.isRequired,
     showCollectionConfirmDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     sign: PropTypes.func.isRequired,
@@ -149,11 +188,6 @@ CreateCollection.propTypes = {
     description: PropTypes.string,
     imageUrl: PropTypes.any,
     jsonSchema: PropTypes.string,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            collectionID: PropTypes.string.isRequired,
-        }),
-    }),
 };
 
 const stateToProps = (state) => {
@@ -162,7 +196,6 @@ const stateToProps = (state) => {
         allowances: state.account.bc.allowances.value,
         balance: state.account.bc.balance.value,
         broadCastInProgress: state.account.wallet.broadCast.inProgress,
-        inProgress: state.collections.newCollection.inProgress,
         lang: state.language,
         signInProgress: state.account.bc.protoBufSign.inProgress,
         symbol: state.collections.createCollection.symbol,
@@ -171,19 +204,19 @@ const stateToProps = (state) => {
         description: state.collections.createCollection.description,
         imageUrl: state.collections.createCollection.imageUrl,
         jsonSchema: state.collections.createCollection.jsonSchema,
-        // collection: state.createAssets.nft.singleCollection.value,
+        collection: state.collections.singleCollection.value,
     };
 };
 
 const actionToProps = {
-    addCollection,
     txSignAndBroadCast,
-    fetch: fetchCollections,
+    fetch: fetchCollection,
     fetchBalance,
     fetchTxHash,
     onChange: setCollectionName,
     showMessage,
     setCollectionSymbol,
+    setUpdateCollection,
     setTxHashInProgressFalse,
     sign: protoBufSigning,
     setCollectionJsonSchema,
