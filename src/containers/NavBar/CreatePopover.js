@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Tooltip, Typography, withStyles } from '@mui/material';
+import { Button, Tooltip, Typography } from '@mui/material';
+import { withStyles } from '@mui/styles';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from '../../components/WithRouter';
@@ -15,8 +16,8 @@ const CustomTooltip = withStyles((theme) => ({
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.25)',
         margin: '19px 0 0',
         padding: '20px',
-        width: '700px',
-        maxWidth: '700px',
+        width: '300px',
+        maxWidth: '300px',
         background: '#1B1B1B',
         border: '1px solid #353535',
         borderRadius: '20px',
@@ -41,7 +42,7 @@ const CreatePopover = (props) => {
     };
 
     const handleNFTCollection = () => {
-        props.router.navigate('/createCollection');
+        props.router.navigate('/create-collection');
         setOpen(false);
     };
 
@@ -73,7 +74,7 @@ const CreatePopover = (props) => {
                 <Button
                     aria-describedby={id}
                     className="create_button">
-                    {variables[this.props.lang].create}
+                    {variables[props.lang].create}
                     <CreateIcon/>
                 </Button>
             </CustomTooltip>

@@ -7,6 +7,7 @@ import CircularProgress from '../../../components/CircularProgress';
 import variables from '../../../utils/variables';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
+import withRouter from '../../../components/WithRouter';
 
 const CollectionsTable = (props) => {
     const options = {
@@ -58,6 +59,11 @@ const CollectionsTable = (props) => {
                         <Button className="primary_button">
                             {variables[props.lang]['bulk_mint']}
                         </Button>
+                        <Button
+                            className="burn_button"
+                            onClick={() => props.router.navigate(`/create-collection/${value.id}`)}>
+                            {variables[props.lang].edit}
+                        </Button>
                     </div>
                 );
             },
@@ -87,6 +93,9 @@ CollectionsTable.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     list: PropTypes.object.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
 };
 
 const stateToProps = (state) => {
@@ -98,4 +107,4 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(CollectionsTable);
+export default withRouter(connect(stateToProps)(CollectionsTable));

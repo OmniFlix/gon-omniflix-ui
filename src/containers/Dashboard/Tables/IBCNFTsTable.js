@@ -57,7 +57,7 @@ const IBCNFTsTable = (props) => {
             customBodyRender: function (value) {
                 return (
                     <div className="collection_info nft_info">
-                        <img alt="thumbnail" src={thumbnail} />
+                        <img alt="thumbnail" src={thumbnail}/>
                         <div>
                             <p className="nft_name">Omni Owl</p>
                             <p className="table_value collection_name">{value}</p>
@@ -85,7 +85,7 @@ const IBCNFTsTable = (props) => {
             customBodyRender: function (value) {
                 return (
                     <div className="table_value origin_chain">
-                        <NetworkImages name="FLIX" />
+                        <NetworkImages name="FLIX"/>
                         <p>OmniFlix</p>
                     </div>
                 );
@@ -120,7 +120,7 @@ const IBCNFTsTable = (props) => {
         <>
             <DataTable
                 columns={columns}
-                data={props.inProgress ? <CircularProgress /> : tableData}
+                data={props.inProgress ? <CircularProgress/> : tableData}
                 name=""
                 options={options}/>
         </>

@@ -23,6 +23,27 @@ p {
     margin: unset;
 }
 
+.dialog .primary_button,
+.side_panel .primary_button,
+.app .primary_button {
+    background: linear-gradient(90deg, #d61d6a, #7645ff);
+    border-radius: 5px;
+    font-family: "Quantico", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 23px;
+    color: #e7e7e7;
+    padding: 10px 15px;
+    text-transform: capitalize;
+}
+
+.dialog .primary_button:disabled,
+.side_panel .primary_button:disabled,
+.app .primary_button:disabled {
+    color: #e7e7e7;
+    opacity: 0.5;
+}
+
 /* scroll bar */
 .scroll_bar {
     overflow: auto;

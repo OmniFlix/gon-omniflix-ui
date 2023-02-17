@@ -1,0 +1,67 @@
+.add_schema {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.add_schema .add_property {
+    border: 2px dashed #444444;
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    color: #999999;
+}
+
+.add_schema .add_property > svg {
+    margin-right: 10px;
+    margin-bottom: -1px;
+}
+
+.add_schema .property {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #141414;
+    border: 1px solid #262626;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.add_schema .property > .text_field {
+    margin: unset;
+    width: 40%;
+}
+
+.add_schema .property > .text_field > div {
+    background: #1B1B1B;
+    height: 100%;
+}
+
+.add_schema .property .select_field .select__control {
+    background: #1B1B1B;
+}
+
+.add_schema .property .remove_button {
+    background: #4D4D4D;
+    width: 24px;
+    height: 24px;
+    padding-bottom: 10px;
+    padding-right: 9px;
+}
+
+.add_schema .property .check_box label {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #696969;
+}
+
+.add_schema .property .check_box label > span {
+    color: #FFFFFF;
+}
