@@ -51,7 +51,7 @@ class Dashboard extends Component {
                 </div>
                 <div className="page_section">
                     {this.props.tabValue === 'my_collections' &&
-                        <div className="data_table"><CollectionsTable/></div>}
+                        <div className="data_table collection_data_table"><CollectionsTable/></div>}
                     {this.props.tabValue === 'all_collections' &&
                         <div className="data_table"><AllCollectionsTable/></div>}
                     {this.props.tabValue === 'nfts' &&

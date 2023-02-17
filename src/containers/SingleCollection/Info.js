@@ -1,31 +1,32 @@
 import React from 'react';
 import './index.css';
-import thumbnail from '../../assets/dashboard/collections.svg';
-import verifiedIcon from '../../assets/dashboard/verified.svg';
 import variables from '../../utils/variables';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
+import ImageOnLoad from '../../components/ImageOnLoad';
 
 const Info = (props) => {
     return (
         <div className="collection_section">
             <div className="section1">
-                <img alt="thumb" src={thumbnail} />
+                <ImageOnLoad
+                    alt="thumb"
+                    src={props.collection && props.collection.denom && props.collection.denom.preview_uri}/>
             </div>
             <div className="section2">
                 <div className="row1">
-                    <p>Rise of the Aztecs</p>
-                    <img alt="verified" src={verifiedIcon} />
+                    <p>{props.collection && props.collection.denom && props.collection.denom.name}</p>
                 </div>
                 <div className="row2">
                     <span>{variables[props.lang]['created_by']}</span>
                     <div className="hash_text">
-                        <p>{props.address}</p>
-                        <span>{props.address && props.address.slice(props.address.length - 6, props.address.length)}</span>
+                        <p>{props.collection && props.collection.denom && props.collection.denom.creator}</p>
+                        <span>{props.collection && props.collection.denom && props.collection.denom.creator &&
+                            props.collection.denom.creator.slice(props.collection.denom.creator.length - 6, props.collection.denom.creator.length)}</span>
                     </div>
                 </div>
                 <div className="row3">
-                        The Bored Ape Yacht Club is a collection of 10,000 unique Bored Ape NFTs— unique digital collectibles In the distant future, drivers fight in a world divided into 4 Factions. Originals Meka,
+                    {props.collection && props.collection.denom && props.collection.denom.description}
                 </div>
             </div>
         </div>
@@ -34,13 +35,15 @@ const Info = (props) => {
 
 Info.propTypes = {
     address: PropTypes.string.isRequired,
+    collection: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
-        lang: state.language,
         address: state.account.wallet.connection.address,
+        collection: state.collection.collection.value,
+        lang: state.language,
     };
 };
 

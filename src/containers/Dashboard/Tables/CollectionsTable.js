@@ -24,7 +24,7 @@ const CollectionsTable = (props) => {
             },
         },
         responsive: 'standard',
-        serverSide: true,
+        serverSide: false,
         pagination: true,
         selectableRows: 'none',
         download: false,
@@ -34,6 +34,10 @@ const CollectionsTable = (props) => {
         search: false,
     };
 
+    const handleRedirect = (event, id) => {
+        props.router.navigate(`/collection/${id}`);
+    };
+
     const columns = [{
         name: 'collection_title',
         label: 'Collection Title',
@@ -41,7 +45,7 @@ const CollectionsTable = (props) => {
             sort: false,
             customBodyRender: function (value) {
                 return (
-                    <div className="collection_info">
+                    <div className="collection_info" onClick={(e) => handleRedirect(e, value.id)}>
                         <ImageOnLoad alt="thumbnail" src={value.preview_uri}/>
                         <div className="table_value collection_name">{value.name}</div>
                     </div>
