@@ -67,8 +67,7 @@ class NavBar extends Component {
                 <div className="left_section">
                     <Logo/>
                 </div>
-                {this.props.address !== '' &&
-                    <Tabs/>}
+                <Tabs/>
                 <div className="right_section">
                     {this.props.address !== '' &&
                         <Button className="claim_button">

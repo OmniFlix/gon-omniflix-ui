@@ -20,7 +20,6 @@ import { customTypes } from '../../registry';
 import variables from '../../utils/variables';
 import { generateID } from '../../utils/generateID';
 import { setTabValue } from '../../actions/dashboard';
-import { urlFetchAllCollections } from '../../chains/collections';
 
 const MintCollectionButton = (props) => {
     const handleClick = () => {

@@ -19,11 +19,22 @@ class NavTabs extends Component {
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
         if (route === '') {
-            this.props.router.navigate('/about');
             this.props.setNavTabs('about');
-        } else if (this.props.tabValue !== route) {
-            this.props.router.navigate('/' + route);
+            this.props.router.navigate('/about');
+        }
+        if (this.props.tabValue !== route) {
             this.props.setNavTabs(route);
+            this.props.router.navigate('/' + route);
+        }
+    }
+
+    componentDidUpdate (pp, ps, ss) {
+        if (pp.router.location.pathname !== (this.props.router.location && this.props.router.location.pathname)) {
+            const value = this.props.router.location && this.props.router.location.pathname.split('/')[1];
+
+            if (value !== this.props.tabValue) {
+                this.props.setNavTabs(value);
+            }
         }
     }
 
