@@ -10,6 +10,7 @@ export const ChainsList = {
         PREFIX: 'omniflix',
         NFT_S_OWNED_URL: '/omniflix/onft/v1beta1/onfts/:denomId/:address',
         COLLECTIONS_OWNED_URL: '/omniflix/onft/v1beta1/denoms?owner=:address',
+        COLLECTIONS_URL: '/omniflix/onft/v1beta1/denoms?',
     },
     // iris: {
     //     RPC_URL: 'http://34.145.1.166:26657',

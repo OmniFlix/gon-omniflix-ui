@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CircularProgress from './components/CircularProgress';
 
-const WalletConnect = lazy(() => import('./containers/WalletConnect').then().catch());
 const Dashboard = lazy(() => import('./containers/Dashboard').then().catch());
 const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 const About = lazy(() => import('./containers/About').then().catch());
@@ -10,9 +9,6 @@ const SingleCollection = lazy(() => import('./containers/SingleCollection').then
 const CreateCollection = lazy(() => import('./containers/CreateCollection').then().catch());
 
 const routes = [{
-    path: '/',
-    component: WalletConnect,
-}, {
     path: '/about',
     component: About,
 }, {
@@ -45,7 +41,7 @@ const Router = () => {
                         )}
                         <Route
                             exact
-                            element={<WalletConnect/>}
+                            element={<About/>}
                             path="*"/>
                     </Routes>
                 </div>

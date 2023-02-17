@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import {
+    ALL_COLLECTIONS_FETCH_ERROR,
+    ALL_COLLECTIONS_FETCH_IN_PROGRESS, ALL_COLLECTIONS_FETCH_SUCCESS,
     AVATAR_UPLOAD_ERROR,
     AVATAR_UPLOAD_IN_PROGRESS,
     AVATAR_UPLOAD_SUCCESS,
@@ -57,6 +59,47 @@ const collectionSList = (state = {
         };
     }
     case COLLECTIONS_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
+const allCollectionSList = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case ALL_COLLECTIONS_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case ALL_COLLECTIONS_FETCH_SUCCESS: {
+        if (action.chain) {
+            return {
+                ...state,
+                inProgress: false,
+                value: {
+                    [action.chain]: {
+                        value: action.value,
+                        skip: action.skip,
+                        limit: action.limit,
+                        total: action.total,
+                    },
+                },
+            };
+        }
+
+        return {
+            ...state,
+            inProgress: false,
+        };
+    }
+    case ALL_COLLECTIONS_FETCH_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -241,6 +284,7 @@ const avatar = (state = {
 
 export default combineReducers({
     collectionSList,
+    allCollectionSList,
     singleCollection,
     createCollection,
     collectionConfirmDialog,

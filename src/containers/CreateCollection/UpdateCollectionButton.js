@@ -14,7 +14,7 @@ import {
     setTxHashInProgressFalse,
     txSignAndBroadCast,
 } from '../../actions/account/wallet';
-import { fetchCollections, hideCollectionConfirmDialog, setSchema } from '../../actions/collections';
+import { fetchAllCollections, fetchCollections, hideCollectionConfirmDialog, setSchema } from '../../actions/collections';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import withRouter from '../../components/WithRouter';
 import { setTabValue } from '../../actions/dashboard';
@@ -111,12 +111,13 @@ const UpdateCollectionButton = (props) => {
                                         }
 
                                         props.fetch(props.chainValue, props.address, DEFAULT_SKIP, 500);
+                                        props.fetchAllCollections(props.chainValue, DEFAULT_SKIP, 500);
                                         props.setSchema(null);
                                         props.fetchBalance(props.address);
                                         props.setTxHashInProgressFalse();
                                         props.hideCollectionConfirmDialog();
                                         props.router.navigate('/dashboard');
-                                        props.setTabValue('collections');
+                                        props.setTabValue(props.tabValue);
                                         clearInterval(time);
                                     }
 
@@ -166,6 +167,7 @@ UpdateCollectionButton.propTypes = {
     chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetch: PropTypes.func.isRequired,
+    fetchAllCollections: PropTypes.func.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     hideCollectionConfirmDialog: PropTypes.func.isRequired,
@@ -183,6 +185,7 @@ UpdateCollectionButton.propTypes = {
     showMessage: PropTypes.func.isRequired,
     sign: PropTypes.func.isRequired,
     signInProgress: PropTypes.bool.isRequired,
+    tabValue: PropTypes.string.isRequired,
     txHashInProgress: PropTypes.bool.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
@@ -205,6 +208,7 @@ const stateToProps = (state) => {
         description: state.collections.createCollection.description,
         imageUrl: state.collections.createCollection.imageUrl,
         collection: state.collections.singleCollection.value,
+        tabValue: state.dashboard.tabValue.value,
     };
 };
 
@@ -212,6 +216,7 @@ const actionToProps = {
     aminoSignTx,
     txSignAndBroadCast,
     fetch: fetchCollections,
+    fetchAllCollections,
     fetchBalance,
     fetchTxHash,
     showMessage,

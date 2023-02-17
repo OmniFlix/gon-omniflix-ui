@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import './index.css';
 import { setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
-import { fetchCollections } from '../../../actions/collections';
+import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { DEFAULT_SKIP } from '../../../constants/url';
 
 class HeaderTabs extends Component {
@@ -22,9 +22,14 @@ class HeaderTabs extends Component {
 
         this.props.setTabValue(newValue);
 
-        if (newValue === 'collections' && !this.props.collectionsInProgress && this.props.chainValue &&
+        if (newValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
             this.props.fetchCollections(this.props.chainValue, this.props.address, DEFAULT_SKIP, 500);
+        }
+
+        if (newValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
+            !this.props.allCollections[this.props.chainValue]) {
+            this.props.fetchAllCollections(this.props.chainValue, DEFAULT_SKIP, 500);
         }
     }
 
@@ -59,9 +64,12 @@ class HeaderTabs extends Component {
 
 HeaderTabs.propTypes = {
     address: PropTypes.string.isRequired,
+    allCollections: PropTypes.object.isRequired,
+    allCollectionsInProgress: PropTypes.bool.isRequired,
     chainValue: PropTypes.string.isRequired,
     collections: PropTypes.object.isRequired,
     collectionsInProgress: PropTypes.bool.isRequired,
+    fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setTabValue: PropTypes.func.isRequired,
@@ -74,6 +82,8 @@ const stateToProps = (state) => {
         chainValue: state.dashboard.chainValue.value,
         collections: state.collections.collectionSList.value,
         collectionsInProgress: state.collections.collectionSList.inProgress,
+        allCollections: state.collections.allCollectionSList.value,
+        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         lang: state.language,
         tabValue: state.dashboard.tabValue.value,
     };
@@ -81,6 +91,7 @@ const stateToProps = (state) => {
 
 const actionsToProps = {
     fetchCollections,
+    fetchAllCollections,
     setTabValue,
 };
 
