@@ -2,25 +2,41 @@ import React from 'react';
 import DataTable from '../../../components/DataTable';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
-import thumbnail from '../../../assets/thumbnail.svg';
 import { Button } from '@mui/material';
 import CircularProgress from '../../../components/CircularProgress';
 import variables from '../../../utils/variables';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
-import NetworkImages from '../../../components/NetworkImages';
+import ImageOnLoad from '../../../components/ImageOnLoad';
+import { fetchCollectionNFTS } from '../../../actions/collection';
 
 const NFTsTable = (props) => {
     const options = {
         textLabels: {
             body: {
-                noMatch: <div className="no_data_table"> No data found </div>,
+                noMatch: props.inProgress
+                    ? <CircularProgress/>
+                    : <div className="no_data_table"> No data found </div>,
                 toolTip: 'Sort',
             },
             viewColumns: {
                 title: 'Show Columns',
                 titleAria: 'Show/Hide Table Columns',
             },
+        },
+        onChangePage: (currentPage) => {
+            if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
+                return;
+            }
+
+            props.fetchCollectionNFTS(props.collection.denom && props.collection.denom.id, props.limit * currentPage, props.limit);
+        },
+        onChangeRowsPerPage: (numberOfRows) => {
+            if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
+                return;
+            }
+
+            props.fetchCollectionNFTS(props.collection.denom && props.collection.denom.id, props.skip, numberOfRows);
         },
         responsive: 'standard',
         serverSide: true,
@@ -33,18 +49,22 @@ const NFTsTable = (props) => {
         search: false,
     };
 
-    const address = 'omniflix1rh3t2ptfpzm75tcfcp46vnkk992hqrt2z50glp';
     const columns = [{
         name: 'nft_title',
         label: 'NFT Title',
         options: {
+            sort: false,
             customBodyRender: function (value) {
                 return (
                     <div className="collection_info nft_info">
-                        <img alt="thumbnail" src={thumbnail}/>
+                        <ImageOnLoad
+                            alt="thumbnail"
+                            src={value && value.metadata && value.metadata.preview_uri
+                                ? value.metadata.preview_uri
+                                : value && value.metadata && value.metadata.media_uri}/>
                         <div>
-                            <p className="nft_name">Omni Owl</p>
-                            <p className="table_value collection_name">{value}</p>
+                            <p className="nft_name">{value && value.metadata && value.metadata.name}</p>
+                            <p className="table_value collection_name">{props.collection && props.collection.name}</p>
                         </div>
                     </div>
                 );
@@ -54,7 +74,8 @@ const NFTsTable = (props) => {
         name: 'nft_id',
         label: 'NFT ID',
         options: {
-            customBodyRender: function () {
+            sort: false,
+            customBodyRender: function (address) {
                 return (
                     <div className="nft_id">
                         <div className="hash_text">
@@ -70,23 +91,11 @@ const NFTsTable = (props) => {
         name: 'nft_type',
         label: 'NFT Type',
         options: {
+            sort: false,
             customBodyRender: function (value) {
                 return (
                     <div className="table_value">
-                        {value}
-                    </div>
-                );
-            },
-        },
-    }, {
-        name: 'origin_chain',
-        label: 'Origin Chain',
-        options: {
-            customBodyRender: function (value) {
-                return (
-                    <div className="table_value origin_chain">
-                        <NetworkImages name="FLIX"/>
-                        <p>OmniFlix</p>
+                        Native
                     </div>
                 );
             },
@@ -96,9 +105,9 @@ const NFTsTable = (props) => {
         label: 'Actions',
         options: {
             sort: false,
-            customBodyRender: function (value) {
+            customBodyRender: function (address) {
                 return (
-                    <div className="table_actions center_actions">
+                    address === props.address && <div className="table_actions center_actions">
                         <Button className="primary_button">
                             {variables[props.lang].transfer}
                         </Button>
@@ -111,16 +120,20 @@ const NFTsTable = (props) => {
         },
     }];
 
-    const tableData =
-        [...Array(5)].map((item, index) => ([
-            'OMNI OWL(Green) #14', '', 'Native NFT', '',
-        ]));
+    const list = props.collection && props.collection.onfts;
+    const tableData = list && list.length
+        ? list.map((item, index) => [
+            item,
+            item.id,
+            item,
+            item.owner,
+        ]) : [];
 
     return (
         <>
             <DataTable
                 columns={columns}
-                data={props.inProgress ? <CircularProgress/> : tableData}
+                data={tableData}
                 name=""
                 options={options}/>
         </>
@@ -128,14 +141,28 @@ const NFTsTable = (props) => {
 };
 
 NFTsTable.propTypes = {
+    address: PropTypes.string.isRequired,
+    collection: PropTypes.object.isRequired,
+    fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    limit: PropTypes.number.isRequired,
+    skip: PropTypes.number.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
+        address: state.account.wallet.connection.address,
+        collection: state.collection.collection.value,
+        inProgress: state.collection.collection.inProgress,
+        skip: state.collection.collection.skip,
+        limit: state.collection.collection.limit,
         lang: state.language,
     };
 };
 
-export default connect(stateToProps)(NFTsTable);
+const actionToProps = {
+    fetchCollectionNFTS,
+};
+
+export default connect(stateToProps, actionToProps)(NFTsTable);

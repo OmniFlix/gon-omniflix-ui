@@ -1,4 +1,3 @@
-import CosmosIcon from '../assets/chains/cosmos.svg';
 import IrisIcon from '../assets/chains/iris.svg';
 import OmniIcon from '../assets/chains/omniflix.svg';
 import StargazeIcon from '../assets/chains/stargaze.svg';
@@ -7,10 +6,6 @@ import OsmoIcon from '../assets/chains/osmo.svg';
 import { config } from '../config';
 
 export const list = [{
-    icon: CosmosIcon,
-    name: 'Cosmos',
-    value: 'cosmos',
-}, {
     icon: IrisIcon,
     name: 'IrisNet',
     value: 'iris',
