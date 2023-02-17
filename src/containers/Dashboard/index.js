@@ -9,8 +9,15 @@ import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
 import { fetchCollections } from '../../actions/collections';
 import { DEFAULT_SKIP } from '../../constants/url';
+import withRouter from '../../components/WithRouter';
 
 class Dashboard extends Component {
+    constructor (props) {
+        super(props);
+
+        this.handleCreateCollection = this.handleCreateCollection.bind(this);
+    }
+
     componentDidMount () {
         if (this.props.tabValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
@@ -24,6 +31,10 @@ class Dashboard extends Component {
         }
     }
 
+    handleCreateCollection () {
+        this.props.router.navigate('/create-collection');
+    }
+
     render () {
         return (
             <div className="home scroll_bar">
@@ -33,14 +44,6 @@ class Dashboard extends Component {
                     <div className="left_section">
                         <Tabs/>
                     </div>
-                    {/* <div className="right_section"> */}
-                    {/*    <Button> */}
-                    {/*        {variables[this.props.lang]['create_collection']} */}
-                    {/*    </Button> */}
-                    {/*    <Button> */}
-                    {/*        {variables[this.props.lang]['create_nft']} */}
-                    {/*    </Button> */}
-                    {/* </div> */}
                 </div>
                 <div className="page_section">
                     {this.props.tabValue === 'my_collections' &&
@@ -64,6 +67,9 @@ Dashboard.propTypes = {
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     tabValue: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -82,4 +88,4 @@ const actionsToProps = {
     fetchCollections,
 };
 
-export default connect(stateToProps, actionsToProps)(Dashboard);
+export default withRouter(connect(stateToProps, actionsToProps)(Dashboard));

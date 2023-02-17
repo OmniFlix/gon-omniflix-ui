@@ -7,6 +7,7 @@ const Dashboard = lazy(() => import('./containers/Dashboard').then().catch());
 const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 const About = lazy(() => import('./containers/About').then().catch());
 const SingleCollection = lazy(() => import('./containers/SingleCollection').then().catch());
+const CreateCollection = lazy(() => import('./containers/CreateCollection').then().catch());
 
 const routes = [{
     path: '/',
@@ -20,6 +21,12 @@ const routes = [{
 }, {
     path: '/collection/:id',
     component: SingleCollection,
+}, {
+    path: '/create-collection',
+    component: CreateCollection,
+}, {
+    path: '/create-collection/:collectionID',
+    component: CreateCollection,
 }];
 
 const Router = () => {
