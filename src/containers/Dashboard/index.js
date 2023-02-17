@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import CollectionsTable from './Tables/CollectionsTable';
 import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
-import { Button } from '@mui/material';
-import variables from '../../utils/variables';
 import { fetchCollections } from '../../actions/collections';
 import { DEFAULT_SKIP } from '../../constants/url';
 import withRouter from '../../components/WithRouter';
@@ -21,7 +19,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount () {
-        if (this.props.tabValue === 'collections' && !this.props.collectionsInProgress && this.props.chainValue &&
+        if (this.props.tabValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
             this.props.fetchCollections(this.props.chainValue, this.props.address, DEFAULT_SKIP, 500);
         }
@@ -46,17 +44,9 @@ class Dashboard extends Component {
                     <div className="left_section">
                         <Tabs/>
                     </div>
-                    <div className="right_section">
-                        <Button onClick={this.handleCreateCollection}>
-                            {variables[this.props.lang]['create_collection']}
-                        </Button>
-                        <Button>
-                            {variables[this.props.lang]['create_nft']}
-                        </Button>
-                    </div>
                 </div>
                 <div className="page_section">
-                    {this.props.tabValue === 'collections' &&
+                    {this.props.tabValue === 'my_collections' &&
                         <div className="data_table"><CollectionsTable/></div>}
                     {this.props.tabValue === 'nfts' &&
                         <div className="data_table nfts_table"><NFTsTable/></div>}

@@ -40,23 +40,17 @@ class HeaderTabs extends Component {
             <AppBar className="horizontal_tabs" position="static">
                 <div className="tabs_content">
                     <Tab
-                        className={'tab ' + (this.props.tabValue === 'nfts' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang]['native_nfts']}</p>}
-                        value="nfts"
-                        onClick={() => this.handleChange('nfts')}
+                        className={'tab ' + (this.props.tabValue === 'all_collections' ? 'active_tab' : '')}
+                        label={<p className="text">{variables[this.props.lang]['all_collections']}</p>}
+                        value="all_collections"
+                        onClick={() => this.handleChange('all_collections')}
                         {...a11yProps(0)} />
                     <Tab
-                        className={'tab ' + (this.props.tabValue === 'ibc_nfts' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang]['ibc_nfts']}</p>}
-                        value="ibc_nfts"
-                        onClick={() => this.handleChange('ibc_nfts')}
+                        className={'tab ' + (this.props.tabValue === 'my_collections' ? 'active_tab' : '')}
+                        label={<p className="text">{variables[this.props.lang]['my_collections']}</p>}
+                        value="my_collections"
+                        onClick={() => this.handleChange('my_collections')}
                         {...a11yProps(1)} />
-                    <Tab
-                        className={'tab ' + (this.props.tabValue === 'collections' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang].collections}</p>}
-                        value="collections"
-                        onClick={() => this.handleChange('collections')}
-                        {...a11yProps(2)} />
                 </div>
             </AppBar>
         );

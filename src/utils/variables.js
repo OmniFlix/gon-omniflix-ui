@@ -14,6 +14,8 @@ const variables = {
         asset_via_upload_info: 'create audio, video, document NFTs by uploading files',
 
         // Home
+        all_collections: 'All Collections',
+        my_collections: 'My Collections',
         collections: 'Collections',
         nfts: 'NFTs',
         native_nfts: 'Native  NFTs',
@@ -32,6 +34,7 @@ const variables = {
         create_collection: 'Create collection',
         update_collection: 'Update collection',
         create_nft: 'Create NFT',
+        created_by: 'Created by',
 
         // Create Collection
         collection_avatar: 'Collection Avatar',

@@ -17,7 +17,7 @@ const chainValue = (state = {
 };
 
 const tabValue = (state = {
-    value: 'nfts',
+    value: 'all_collections',
 }, action) => {
     switch (action.type) {
     case TAB_VALUE_SET:
