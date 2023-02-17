@@ -1,4 +1,5 @@
 import {
+    ALL_COLLECTIONS_FETCH_ERROR, ALL_COLLECTIONS_FETCH_IN_PROGRESS, ALL_COLLECTIONS_FETCH_SUCCESS,
     AVATAR_UPLOAD_ERROR,
     AVATAR_UPLOAD_IN_PROGRESS,
     AVATAR_UPLOAD_SUCCESS,
@@ -24,7 +25,7 @@ import {
     UPDATE_COLLECTION_SET,
 } from '../constants/collections';
 import Axios from 'axios';
-import { urlFetchCollections } from '../chains/collections';
+import { urlFetchAllCollections, urlFetchCollections } from '../chains/collections';
 import { AVATAR_UPLOAD_URL, SCHEMA_LIST_URL, urlFetchCollectionInfo } from '../constants/url';
 
 export const setCollectionName = (value) => {
@@ -303,4 +304,58 @@ export const setUpdateCollection = (value) => {
         type: UPDATE_COLLECTION_SET,
         value,
     };
+};
+
+const fetchAllCollectionsInProgress = () => {
+    return {
+        type: ALL_COLLECTIONS_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchAllCollectionsSuccess = (value, chain, skip, limit, total) => {
+    return {
+        type: ALL_COLLECTIONS_FETCH_SUCCESS,
+        value,
+        chain,
+        skip,
+        limit,
+        total,
+    };
+};
+
+const fetchAllCollectionsError = (message) => {
+    return {
+        type: ALL_COLLECTIONS_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchAllCollections = (chain, skip, limit, cb) => (dispatch) => {
+    dispatch(fetchAllCollectionsInProgress());
+
+    const url = urlFetchAllCollections(chain, skip, limit);
+    Axios.get(url, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    })
+        .then((res) => {
+            dispatch(fetchAllCollectionsSuccess(res.data && res.data.denoms, chain, skip, limit,
+                res.data && res.data.pagination && res.data.pagination.total));
+            if (cb) {
+                cb(res.data && res.data.denoms, res.data && res.data.pagination && res.data.pagination.total);
+            }
+        })
+        .catch((error) => {
+            dispatch(fetchAllCollectionsError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            if (cb) {
+                cb(null);
+            }
+        });
 };

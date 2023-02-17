@@ -1,3 +1,9 @@
+.data_table .collection_data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .data_table .collection_info {
     display: flex;
     align-items: center;

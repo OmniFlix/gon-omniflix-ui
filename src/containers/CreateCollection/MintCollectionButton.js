@@ -13,13 +13,14 @@ import {
     txSignAndBroadCast,
     txSignAndBroadCastAminoSign,
 } from '../../actions/account/wallet';
-import { fetchCollections, hideCollectionConfirmDialog, setSchema } from '../../actions/collections';
+import { fetchAllCollections, fetchCollections, hideCollectionConfirmDialog, setSchema } from '../../actions/collections';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import withRouter from '../../components/WithRouter';
 import { customTypes } from '../../registry';
 import variables from '../../utils/variables';
 import { generateID } from '../../utils/generateID';
 import { setTabValue } from '../../actions/dashboard';
+import { urlFetchAllCollections } from '../../chains/collections';
 
 const MintCollectionButton = (props) => {
     const handleClick = () => {
@@ -116,12 +117,13 @@ const MintCollectionButton = (props) => {
                                     }
 
                                     props.fetch(props.chainValue, props.address, DEFAULT_SKIP, 500);
+                                    props.fetchAllCollections(props.chainValue, DEFAULT_SKIP, 500);
                                     props.setSchema(null);
                                     props.fetchBalance(props.address);
                                     props.setTxHashInProgressFalse();
                                     props.hideCollectionConfirmDialog();
                                     props.router.navigate('/dashboard');
-                                    props.setTabValue('collections');
+                                    props.setTabValue(props.tabValue);
                                     clearInterval(time);
                                 }
 
@@ -169,6 +171,7 @@ MintCollectionButton.propTypes = {
     broadCastInProgress: PropTypes.bool.isRequired,
     chainValue: PropTypes.string.isRequired,
     fetch: PropTypes.func.isRequired,
+    fetchAllCollections: PropTypes.func.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     hideCollectionConfirmDialog: PropTypes.func.isRequired,
@@ -184,6 +187,7 @@ MintCollectionButton.propTypes = {
     sign: PropTypes.func.isRequired,
     signInProgress: PropTypes.bool.isRequired,
     symbol: PropTypes.string.isRequired,
+    tabValue: PropTypes.string.isRequired,
     txHashInProgress: PropTypes.bool.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
     txSignAndBroadCastAminoSign: PropTypes.func.isRequired,
@@ -209,6 +213,7 @@ const stateToProps = (state) => {
         description: state.collections.createCollection.description,
         imageUrl: state.collections.createCollection.imageUrl,
         jsonSchema: state.collections.createCollection.jsonSchema,
+        tabValue: state.dashboard.tabValue.value,
     };
 };
 
@@ -217,6 +222,7 @@ const actionToProps = {
     txSignAndBroadCast,
     txSignAndBroadCastAminoSign,
     fetch: fetchCollections,
+    fetchAllCollections,
     fetchBalance,
     fetchTxHash,
     showMessage,
