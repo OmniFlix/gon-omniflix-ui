@@ -8,7 +8,7 @@ import variables from '../../../utils/variables';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
-import { fetchCollectionNFTS } from '../../../actions/collection';
+import { fetchCollectionNFTS, showBurnDialog, showTransferDialog } from '../../../actions/collection';
 
 const NFTsTable = (props) => {
     const options = {
@@ -107,11 +107,11 @@ const NFTsTable = (props) => {
             sort: false,
             customBodyRender: function (address) {
                 return (
-                    address === props.address && <div className="table_actions center_actions">
-                        <Button className="primary_button">
+                    address !== props.address && <div className="table_actions center_actions">
+                        <Button className="primary_button" onClick={props.showTransferDialog}>
                             {variables[props.lang].transfer}
                         </Button>
-                        <Button className="burn_button">
+                        <Button className="burn_button" onClick={props.showBurnDialog}>
                             {variables[props.lang].burn}
                         </Button>
                     </div>
@@ -147,6 +147,8 @@ NFTsTable.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     limit: PropTypes.number.isRequired,
+    showBurnDialog: PropTypes.func.isRequired,
+    showTransferDialog: PropTypes.func.isRequired,
     skip: PropTypes.number.isRequired,
 };
 
@@ -163,6 +165,8 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchCollectionNFTS,
+    showBurnDialog,
+    showTransferDialog,
 };
 
 export default connect(stateToProps, actionToProps)(NFTsTable);

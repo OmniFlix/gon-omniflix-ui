@@ -13,6 +13,8 @@ import CircularProgress from '../../components/CircularProgress';
 import NoData from '../../components/NoData';
 import DotsLoading from '../../components/DotsLoading';
 import { setTabValue } from '../../actions/dashboard';
+import TransferDialog from './TransferDialog';
+import BurnDialog from './BurnDialog';
 
 class SingleCollection extends Component {
     constructor (props) {
@@ -47,12 +49,14 @@ class SingleCollection extends Component {
                 {this.props.inProgress
                     ? <CircularProgress/>
                     : this.props.collection && this.props.collection.denom
-                        ? <>
+                        ? <div className="coll_page">
                             <Info/>
                             <div className="data_table nfts_table">
                                 <NFTsTable/>
                             </div>
-                        </> : <NoData/>}
+                        </div> : <NoData/>}
+                <TransferDialog />
+                <BurnDialog />
             </div>
         );
     }
