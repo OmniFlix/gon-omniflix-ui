@@ -1,0 +1,36 @@
+.mint_nft .schema_properties {
+    background: #141414;
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.mint_nft .schema_properties .row {
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.mint_nft .schema_properties .row:last-child {
+    margin-bottom: 0;
+}
+
+.mint_nft .schema_properties .row .label_info {
+    width: 40%;
+}
+
+.mint_nft .schema_properties .text_field {
+    width: 58%;
+    height: 40px;
+    margin-top: unset;
+}
+
+.mint_nft .schema_properties .text_field > div {
+    background: #1B1B1B;
+    height: 40px;
+}
+
+.mint_nft .schema_properties .text_field.text_area,
+.mint_nft .schema_properties .text_field.text_area > div {
+    height: unset;
+}

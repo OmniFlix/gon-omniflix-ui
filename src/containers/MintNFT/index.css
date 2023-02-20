@@ -1,0 +1,873 @@
+.video {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.video_info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.video_info > div {
+    background: #1C1C1C;
+    border-radius: 10px;
+}
+
+.video_info .form_card {
+    width: 72%;
+    display: flex;
+    flex-direction: column;
+}
+
+.video_info .card2_asset {
+    width: 26%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: none;
+}
+
+.form_card form {
+    padding: 34px 52px;
+    flex: 1;
+}
+
+.form_card .row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.form_card .row:last-child {
+    margin-bottom: unset;
+}
+
+.row .label_info {
+    width: 50%;
+    text-align: left;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.row .label_info .title {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #B7B7B7;
+}
+
+.row .label_info .sub_title {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #b7b7b7ad;
+}
+
+.row .label_info .title_info {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 13px;
+    line-height: 16px;
+    color: #777777;
+    margin-top: 5px;
+}
+
+.row.description_section {
+    position: relative;
+}
+
+.row .description_characters {
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+    line-height: 23px;
+    color: #696969;
+}
+
+.form_card .text_field,
+.form_card .select_field_parent,
+.form_card .auto_complete,
+.form_card .button_div {
+    width: 50%;
+}
+
+.form_card .select_field_parent .text_field {
+    width: 100%;
+}
+
+.form_card .row_reverse {
+    flex-direction: column;
+}
+
+.row.row_reverse .label_info {
+    width: 100%;
+    margin: unset;
+}
+
+.form_card .row_reverse .text_field {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form_card .text_area > div {
+    padding: unset;
+}
+
+.form_card .stepper {
+    margin-top: -22px;
+}
+
+.video .footer_buttons {
+    border-top: 2px solid #353535;
+    padding: 30px 52px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer_buttons .back_button {
+    margin-right: 14px;
+}
+
+.form_card .button_div {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.form_card .button_div > .primary_button {
+    width: max-content;
+}
+
+.form_card .button_div .error {
+    width: 100%;
+    bottom: -20px;
+    position: absolute;
+    color: #f44336;
+    margin-left: 14px;
+    margin-right: 14px;
+    font-size: 0.75rem;
+    margin-top: 3px;
+    text-align: left;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+}
+
+.form_card .copy_info > p {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.form_card .copy_info > p.category {
+    text-transform: capitalize;
+}
+
+.form_card .row.al_flx_start {
+    align-items: flex-start;
+}
+
+.form_card .file_upload {
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='5' ry='5' stroke='%23333' stroke-width='4' stroke-dasharray='6%2c 10' stroke-dashoffset='3' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+.file_upload .helper_text {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    color: #696969;
+}
+
+.file_upload .or_text {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    color: #696969;
+    margin: 25px 0;
+}
+
+.file_upload .primary_button {
+    padding: 3px 10px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.file_upload .primary_button input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.form_card .uploading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: #000000;
+    border-radius: 5px;
+    padding: 10px 12px;
+    margin-top: 14px;
+}
+
+.uploading .file_name {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.uploading .file_name .icon {
+    width: 22px;
+    margin-right: 10px;
+}
+
+.uploading .file_name > p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    line-height: 23px;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.uploading .progress_with_label {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    flex: 1;
+    margin: 0 8%;
+}
+
+.uploading .progress_with_label .text {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.uploading .progress_with_label > div:last-child {
+    width: 200px;
+}
+
+.uploading .close_button {
+    padding: 2px;
+}
+
+.uploading .close_button .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.uploaded .right_content {
+    display: flex;
+    align-items: center;
+}
+
+.uploaded .quick_edit {
+    background: #2B2B2B;
+    border-radius: 100px;
+    margin-right: 30px;
+    padding: 6px 25px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #B7B7B7;
+}
+
+.send_many {
+    height: calc(100vh - 80px);
+    padding: 10px 50px 30px;
+}
+
+.send_many .header {
+    background: #1B1B1B;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 6px 10px;
+}
+
+.send_many .header .cursor {
+    cursor: pointer;
+}
+
+.send_many .header > div {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #696969;
+}
+
+.send_many .header > p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.send_many .header > img {
+    margin: 0 10px;
+    color: #696969;
+}
+
+.send_many .section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Right section */
+.send_many .section .right_section {
+    background: #1B1B1B;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: left;
+}
+
+.send_many .section .right_section > p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.send_many .section .right_section > img {
+    width: 350px;
+    margin: 20px 0;
+}
+
+.send_many .section .right_section .details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
+.send_many .section .right_section .details .collection_name {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #696969;
+    margin-bottom: 5px;
+}
+
+.send_many .section .right_section .details .nft_name {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    color: #828282;
+    word-break: break-word;
+}
+
+/* Left section */
+.send_many .section .left_section {
+    background: #1B1B1B;
+    border-radius: 5px;
+    padding: 20px;
+    flex: 1;
+    margin-right: 20px;
+}
+
+.send_many .section .left_section .row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.send_many .section .left_section .row .label_info {
+    width: 38%;
+}
+
+.send_many .section .left_section .row > .text_field,
+.send_many .section .left_section .row > .upload_avatar,
+.send_many .section .left_section .row > .select_field_parent {
+    width: 59%;
+}
+
+.send_many .section .left_section .row > .upload_avatar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.send_many .section .left_section .row > .upload_avatar > .text_field {
+    width: 80%;
+}
+
+.send_many .section .left_section .row > .upload_avatar > .select_field_parent .text_field {
+    width: 90%;
+}
+
+.send_many .section .left_section .row .label_info .title {
+
+}
+
+.send_many .section .left_section .row .label_info .title_info {
+
+}
+
+.send_many .section .left_section .row.row_reverse {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.send_many .section .left_section .row.row_reverse .label_info {
+    margin-bottom: 10px;
+}
+
+.send_many .section .left_section .row.row_reverse .text_field {
+    width: 100%;
+}
+
+.send_many .section .left_section .row.actions {
+    border-top: 2px solid #353535;
+    padding-top: 30px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send_many .section .left_section .row.actions button {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 5px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 10px 25px;
+}
+
+.send_many .section .left_section .row.actions button:disabled {
+    opacity: 0.5;
+}
+
+.send_many .upload_avatar .select_field_parent:last-child {
+    width: max-content;
+    margin-right: 20px;
+}
+
+.send_many .file_upload > button {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #B7B7B7;
+    width: max-content;
+    margin-left: 10px;
+    z-index: 1;
+    border-radius: 5px;
+    height: 44px;
+}
+
+.send_many .file_upload > button:before {
+    content: '';
+    position: absolute;
+    background: #1B1B1B;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 5px;
+}
+
+.send_many .file_upload > button:after {
+    content: '';
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    z-index: -2;
+    border-radius: 5px;
+}
+
+.send_many .file_upload input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.send_many .schema_properties {
+    background: #141414;
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.send_many .schema_properties .text_field > div {
+    background: #1b1b1b;
+}
+
+.send_many .text_area > div {
+    padding: unset;
+}
+
+.card2_asset .source_type {
+    padding: 20px;
+    background: #1C1C1C;
+    border-radius: 10px;
+    width: 100%;
+    min-height: 250px;
+}
+
+.source_type_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.source_type_header .st_header1 {
+    display: flex;
+    align-items: center;
+}
+
+.source_type_header .type {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #B7B7B7;
+    background: #000000;
+    border-radius: 10px;
+    padding: 2px 20px 2px 10px;
+}
+
+.source_type_header .asset {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+    background: #CDCDCD;
+    border-radius: 10px;
+    padding: 2px 10px;
+    margin-left: -11px;
+    text-transform: capitalize;
+}
+
+.source_type_header > button {
+    min-width: auto;
+    padding: 0;
+}
+
+.source_type_header > button .icon {
+    width: 20px;
+}
+
+.source_preview {
+    background: #242424;
+    border-radius: 10px;
+    height: 80%;
+    margin-top: 18px;
+    font-family: 'Quantico', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 50px;
+}
+
+.walk_through {
+    border-radius: 10px;
+    position: relative;
+    bottom: 24px;
+    width: 100%;
+}
+
+.walk_through .preview_icon {
+    width: 100%;
+}
+
+.preview_content {
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 0 0 10px 10px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 20px;
+    position: absolute;
+    bottom: -24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player_icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 30%;
+    left: 42%;
+    cursor: pointer;
+}
+
+/* Preview MenuActionDialog CSS */
+.dialog.preview_dialog .dialog_content {
+    background: #1B1B1B;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.preview_dialog .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    padding: 20px 40px;
+    background: #1B1B1B;
+    opacity: 0.98;
+    border-radius: 0 0 5px 5px;
+}
+
+.preview_dialog .header > h2 {
+    font-family: 'Quantico', sans-serif;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 43px;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.video_content > img {
+    margin-top: -20px;
+    width: 100%;
+}
+
+.source_type .asset_details {
+    margin-top: 18px;
+}
+
+.asset_details .walk_through {
+    bottom: unset;
+    margin-bottom: 15px;
+    min-height: 100px;
+    margin-left: unset;
+}
+
+.asset_details .walk_through > img:first-child {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.asset_details .walk_through img[alt='thumbnail'] {
+    width: 100%;
+}
+
+.asset_details .player_icon {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.asset_details .walk_through:hover .player_icon {
+    display: unset;
+}
+
+.asset_details > .source_preview {
+    margin-bottom: 50px;
+}
+
+.asset_details .row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.asset_details .row > p,
+.asset_details .row > a {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    color: #FFFFFF;
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.asset_details .row > p.ubuntu_font {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.asset_details .row > a {
+    color: #1890FF;
+}
+
+.card2_asset .card {
+    width: 100%;
+    background: #1C1C1C;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 15px;
+    text-align: left;
+}
+
+.card2_asset .card > h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #B7B7B7;
+    margin: 0 0 10px;
+}
+
+.card2_asset .card > .row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.card2_asset .card > .row > p,
+.card2_asset .card .hash_text,
+.card2_asset .card a {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    color: #FFFFFF;
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card2_asset .card .hash_text {
+    max-width: unset;
+}
+
+.card2_asset .card a {
+    color: #1890FF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card2_asset .card .no_info {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    color: #696969;
+}
+
+.card2_asset .card .spinner {
+    width: 50%;
+    text-align: left;
+}
+
+.card2_asset .card .spinner > div {
+    width: 8px;
+    height: 8px;
+}
+
+.preview_dialog img[alt='thumbnail'],
+.preview_dialog .pdf_view {
+    height: 400px;
+    width: auto;
+}
+
+@media (max-width: 1025px) {
+    .send_many .section .left_section {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .send_many .section .right_section .details {
+        width: 100%;
+    }
+
+    .form_card form {
+        padding: 34px 30px;
+    }
+
+    .video_info {
+        flex-direction: column;
+        padding-bottom: 50px;
+    }
+
+    .video_info .form_card {
+        width: 100%;
+    }
+
+    .video_info .card2_asset {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .form_card form {
+        max-height: unset;
+    }
+
+    .video .footer_buttons {
+        padding: 20px 30px;
+    }
+
+    .walk_through {
+        bottom: unset;
+        margin-left: 20px;
+    }
+}

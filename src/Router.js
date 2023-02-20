@@ -7,6 +7,7 @@ const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 const About = lazy(() => import('./containers/About').then().catch());
 const SingleCollection = lazy(() => import('./containers/SingleCollection').then().catch());
 const CreateCollection = lazy(() => import('./containers/CreateCollection').then().catch());
+const MintNFT = lazy(() => import('./containers/MintNFT').then().catch());
 
 const routes = [{
     path: '/about',
@@ -23,6 +24,9 @@ const routes = [{
 }, {
     path: '/create-collection/:collectionID',
     component: CreateCollection,
+}, {
+    path: '/mint',
+    component: MintNFT,
 }];
 
 const Router = () => {
