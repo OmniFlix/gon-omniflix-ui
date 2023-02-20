@@ -4,7 +4,7 @@ import {
     ALL_COLLECTIONS_FETCH_IN_PROGRESS, ALL_COLLECTIONS_FETCH_SUCCESS,
     AVATAR_UPLOAD_ERROR,
     AVATAR_UPLOAD_IN_PROGRESS,
-    AVATAR_UPLOAD_SUCCESS,
+    AVATAR_UPLOAD_SUCCESS, CLEAR_COLLECTION_SET,
     COLLECTION_CONFIRM_DIALOG_HIDE,
     COLLECTION_CONFIRM_DIALOG_SHOW,
     COLLECTION_FETCH_ERROR,
@@ -128,6 +128,11 @@ const singleCollection = (state = {
         return {
             ...state,
             inProgress: false,
+        };
+    case CLEAR_COLLECTION_SET:
+        return {
+            ...state,
+            value: {},
         };
     default:
         return state;

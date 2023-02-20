@@ -13,6 +13,8 @@ import { fetchBalance } from '../../actions/account/BCDetails';
 import ConnectedAccount from './ConnectedAccount';
 import Tabs from './Tabs';
 import CreatePopover from './CreatePopover';
+import { showClaimFaucetDialog } from '../../actions/navBar';
+import ClaimFaucetDialog from './ClaimFaucetDialog';
 
 class NavBar extends Component {
     componentDidMount () {
@@ -70,7 +72,7 @@ class NavBar extends Component {
                 <Tabs/>
                 <div className="right_section">
                     {this.props.address !== '' &&
-                        <Button className="claim_button">
+                        <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
                             <FaucetIcon/>
                             {variables[this.props.lang]['claim_faucet']}
                         </Button>}
@@ -81,6 +83,7 @@ class NavBar extends Component {
                             : <ConnectedAccount/>}
                     </div>
                 </div>
+                <ClaimFaucetDialog />
             </div>
         );
     }
@@ -94,6 +97,7 @@ NavBar.propTypes = {
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setDisconnect: PropTypes.func.isRequired,
+    showClaimFaucetDialog: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -109,6 +113,7 @@ const actionToProps = {
     fetchBalance,
     initializeChain,
     setDisconnect,
+    showClaimFaucetDialog,
 };
 
 export default connect(stateToProps, actionToProps)(NavBar);

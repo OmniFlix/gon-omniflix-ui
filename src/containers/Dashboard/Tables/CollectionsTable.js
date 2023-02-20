@@ -8,6 +8,7 @@ import variables from '../../../utils/variables';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
 import withRouter from '../../../components/WithRouter';
+import { setClearCollection } from '../../../actions/collections';
 
 const CollectionsTable = (props) => {
     const options = {
@@ -35,7 +36,9 @@ const CollectionsTable = (props) => {
     };
 
     const handleRedirect = (event, id) => {
-        props.router.navigate(`/collection/${id}`);
+        props.setClearCollection();
+        const result = id.replace('/', '_');
+        props.router.navigate(`/collection/${result}`);
     };
 
     const columns = [{
@@ -45,7 +48,7 @@ const CollectionsTable = (props) => {
             sort: false,
             customBodyRender: function (value) {
                 return (
-                    <div className="collection_info" onClick={(e) => handleRedirect(e, value.id)}>
+                    <div className="collection_info">
                         <ImageOnLoad alt="thumbnail" src={value.preview_uri}/>
                         <div className="table_value collection_name">{value.name}</div>
                     </div>
@@ -73,8 +76,10 @@ const CollectionsTable = (props) => {
             customBodyRender: function (value) {
                 return (
                     <div className="table_actions">
-                        <Button className="primary_button">
-                            {variables[props.lang]['bulk_mint']}
+                        <Button
+                            className="primary_button"
+                            onClick={(e) => handleRedirect(e, value.id)}>
+                            {variables[props.lang].view}
                         </Button>
                         <Button
                             className="burn_button"
@@ -90,6 +95,7 @@ const CollectionsTable = (props) => {
     const list = props.list && props.list[props.chainValue];
     const tableData = list && list.value && list.value.length
         ? list.value.map((item, index) => [
+            item,
             item,
             item,
         ]) : [];
@@ -113,6 +119,7 @@ CollectionsTable.propTypes = {
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }).isRequired,
+    setClearCollection: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -124,4 +131,8 @@ const stateToProps = (state) => {
     };
 };
 
-export default withRouter(connect(stateToProps)(CollectionsTable));
+const actionsToProps = {
+    setClearCollection,
+};
+
+export default withRouter(connect(stateToProps, actionsToProps)(CollectionsTable));

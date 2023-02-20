@@ -39,8 +39,8 @@ class NavTabs extends Component {
     }
 
     handleChange (newValue) {
-        this.props.router.navigate('/' + newValue);
         this.props.setNavTabs(newValue);
+        this.props.router.navigate('/' + newValue);
     }
 
     render () {

@@ -3,23 +3,12 @@ import { config } from '../../config';
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Popover } from '@mui/material';
-import variables from '../../utils/variables';
+import { Button } from '@mui/material';
 import { setDisconnect } from '../../actions/account/wallet';
+import DisconnectIcon from '../../assets/disconnect.svg';
 
 const ConnectedAccount = (props) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     const setDisconnect = () => {
-        setAnchorEl(null);
         props.setDisconnect();
         localStorage.removeItem('gon_of_address');
     };
@@ -27,46 +16,32 @@ const ConnectedAccount = (props) => {
     let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
     balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
 
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
     return (
         <>
-            <Button aria-describedby={id} className="connected_account" onClick={handleClick}>
-                {props.balanceInProgress || props.connectInProgress
-                    ? <DotsLoading/>
-                    : balance
-                        ? <p className="tokens">
-                            {balance} {config.COIN_DENOM}
-                        </p>
-                        : <p className="tokens">
-                            0 {config.COIN_DENOM}
-                        </p>}
-                {props.inProgress && props.address === ''
-                    ? <DotsLoading/>
-                    : <div className="hash_text">
-                        <p>{props.address}</p>
-                        <span>
-                            {props.address && props.address.slice(props.address.length - 6, props.address.length)}
-                        </span>
-                    </div>}
-            </Button>
-            <Popover
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                className="profile_popover"
-                id={id}
-                open={open}
-                onClose={handleClose}
-            >
-                <div className="profile_actions">
-                    <Button onClick={setDisconnect}>
-                        <span>{variables[props.lang].disconnect}</span>
-                    </Button>
+            <div className="connected_account">
+                <div>
+                    {props.balanceInProgress || props.connectInProgress
+                        ? <DotsLoading/>
+                        : balance
+                            ? <p className="tokens">
+                                {balance} {config.COIN_DENOM}
+                            </p>
+                            : <p className="tokens">
+                                0 {config.COIN_DENOM}
+                            </p>}
+                    {props.inProgress && props.address === ''
+                        ? <DotsLoading/>
+                        : <div className="hash_text">
+                            <p>{props.address}</p>
+                            <span>
+                                {props.address && props.address.slice(props.address.length - 6, props.address.length)}
+                            </span>
+                        </div>}
                 </div>
-            </Popover>
+                <Button className="disconnect_button" title="Disconnect" onClick={setDisconnect}>
+                    <img alt="disconnect" src={DisconnectIcon} />
+                </Button>
+            </div>
         </>
     );
 };

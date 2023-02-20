@@ -12,6 +12,8 @@ const variables = {
         nft_collection_info: 'create a collection of NFTs',
         asset_via_upload: 'Asset via File Upload',
         asset_via_upload_info: 'create audio, video, document NFTs by uploading files',
+        faucet: 'Faucet',
+        claim_test_tokens: 'Claim Test Tokens',
 
         // Home
         all_collections: 'All Collections',
@@ -92,6 +94,7 @@ const variables = {
         cancel: 'Cancel',
         confirm: 'Confirm',
         approval_pending: 'APPROVAL PENDING',
+        view: 'View',
     },
 };
 

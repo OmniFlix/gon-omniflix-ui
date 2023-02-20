@@ -3,6 +3,36 @@
     background: unset;
 }
 
+.single_collection .breadcrumb {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    color: #757575;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 30px 20px 30px;
+}
+
+.single_collection .breadcrumb > p {
+    cursor: pointer;
+}
+
+.single_collection .breadcrumb > span {
+    margin: 0 5px;
+}
+
+.single_collection .breadcrumb > div {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    color: #FFFFFF;
+}
+
 .single_collection .collection_section {
     background: #292935;
     border-radius: 10px;
@@ -35,7 +65,8 @@
 
 .single_collection .collection_section .section2 .row1 {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: flex-start;
 }
 
@@ -62,7 +93,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .single_collection .collection_section .section2 .row2 .hash_text {

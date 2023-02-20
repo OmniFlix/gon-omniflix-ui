@@ -479,3 +479,29 @@
     bottom: 10px;
     right: 35px;
 }
+
+.create_collection .collection_content .field_width {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.create_collection .collection_content .field_width > div:first-child {
+    flex: 1;
+}
+
+.create_collection .collection_content .field_width > div:last-child {
+    width: 150px;
+    margin-left: 15px;
+}
+
+.create_collection .field_width .file_upload > button {
+    width: 100%;
+    margin-left: 0;
+}
+
+.collection_content .field_width .tab_switch button {
+    width: 50%;
+    padding: 10px 0;
+}

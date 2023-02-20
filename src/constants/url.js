@@ -35,3 +35,6 @@ export const urlFetchCollectionNFTS = (ID, skip, limit) => {
 
     return `${URL}/omniflix/onft/v1beta1/collections/${ID}?${params.join('&')}`;
 };
+
+export const urlClaimFaucet = (address) => `${URL}/claim-status/${address}`;
+export const urlAddFaucet = (chain) => `${config.FAUCET_URL}/${chain}/claim`;

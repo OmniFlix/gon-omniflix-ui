@@ -8,6 +8,7 @@ import variables from '../../../utils/variables';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
 import withRouter from '../../../components/WithRouter';
+import { setClearCollection } from '../../../actions/collections';
 
 const AllCollectionsTable = (props) => {
     const options = {
@@ -32,6 +33,12 @@ const AllCollectionsTable = (props) => {
         print: false,
         viewColumns: false,
         search: false,
+    };
+
+    const handleRedirect = (event, id) => {
+        props.setClearCollection();
+        const result = id.replace('/', '_');
+        props.router.navigate(`/collection/${result}`);
     };
 
     const columns = [{
@@ -69,8 +76,10 @@ const AllCollectionsTable = (props) => {
             customBodyRender: function (value) {
                 return (
                     <div className="table_actions">
-                        <Button className="primary_button">
-                            {variables[props.lang]['bulk_mint']}
+                        <Button
+                            className="primary_button"
+                            onClick={(e) => handleRedirect(e, value.id)}>
+                            {variables[props.lang].view}
                         </Button>
                         <Button
                             className="burn_button"
@@ -110,6 +119,7 @@ AllCollectionsTable.propTypes = {
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }).isRequired,
+    setClearCollection: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -121,4 +131,8 @@ const stateToProps = (state) => {
     };
 };
 
-export default withRouter(connect(stateToProps)(AllCollectionsTable));
+const actionsToProps = {
+    setClearCollection,
+};
+
+export default withRouter(connect(stateToProps, actionsToProps)(AllCollectionsTable));
