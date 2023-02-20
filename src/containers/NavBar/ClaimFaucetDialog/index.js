@@ -35,7 +35,7 @@ const ClaimFaucetDialog = (props) => {
             onClose={props.handleClose}>
             <DialogContent className="claim_faucet_dialog_content">
                 <h2>{variables[props.lang].faucet}</h2>
-                <img alt="close" className="close_button" src={closeIcon} />
+                <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose} />
                 <div className="card">
                     <div className="left_section">
                         <img alt="flix" src={flixIcon} />

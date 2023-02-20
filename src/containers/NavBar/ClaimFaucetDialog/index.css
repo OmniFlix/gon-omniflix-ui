@@ -12,6 +12,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    cursor: pointer;
 }
 
 .claim_faucet_dialog_content h2 {
