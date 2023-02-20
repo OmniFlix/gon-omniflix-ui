@@ -37,7 +37,8 @@ const CreatePopover = (props) => {
     };
 
     const handleShowUploadDialog = () => {
-        props.showUploadFilesDialog();
+        // props.showUploadFilesDialog();
+        props.router.navigate('/mint');
         setOpen(false);
     };
 

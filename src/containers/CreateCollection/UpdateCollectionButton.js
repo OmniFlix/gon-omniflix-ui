@@ -14,7 +14,12 @@ import {
     setTxHashInProgressFalse,
     txSignAndBroadCast,
 } from '../../actions/account/wallet';
-import { fetchAllCollections, fetchCollections, hideCollectionConfirmDialog, setSchema } from '../../actions/collections';
+import {
+    fetchAllCollections,
+    fetchCollections,
+    hideCollectionConfirmDialog,
+    setSchema,
+} from '../../actions/collections';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import withRouter from '../../components/WithRouter';
 import { setTabValue } from '../../actions/dashboard';

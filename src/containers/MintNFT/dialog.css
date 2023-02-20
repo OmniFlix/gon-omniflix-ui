@@ -1,0 +1,164 @@
+.confirm_mint_dialog.dialog > div:nth-child(3) > div {
+    max-width: 800px;
+    width: 100%;
+    margin: unset;
+    background: #141414;
+    border-radius: 10px;
+}
+
+.confirm_mint_dialog_content > h2 {
+    font-family: 'Quantico', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 26px;
+    text-align: center;
+    color: #E7E7E7;
+    margin: 20px 0 40px 0;
+}
+
+.confirm_mint_dialog .confirm_mint_dialog_content {
+    padding: 40px;
+}
+
+.confirm_mint_dialog .row1 {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.confirm_mint_dialog .left_section {
+    background: #1B1B1B;
+    border: 1px solid #212121;
+    box-sizing: border-box;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.confirm_mint_dialog .left_section img,
+.confirm_mint_dialog .left_section > p {
+    width: 250px;
+}
+
+.confirm_mint_dialog .left_section > p {
+    height: 150px;
+    background: #d7d7d7;
+    border-radius: 10px;
+}
+
+
+.confirm_mint_dialog .left_section > .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.confirm_mint_dialog .left_section > .row > span {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 0;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #B7B7B7;
+}
+
+.confirm_mint_dialog .left_section > .row > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    font-feature-settings: 'zero' on;
+    color: #FFFFFF;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 0;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+}
+
+.confirm_mint_dialog .right_section .row .url_css {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #8F67FF;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 0;
+    text-overflow: ellipsis;
+    text-align: right;
+    cursor: pointer;
+}
+
+.confirm_mint_dialog .right_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1 1;
+    margin-left: 20px;
+}
+
+
+.confirm_mint_dialog .right_section .row {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #B7B7B7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.confirm_mint_dialog .right_section .row > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #F2F2F2;
+}
+
+.confirm_mint_dialog .confirm_mint_action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.confirm_mint_dialog .confirm_mint_action > button {
+    border-radius: 5px;
+    font-family: 'Rubik', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    background: #1B1B1B;
+    width: 49%;
+    height: 40px;
+}
+
+.confirm_mint_dialog .confirm_mint_action .primary_button {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+}

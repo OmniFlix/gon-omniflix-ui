@@ -22,6 +22,14 @@ export const DEFAULT_LIMIT = 10;
 export const DEFAULT_SEARCH = null;
 export const DEFAULT_LAZY_FETCH_HEIGHT = 256;
 export const TRANSACTION_SET_TIME_OUT = 3000;
+export const GAS_PRICE_STEP_LOW = 0.001;
+export const GAS_PRICE_STEP_AVERAGE = 0.0025;
+export const GAS_PRICE_STEP_HIGH = 0.025;
+
+export const gas = {
+    LIST_NFT: 200000,
+    MINT_NFT: 300000,
+};
 
 export const chainId = config.CHAIN_ID;
 export const chainName = config.CHAIN_NAME;
