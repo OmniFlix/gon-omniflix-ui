@@ -65,10 +65,10 @@ const Upload = (props) => {
 Upload.propTypes = {
     avatarInProgress: PropTypes.bool.isRequired,
     avatarUpload: PropTypes.func.isRequired,
-    handleSet: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setCollectionImageUrl: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
+    handleSet: PropTypes.func,
     imageUrl: PropTypes.any,
     match: PropTypes.shape({
         params: PropTypes.shape({

@@ -92,7 +92,7 @@ const AllCollectionsTable = (props) => {
             sort: false,
             customBodyRender: function (value) {
                 return (
-                    <div className="table_actions">
+                    <div className="table_actions ct_actions">
                         <Button
                             className="primary_button"
                             onClick={(e) => handleRedirect(e, value.id)}>

@@ -43,6 +43,10 @@
     padding: 8px 20px;
 }
 
+.data_table .table_actions.ct_actions .primary_button {
+    padding: 8px 30px;
+}
+
 .data_table .nft_id {
     display: flex;
     align-items: center;
@@ -108,4 +112,8 @@
     color: #EB5757;
     margin-left: 10px;
     text-transform: capitalize;
+}
+
+.data_table .copy_button.copy_icon_button svg {
+    fill: #828282;
 }
