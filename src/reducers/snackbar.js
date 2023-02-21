@@ -13,6 +13,7 @@ import { FAUCET_CLAIM_FETCH_ERROR, FAUCET_CLAIM_FETCH_SUCCESS } from '../constan
 const snackbar = (state = {
     open: false,
     message: '',
+    explorer: null,
 }, action) => {
     switch (action.type) {
     case FAUCET_CLAIM_FETCH_ERROR:
@@ -29,11 +30,16 @@ const snackbar = (state = {
         return {
             open: true,
             message: action.message,
+            variant: action.variant,
+            hash: action.hash,
+            explorer: action.explorer ? action.explorer : null,
         };
     case SNACKBAR_HIDE:
         return {
             open: false,
             message: '',
+            variant: '',
+            hash: '',
         };
     default:
         return state;

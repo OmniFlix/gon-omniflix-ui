@@ -11,7 +11,6 @@ import {
     protoBufSigning,
     setTxHashInProgressFalse,
     txSignAndBroadCast,
-    txSignAndBroadCastAminoSign,
 } from '../../actions/account/wallet';
 import {
     fetchAllCollections,
@@ -194,7 +193,6 @@ MintCollectionButton.propTypes = {
     tabValue: PropTypes.string.isRequired,
     txHashInProgress: PropTypes.bool.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
-    txSignAndBroadCastAminoSign: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
     description: PropTypes.string,
     imageUrl: PropTypes.any,
@@ -224,7 +222,6 @@ const stateToProps = (state) => {
 const actionToProps = {
     aminoSignTx,
     txSignAndBroadCast,
-    txSignAndBroadCastAminoSign,
     fetch: fetchCollections,
     fetchAllCollections,
     fetchBalance,

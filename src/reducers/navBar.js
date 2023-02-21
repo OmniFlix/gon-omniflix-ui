@@ -7,7 +7,8 @@ import {
     FAUCET_BALANCE_ADD_SUCCESS,
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
-    FAUCET_CLAIM_FETCH_SUCCESS, FAUCET_SUCCESS_SET,
+    FAUCET_CLAIM_FETCH_SUCCESS,
+    FAUCET_SUCCESS_SET,
     NAV_TABS_SET,
 } from '../constants/navBar';
 
@@ -28,18 +29,31 @@ const tabValue = (state = {
 
 const claimFaucetDialog = (state = {
     open: false,
+    inProgress: false,
 }, action) => {
     switch (action.type) {
     case CLAIM_FAUCET_DIALOG_SHOW:
         return {
+            ...state,
             open: true,
         };
     case CLAIM_FAUCET_DIALOG_HIDE:
     case FAUCET_SUCCESS_SET:
         return {
+            ...state,
             open: false,
         };
-
+    case FAUCET_BALANCE_ADD_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case FAUCET_BALANCE_ADD_SUCCESS:
+    case FAUCET_BALANCE_ADD_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
     default:
         return state;
     }

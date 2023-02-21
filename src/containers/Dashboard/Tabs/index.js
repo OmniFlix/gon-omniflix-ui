@@ -51,12 +51,12 @@ class HeaderTabs extends Component {
                         onClick={() => this.handleChange('all_collections')}
                         {...a11yProps(0)} />
                     {this.props.address &&
-                    <Tab
-                        className={'tab ' + (this.props.tabValue === 'my_collections' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang]['my_collections']}</p>}
-                        value="my_collections"
-                        onClick={() => this.handleChange('my_collections')}
-                        {...a11yProps(1)} />}
+                        <Tab
+                            className={'tab ' + (this.props.tabValue === 'my_collections' ? 'active_tab' : '')}
+                            label={<p className="text">{variables[this.props.lang]['my_collections']}</p>}
+                            value="my_collections"
+                            onClick={() => this.handleChange('my_collections')}
+                            {...a11yProps(1)} />}
                 </div>
             </AppBar>
         );

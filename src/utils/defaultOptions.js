@@ -2,7 +2,7 @@ import IrisIcon from '../assets/chains/iris.svg';
 import OmniIcon from '../assets/chains/omniflix.svg';
 import StargazeIcon from '../assets/chains/stargaze.svg';
 import JunoIcon from '../assets/chains/juno.svg';
-import OsmoIcon from '../assets/chains/osmo.svg';
+import UpTickIcon from '../assets/chains/uptick.svg';
 import { config } from '../config';
 
 export const list = [{
@@ -22,7 +22,7 @@ export const list = [{
     name: 'Juno',
     value: 'juno',
 }, {
-    icon: OsmoIcon,
+    icon: UpTickIcon,
     name: 'Uptick',
     value: 'uptick',
 }];

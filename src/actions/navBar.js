@@ -6,7 +6,8 @@ import {
     FAUCET_BALANCE_ADD_SUCCESS,
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
-    FAUCET_CLAIM_FETCH_SUCCESS, FAUCET_SUCCESS_SET,
+    FAUCET_CLAIM_FETCH_SUCCESS,
+    FAUCET_SUCCESS_SET,
     NAV_TABS_SET,
 } from '../constants/navBar';
 import Axios from 'axios';
@@ -101,11 +102,11 @@ const addFaucetBalanceError = (message) => {
     };
 };
 
-export const addFaucetBalance = (chain, data, cb) => (dispatch) => {
+export const addFaucetBalance = (address, cb) => (dispatch) => {
     dispatch(addFaucetBalanceInProgress());
 
-    const url = urlAddFaucet(chain);
-    Axios.post(url, data, {
+    const url = urlAddFaucet(address);
+    Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
         },

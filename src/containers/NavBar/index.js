@@ -83,7 +83,7 @@ class NavBar extends Component {
                             : <ConnectedAccount/>}
                     </div>
                 </div>
-                <ClaimFaucetDialog />
+                <ClaimFaucetDialog/>
             </div>
         );
     }

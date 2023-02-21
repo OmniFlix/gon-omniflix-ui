@@ -107,8 +107,8 @@ const NFTsTable = (props) => {
             sort: false,
             customBodyRender: function (value) {
                 return (
-                    (value.owner === props.address) && <div className="table_actions center_actions">
-                        <Button className="primary_button" onClick={props.showTransferDialog}>
+                    value.owner === props.address && <div className="table_actions center_actions">
+                        <Button className="primary_button" onClick={() => props.showTransferDialog(value)}>
                             {variables[props.lang].transfer}
                         </Button>
                         <Button className="burn_button" onClick={() => props.showBurnDialog(value)}>

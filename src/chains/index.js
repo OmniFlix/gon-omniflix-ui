@@ -12,16 +12,23 @@ export const ChainsList = {
         COLLECTIONS_OWNED_URL: '/omniflix/onft/v1beta1/denoms?owner=:address',
         COLLECTIONS_URL: '/omniflix/onft/v1beta1/denoms?',
     },
-    // iris: {
-    //     RPC_URL: 'http://34.145.1.166:26657',
-    //     REST_URL: 'http://34.145.1.166:9090',
-    //     CHAIN_ID: 'iris-1',
-    //     CHAIN_NAME: 'IRISnet',
-    //     COIN_DENOM: 'IRIS',
-    //     COIN_MINIMAL_DENOM: 'uiris',
-    //     COIN_DECIMALS: 6,
-    //     PREFIX: 'iaa',
-    //     NFT_S_OWNED_URL: `/onft/owners/:address`,
-    //     COLLECTIONS_OWNED_URL: `/omniflix/onft/v1beta1/denoms?owner=:address`,
-    // },
+    iris: {
+        PREFIX: 'iaa',
+    },
+    uptick: {
+        PREFIX: 'uptick',
+    },
+    stargaze: {
+        PREFIX: 'stars',
+    },
+    juno: {
+        PREFIX: 'juno',
+    },
+};
+
+export const sourceChannel = {
+    iris: 'channel-19',
+    uptick: 'channel-20',
+    stargaze: 'channel-17',
+    juno: 'channel-18',
 };

@@ -24,7 +24,6 @@ class NavTabs extends Component {
         }
         if (this.props.tabValue !== route) {
             this.props.setNavTabs(route);
-            this.props.router.navigate('/' + route);
         }
     }
 

@@ -6,9 +6,12 @@ export const hideSnackbar = () => {
     };
 };
 
-export const showMessage = (message) => {
+export const showMessage = (message, variant, hash, explorer) => {
     return {
         type: MESSAGE_SHOW,
         message,
+        variant,
+        hash,
+        explorer,
     };
 };

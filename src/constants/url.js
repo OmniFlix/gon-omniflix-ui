@@ -18,8 +18,9 @@ export const AVATAR_UPLOAD_URL = `${UPLOAD_URL}/api/v0/add?pin=true&rap-with-dir
 export const urlVerifyAccount = (userId) => `${API_URL}/users/${userId}/verify-bc-account`;
 export const urlFetchAllowances = (address) => `${URL}/cosmos/feegrant/v1beta1/allowances/${address}`;
 export const urlFetchBalance = (address) => `${URL}/cosmos/bank/v1beta1/balances/${address}`;
+export const urlFetchClassTrace = (hash) => `${URL}/ibc/apps/nft_transfer/v1/class_traces/${hash}`;
 export const urlFetchTimeoutHeight = (url, channel) => {
-    return `${url}/ibc/core/channel/v1/channels/${channel}/ports/transfer`;
+    return `${url}/ibc/core/channel/v1/channels/${channel}/ports/nft-transfer`;
 };
 export const urlFetchCollectionInfo = (ID) => {
     return `${URL}/omniflix/onft/v1beta1/denoms/${ID}`;
@@ -37,4 +38,4 @@ export const urlFetchCollectionNFTS = (ID, skip, limit) => {
 };
 
 export const urlClaimFaucet = (address) => `${URL}/claim-status/${address}`;
-export const urlAddFaucet = (chain) => `${config.FAUCET_URL}/${chain}/claim`;
+export const urlAddFaucet = (address) => `https://faucet.gon-flixnet.omniflix.io?address=${address}`;
