@@ -32,6 +32,7 @@ const variables = {
         origin_chain: 'Origin Chain',
         transfer: 'Transfer',
         burn: 'Burn',
+        invalid_address: 'Invalid Address',
 
         create_collection: 'Create collection',
         update_collection: 'Update collection',
@@ -100,6 +101,8 @@ const variables = {
         enter_your: 'Enter your ',
         account_address: ' account address',
         ibc_native_transfer: 'IBC Native Transfer',
+        ibc_transfer: 'IBC Transfer',
+        native_transfer: 'Native Transfer',
         transfer_success: 'IBC Transfer fo your NFT is now successful',
         tx_hash: 'Transaction Hash',
         yay: 'Yay!',

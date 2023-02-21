@@ -39,7 +39,7 @@ const ConnectedAccount = (props) => {
                         </div>}
                 </div>
                 <Button className="disconnect_button" title="Disconnect" onClick={setDisconnect}>
-                    <img alt="disconnect" src={DisconnectIcon} />
+                    <img alt="disconnect" src={DisconnectIcon}/>
                 </Button>
             </div>
         </>

@@ -25,3 +25,10 @@ export const ChainsList = {
     //     COLLECTIONS_OWNED_URL: `/omniflix/onft/v1beta1/denoms?owner=:address`,
     // },
 };
+
+export const sourceChannel = {
+    iris: 'channel-8',
+    uptick: 'channel-9',
+    stargaze: 'channel-7',
+    juno: 'channel-6',
+};

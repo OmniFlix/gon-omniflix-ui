@@ -25,8 +25,7 @@ class SingleCollection extends Component {
 
     componentDidMount () {
         if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.inProgress) {
-            const result = this.props.router.params.id.replace('_', '/');
-            this.props.fetchCollectionNFTS(result, DEFAULT_SKIP, DEFAULT_LIMIT);
+            this.props.fetchCollectionNFTS(this.props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
@@ -55,8 +54,8 @@ class SingleCollection extends Component {
                                 <NFTsTable/>
                             </div>
                         </div> : <NoData/>}
-                <TransferDialog />
-                <BurnDialog />
+                <TransferDialog/>
+                <BurnDialog/>
             </div>
         );
     }
