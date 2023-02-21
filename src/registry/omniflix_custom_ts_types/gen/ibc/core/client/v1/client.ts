@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as Long from "long";
+import Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import {Plan} from "../../../../cosmos/upgrade/v1beta1/upgrade";
 import {Any} from "../../../../google/protobuf/any";
