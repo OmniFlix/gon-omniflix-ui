@@ -122,7 +122,7 @@ class CreateCollection extends Component {
                                     <p className="title">{variables[this.props.lang]['collection_avatar']}</p>
                                     <p className="title_info">{variables[this.props.lang]['collection_avatar_info']}</p>
                                 </div>
-                                <div className="upload_avatar">
+                                <div className="upload_avatar field_width">
                                     <CollectionImageUrlTextField/>
                                     <Upload/>
                                 </div>

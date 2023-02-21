@@ -12,6 +12,8 @@ const variables = {
         nft_collection_info: 'create a collection of NFTs',
         asset_via_upload: 'Asset via File Upload',
         asset_via_upload_info: 'create audio, video, document NFTs by uploading files',
+        faucet: 'Faucet',
+        claim_test_tokens: 'Claim Test Tokens',
 
         // Home
         all_collections: 'All Collections',
@@ -92,6 +94,22 @@ const variables = {
         cancel: 'Cancel',
         confirm: 'Confirm',
         approval_pending: 'APPROVAL PENDING',
+        view: 'View',
+
+        transfer_header: 'Transfer your NFT to a supported network',
+        enter_your: 'Enter your ',
+        account_address: ' account address',
+        ibc_native_transfer: 'IBC Native Transfer',
+        transfer_success: 'IBC Transfer fo your NFT is now successful',
+        tx_hash: 'Transaction Hash',
+        yay: 'Yay!',
+        transfer_failed: 'IBC Transfer not successful',
+        agree_to_delete: 'Do you agree to delete the NFT?',
+        enter_last_digit: 'Enter last 4 characters of the NFT ID',
+        burn_nft: 'Burn NFT',
+        nft_deleted: 'NFT deleted',
+        burn_failed: 'Burn not successful',
+        okay: 'Okay',
 
         // mint NFT
         select_collection: '-- Select collection --',

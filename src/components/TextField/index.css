@@ -7,7 +7,6 @@
     font-size: 18px;
     line-height: 23px;
     color: #696969;
-    border-radius: unset;
 }
 
 .text_field input::placeholder {

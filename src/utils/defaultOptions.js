@@ -6,10 +6,6 @@ import OsmoIcon from '../assets/chains/osmo.svg';
 import { config } from '../config';
 
 export const list = [{
-    icon: IrisIcon,
-    name: 'IrisNet',
-    value: 'iris',
-}, {
     icon: OmniIcon,
     name: 'OmniFlix Hub',
     value: 'omniflix',
@@ -18,13 +14,17 @@ export const list = [{
     name: 'Stargaze',
     value: 'stargaze',
 }, {
+    icon: IrisIcon,
+    name: 'IrisNet',
+    value: 'iris',
+}, {
     icon: JunoIcon,
     name: 'Juno',
     value: 'juno',
 }, {
     icon: OsmoIcon,
-    name: 'Osmosis',
-    value: 'osmosis',
+    name: 'Uptick',
+    value: 'uptick',
 }];
 
 export const tokensList = [{

@@ -42,24 +42,26 @@ const JsonSchemaTextField = (props) => {
                     <p className="title">{variables[props.lang]['json_schema_properties']}</p>
                     <p className="title_info">{variables[props.lang]['json_schema_properties_info']}</p>
                 </div>
-                <SelectField
-                    id="json-schema"
-                    name={variables[props.lang]['json_schema']}
-                    options={options}
-                    placeholder={variables[props.lang]['json_schema']}
-                    value={props.schema}
-                    onChange={handleJson}/>
-                <div className="tab_switch">
-                    <Button
-                        className={props.tabSwitch === 'visual' ? 'active' : ''}
-                        onClick={() => handleTabSwitch('visual')}>
-                        {variables[props.lang].visual}
-                    </Button>
-                    <Button
-                        className={props.tabSwitch === 'code' ? 'active' : ''}
-                        onClick={() => handleTabSwitch('code')}>
-                        {variables[props.lang].code}
-                    </Button>
+                <div className="upload_avatar field_width">
+                    <SelectField
+                        id="json-schema"
+                        name={variables[props.lang]['json_schema']}
+                        options={options}
+                        placeholder={variables[props.lang]['json_schema']}
+                        value={props.schema}
+                        onChange={handleJson}/>
+                    <div className="tab_switch">
+                        <Button
+                            className={props.tabSwitch === 'visual' ? 'active' : ''}
+                            onClick={() => handleTabSwitch('visual')}>
+                            {variables[props.lang].visual}
+                        </Button>
+                        <Button
+                            className={props.tabSwitch === 'code' ? 'active' : ''}
+                            onClick={() => handleTabSwitch('code')}>
+                            {variables[props.lang].code}
+                        </Button>
+                    </div>
                 </div>
             </div>
             {props.tabSwitch === 'code'

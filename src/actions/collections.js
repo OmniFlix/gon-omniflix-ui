@@ -4,7 +4,7 @@ import {
     ALL_COLLECTIONS_FETCH_SUCCESS,
     AVATAR_UPLOAD_ERROR,
     AVATAR_UPLOAD_IN_PROGRESS,
-    AVATAR_UPLOAD_SUCCESS,
+    AVATAR_UPLOAD_SUCCESS, CLEAR_COLLECTION_SET,
     COLLECTION_CONFIRM_DIALOG_HIDE,
     COLLECTION_CONFIRM_DIALOG_SHOW,
     COLLECTION_FETCH_ERROR,
@@ -92,6 +92,12 @@ export const showCollectionConfirmDialog = (value) => {
 export const hideCollectionConfirmDialog = () => {
     return {
         type: COLLECTION_CONFIRM_DIALOG_HIDE,
+    };
+};
+
+export const setClearCollection = () => {
+    return {
+        type: CLEAR_COLLECTION_SET,
     };
 };
 

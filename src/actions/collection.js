@@ -1,10 +1,56 @@
 import { urlFetchCollectionNFTS } from '../constants/url';
 import Axios from 'axios';
 import {
+    BURN_DIALOG_HIDE, BURN_DIALOG_SHOW, CHAIN_ID_SET,
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
-    COLLECTION_NFT_S_FETCH_SUCCESS,
+    COLLECTION_NFT_S_FETCH_SUCCESS, NFT_ID_SET, TRANSFER_ADDRESS_SET, TRANSFER_DIALOG_HIDE, TRANSFER_DIALOG_SHOW,
 } from '../constants/collection';
+
+export const showTransferDialog = () => {
+    return {
+        type: TRANSFER_DIALOG_SHOW,
+    };
+};
+
+export const hideTransferDialog = () => {
+    return {
+        type: TRANSFER_DIALOG_HIDE,
+    };
+};
+
+export const showBurnDialog = () => {
+    return {
+        type: BURN_DIALOG_SHOW,
+    };
+};
+
+export const hideBurnDialog = () => {
+    return {
+        type: BURN_DIALOG_HIDE,
+    };
+};
+
+export const setChainID = (value) => {
+    return {
+        type: CHAIN_ID_SET,
+        value,
+    };
+};
+
+export const setTransferAddress = (value) => {
+    return {
+        type: TRANSFER_ADDRESS_SET,
+        value,
+    };
+};
+
+export const setNftID = (value) => {
+    return {
+        type: NFT_ID_SET,
+        value,
+    };
+};
 
 const fetchCollectionNFTSInProgress = () => {
     return {

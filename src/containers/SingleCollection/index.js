@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import Info from './Info';
 import NFTsTable from '../Dashboard/Tables/NFTsTable';
-import ChainPopover from '../Dashboard/ChainPopover';
-import Tabs from '../Dashboard/Tabs';
-import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import '../Dashboard/index.css';
 import { fetchCollectionNFTS } from '../../actions/collection';
@@ -15,51 +12,51 @@ import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 import CircularProgress from '../../components/CircularProgress';
 import NoData from '../../components/NoData';
 import DotsLoading from '../../components/DotsLoading';
+import { setTabValue } from '../../actions/dashboard';
+import TransferDialog from './TransferDialog';
+import BurnDialog from './BurnDialog';
 
 class SingleCollection extends Component {
+    constructor (props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
     componentDidMount () {
         if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.inProgress) {
-            this.props.fetchCollectionNFTS(this.props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
+            const result = this.props.router.params.id.replace('_', '/');
+            this.props.fetchCollectionNFTS(result, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
+    }
+
+    handleClick () {
+        this.props.setTabValue(this.props.tabValue);
+        this.props.router.navigate('/dashboard');
     }
 
     render () {
         return (
             <div className="home single_collection scroll_bar">
-                <ChainPopover/>
-                <p className="border"/>
-                <div className="header">
-                    <div className="left_section">
-                        <Tabs/>
-                    </div>
-                    <div className="center_section">
-                        <span>
-                            {this.props.tabValue && this.props.tabValue.replace(/_/g, ' ')}
-                            {'    /  '}
-                        </span>
-                        {this.props.inProgress
-                            ? <DotsLoading/>
-                            : this.props.collection && this.props.collection.denom
-                                ? <p>{this.props.collection.denom.symbol}</p> : null}
-                    </div>
-                    <div className="right_section">
-                        <Button>
-                            {variables[this.props.lang]['create_collection']}
-                        </Button>
-                        <Button>
-                            {variables[this.props.lang]['create_nft']}
-                        </Button>
-                    </div>
+                <div className="breadcrumb">
+                    <p onClick={this.handleClick}>{variables[this.props.lang].collections}{' '}</p>
+                    <span>/</span>
+                    {this.props.inProgress
+                        ? <DotsLoading/>
+                        : this.props.collection && this.props.collection.denom
+                            ? <div>{this.props.collection.denom.symbol}</div> : null}
                 </div>
                 {this.props.inProgress
                     ? <CircularProgress/>
                     : this.props.collection && this.props.collection.denom
-                        ? <>
+                        ? <div className="coll_page">
                             <Info/>
                             <div className="data_table nfts_table">
                                 <NFTsTable/>
                             </div>
-                        </> : <NoData/>}
+                        </div> : <NoData/>}
+                <TransferDialog />
+                <BurnDialog />
             </div>
         );
     }
@@ -72,10 +69,12 @@ SingleCollection.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
             id: PropTypes.string,
         }).isRequired,
     }).isRequired,
+    setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
 };
 
@@ -91,6 +90,7 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchCollectionNFTS,
+    setTabValue,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(SingleCollection));

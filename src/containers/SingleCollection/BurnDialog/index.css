@@ -1,0 +1,161 @@
+.burn_dialog > div:nth-child(3) > div {
+    background: #101010;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    width: 450px;
+}
+
+.burn_dialog .transfer_dialog_content {
+    padding: 20px 0;
+}
+
+.burn_dialog .transfer_dialog_content .close_button {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
+
+.burn_dialog .transfer_dialog_content > h2 {
+    margin-top: 0;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.burn_dialog .transfer_dialog_content .card > img {
+    width: 100px;
+    height: 110px;
+    border-radius: 5px;
+}
+
+.burn_dialog .transfer_dialog_content .card .nft {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    color: #828282;
+    margin-top: 10px;
+}
+
+.burn_dialog .transfer_dialog_content .card .collection {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    font-feature-settings: 'zero' on, 'ss02' on;
+    color: #FFFFFF;
+    margin-top: 20px;
+}
+
+.burn_dialog .transfer_dialog_content .fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.burn_dialog .transfer_dialog_content .fields > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #2D9CDB;
+}
+
+.burn_dialog .transfer_dialog_content .fields > div {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.burn_dialog .transfer_dialog_content .fields .burn_nft {
+    border-bottom: 1px solid #2D9CDB;
+    margin: 0 6px;
+}
+
+.burn_dialog .transfer_dialog_content .fields .burn_nft input {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #2D9CDB;
+    background: unset;
+    border: unset;
+}
+
+.burn_dialog .transfer_dialog_content .fields .burn_nft input:focus-visible {
+    outline: unset;
+}
+
+.burn_dialog .transfer_dialog_content .actions {
+    margin-top: 20px;
+}
+
+.burn_dialog .transfer_dialog_content .actions .primary_button {
+    width: 100%;
+    padding: 14px 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: #FFFFFF;
+}
+
+.burn_dialog .transfer_dialog_content.success_transfer .tx_hash > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.burn_dialog .transfer_dialog_content.success_transfer .tx_hash > div {
+    background: rgba(20, 20, 20, 0.9);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0 20px 0;
+}
+
+.burn_dialog .transfer_dialog_content.success_transfer .tx_hash .hash_text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #828282;
+    max-width: 92%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 8px 16px;
+}
+
+.burn_dialog .transfer_dialog_content.success_transfer .tx_hash .hash_text > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.burn_dialog .transfer_dialog_content.success_transfer > img,
+.burn_dialog .transfer_dialog_content.failed_transfer > img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
