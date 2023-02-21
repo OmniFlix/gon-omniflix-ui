@@ -30,7 +30,7 @@ const ChainSelectField = (props) => {
                 MenuProps={MenuProps}
                 className="chains_field"
                 defaultValue={true}
-                input={<OutlinedInput />}
+                input={<OutlinedInput/>}
                 value={props.value}
                 onChange={handleChange}
             >
@@ -41,7 +41,7 @@ const ChainSelectField = (props) => {
                     <MenuItem
                         key={item.name}
                         value={item.name}>
-                        <img alt={item.name} src={item.icon} />
+                        <img alt={item.name} src={item.icon}/>
                         {item.name}
                     </MenuItem>
                 ))}

@@ -13,6 +13,7 @@ export const config = {
 
 export const IPFS_URL = 'https://ipfs.omniflix.studio/ipfs';
 export const IPFS_REFERENCE_PATH = 'ipfs://';
+export const EXPLORER_URL = 'https://www.mintscan.io/omniflix';
 
 export const DEFAULT_TOTAL = 10;
 export const DEFAULT_SORT_BY = 'created_at';

@@ -1,6 +1,8 @@
 .single_collection.home {
-    /*margin: 0 30px;*/
     background: unset;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
 }
 
 .single_collection .breadcrumb {
@@ -35,8 +37,8 @@
 
 .single_collection .coll_page {
     display: flex;
-    align-items: flex-start;
-    padding: 0 30px 30px;
+    padding: 0 30px;
+    flex: 1;
 }
 
 .single_collection .collection_section {
@@ -171,7 +173,7 @@
     }
 
     .single_collection .data_table {
-        margin: 0  0 30px 0;
+        margin: 0 0 30px 0;
         width: 100%;
     }
 }

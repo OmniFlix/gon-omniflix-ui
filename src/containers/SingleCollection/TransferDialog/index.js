@@ -29,7 +29,7 @@ const TransferDialog = (props) => {
             onClose={props.handleClose}>
             {transfer === 'success'
                 ? <DialogContent className="transfer_dialog_content success_transfer">
-                    <img alt="success" src={successIcon} />
+                    <img alt="success" src={successIcon}/>
                     <h2>{variables[props.lang]['transfer_success']}</h2>
                     <div className="tx_hash">
                         <p>{variables[props.lang].tx_hash}</p>
@@ -38,11 +38,11 @@ const TransferDialog = (props) => {
                                 <p>{hash}</p>
                                 <span>{hash && hash.slice(hash.length - 6, hash.length)}</span>
                             </div>
-                            <CopyButton data={hash} />
+                            <CopyButton data={hash}/>
                         </div>
                     </div>
                     <div className="card">
-                        <img alt="nft" src={nftIcon} />
+                        <img alt="nft" src={nftIcon}/>
                         <div>
                             <p className="collection">Liquidity Pool NFTs</p>
                             <p className="nft">ATOM-OSMO-LPNFT-654321</p>
@@ -56,10 +56,10 @@ const TransferDialog = (props) => {
                 </DialogContent>
                 : transfer === 'failed'
                     ? <DialogContent className="transfer_dialog_content failed_transfer">
-                        <img alt="success" src={failedIcon} />
+                        <img alt="success" src={failedIcon}/>
                         <h2>{variables[props.lang]['transfer_failed']}</h2>
                         <div className="card">
-                            <img alt="nft" src={nftIcon} />
+                            <img alt="nft" src={nftIcon}/>
                             <div>
                                 <p className="collection">Liquidity Pool NFTs</p>
                                 <p className="nft">ATOM-OSMO-LPNFT-654321</p>
@@ -73,17 +73,17 @@ const TransferDialog = (props) => {
                     </DialogContent>
                     : <DialogContent className="transfer_dialog_content">
                         <h2>{variables[props.lang]['transfer_header']}</h2>
-                        <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose} />
+                        <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose}/>
                         <div className="card">
-                            <img alt="nft" src={nftIcon} />
+                            <img alt="nft" src={nftIcon}/>
                             <div>
                                 <p className="collection">Liquidity Pool NFTs</p>
                                 <p className="nft">ATOM-OSMO-LPNFT-654321</p>
                             </div>
                         </div>
                         <div className="fields">
-                            <ChainSelectField />
-                            <AddressTextField />
+                            <ChainSelectField/>
+                            <AddressTextField/>
                         </div>
                         <div className="actions">
                             <Button className="primary_button" onClick={() => handleClick('success')}>

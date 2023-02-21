@@ -12,6 +12,7 @@ import {
 const snackbar = (state = {
     open: false,
     message: '',
+    explorer: null,
 }, action) => {
     switch (action.type) {
     case VERIFY_ACCOUNT_ERROR:
@@ -26,11 +27,16 @@ const snackbar = (state = {
         return {
             open: true,
             message: action.message,
+            variant: action.variant,
+            hash: action.hash,
+            explorer: action.explorer ? action.explorer : null,
         };
     case SNACKBAR_HIDE:
         return {
             open: false,
             message: '',
+            variant: '',
+            hash: '',
         };
     default:
         return state;

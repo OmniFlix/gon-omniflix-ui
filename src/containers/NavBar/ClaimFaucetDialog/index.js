@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addFaucetBalance, fetchFaucetClaim, hideClaimFaucetDialog, setFaucetSuccess } from '../../../actions/navBar';
-import { Dialog, DialogContent, Button } from '@mui/material';
+import { Button, Dialog, DialogContent } from '@mui/material';
 import React from 'react';
 import variables from '../../../utils/variables';
 import closeIcon from '../../../assets/close.svg';
@@ -35,10 +35,10 @@ const ClaimFaucetDialog = (props) => {
             onClose={props.handleClose}>
             <DialogContent className="claim_faucet_dialog_content">
                 <h2>{variables[props.lang].faucet}</h2>
-                <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose} />
+                <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose}/>
                 <div className="card">
                     <div className="left_section">
-                        <img alt="flix" src={flixIcon} />
+                        <img alt="flix" src={flixIcon}/>
                         <div>
                             <p className="chain_name">{config.CHAIN_NAME}</p>
                             <p className="chain_id">{config.CHAIN_ID}</p>

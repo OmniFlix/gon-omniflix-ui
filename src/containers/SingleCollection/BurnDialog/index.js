@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, Dialog, DialogContent } from '@mui/material';
-import { hideBurnDialog, hideTransferDialog } from '../../../actions/collection';
+import { hideBurnDialog } from '../../../actions/collection';
 import React, { useState } from 'react';
 import successIcon from '../../../assets/success.svg';
 import variables from '../../../utils/variables';
@@ -28,7 +28,7 @@ const BurnDialog = (props) => {
             onClose={props.handleClose}>
             {burn === 'success'
                 ? <DialogContent className="transfer_dialog_content success_transfer">
-                    <img alt="success" src={successIcon} />
+                    <img alt="success" src={successIcon}/>
                     <h2>{variables[props.lang]['nft_deleted']}</h2>
                     <div className="tx_hash">
                         <p>{variables[props.lang].tx_hash}</p>
@@ -37,11 +37,11 @@ const BurnDialog = (props) => {
                                 <p>{hash}</p>
                                 <span>{hash && hash.slice(hash.length - 6, hash.length)}</span>
                             </div>
-                            <CopyButton data={hash} />
+                            <CopyButton data={hash}/>
                         </div>
                     </div>
                     <div className="card">
-                        <img alt="nft" src={nftIcon} />
+                        <img alt="nft" src={nftIcon}/>
                         <div>
                             <p className="collection">Liquidity Pool NFTs</p>
                             <p className="nft">ATOM-OSMO-LPNFT-654321</p>
@@ -55,10 +55,10 @@ const BurnDialog = (props) => {
                 </DialogContent>
                 : burn === 'failed'
                     ? <DialogContent className="transfer_dialog_content failed_transfer">
-                        <img alt="success" src={failedIcon} />
+                        <img alt="success" src={failedIcon}/>
                         <h2>{variables[props.lang]['burn_failed']}</h2>
                         <div className="card">
-                            <img alt="nft" src={nftIcon} />
+                            <img alt="nft" src={nftIcon}/>
                             <div>
                                 <p className="collection">Liquidity Pool NFTs</p>
                                 <p className="nft">ATOM-OSMO-LPNFT-654321</p>
@@ -72,9 +72,9 @@ const BurnDialog = (props) => {
                     </DialogContent>
                     : <DialogContent className="transfer_dialog_content">
                         <h2>{variables[props.lang]['agree_to_delete']}</h2>
-                        <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose} />
+                        <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose}/>
                         <div className="card">
-                            <img alt="nft" src={nftIcon} />
+                            <img alt="nft" src={nftIcon}/>
                             <div>
                                 <p className="collection">Liquidity Pool NFTs</p>
                                 <p className="nft">ATOM-OSMO-LPNFT-654321</p>
@@ -86,12 +86,12 @@ const BurnDialog = (props) => {
                                     <p>{hash}</p>
                                     <span>{hash && hash.slice(hash.length - 6, hash.length)}</span>
                                 </div>
-                                <CopyButton data={hash} />
+                                <CopyButton data={hash}/>
                             </div>
                         </div>
                         <div className="fields">
                             <p>{variables[props.lang]['enter_last_digit']}</p>
-                            <NFTIDTextField />
+                            <NFTIDTextField/>
                         </div>
                         <div className="actions">
                             <Button className="primary_button" onClick={() => handleClick('success')}>

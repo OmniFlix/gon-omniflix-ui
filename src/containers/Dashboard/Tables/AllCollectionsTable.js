@@ -9,6 +9,7 @@ import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
 import withRouter from '../../../components/WithRouter';
 import { setClearCollection } from '../../../actions/collections';
+import { fetchClassTrace } from '../../../actions/collection';
 
 const AllCollectionsTable = (props) => {
     const options = {
@@ -37,8 +38,24 @@ const AllCollectionsTable = (props) => {
 
     const handleRedirect = (event, id) => {
         props.setClearCollection();
-        const result = id.replace('/', '_');
-        props.router.navigate(`/collection/${result}`);
+        if (props.classTraceInProgress) {
+            return;
+        }
+
+        if (id.indexOf('ibc/') > -1) {
+            const updatedID = id.replace('ibc/', '');
+            if (props.classTrace && props.classTrace[updatedID] && props.classTrace[updatedID].base_class_id) {
+                props.router.navigate(`/collection/${props.classTrace[updatedID].base_class_id}`);
+            } else {
+                props.fetchClassTrace(updatedID, (result) => {
+                    if (result && result.base_class_id) {
+                        props.router.navigate(`/collection/${result.base_class_id}`);
+                    }
+                });
+            }
+        } else {
+            props.router.navigate(`/collection/${id}`);
+        }
     };
 
     const columns = [{
@@ -81,11 +98,11 @@ const AllCollectionsTable = (props) => {
                             onClick={(e) => handleRedirect(e, value.id)}>
                             {variables[props.lang].view}
                         </Button>
-                        <Button
-                            className="burn_button"
-                            onClick={() => props.router.navigate(`/create-collection/${value.id}`)}>
-                            {variables[props.lang].edit}
-                        </Button>
+                        {/* <Button */}
+                        {/*     className="burn_button" */}
+                        {/*     onClick={() => props.router.navigate(`/create-collection/${value.id}`)}> */}
+                        {/*     {variables[props.lang].edit} */}
+                        {/* </Button> */}
                     </div>
                 );
             },
@@ -113,6 +130,9 @@ const AllCollectionsTable = (props) => {
 
 AllCollectionsTable.propTypes = {
     chainValue: PropTypes.string.isRequired,
+    classTrace: PropTypes.object.isRequired,
+    classTraceInProgress: PropTypes.bool.isRequired,
+    fetchClassTrace: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     list: PropTypes.object.isRequired,
@@ -125,6 +145,8 @@ AllCollectionsTable.propTypes = {
 const stateToProps = (state) => {
     return {
         chainValue: state.dashboard.chainValue.value,
+        classTrace: state.collection.classTrace.value,
+        classTraceInProgress: state.collection.classTrace.inProgress,
         inProgress: state.collections.allCollectionSList.inProgress,
         lang: state.language,
         list: state.collections.allCollectionSList.value,
@@ -132,6 +154,7 @@ const stateToProps = (state) => {
 };
 
 const actionsToProps = {
+    fetchClassTrace,
     setClearCollection,
 };
 

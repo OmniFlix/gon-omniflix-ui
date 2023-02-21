@@ -55,8 +55,8 @@ class SingleCollection extends Component {
                                 <NFTsTable/>
                             </div>
                         </div> : <NoData/>}
-                <TransferDialog />
-                <BurnDialog />
+                <TransferDialog/>
+                <BurnDialog/>
             </div>
         );
     }
