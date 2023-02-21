@@ -565,7 +565,6 @@ ConfirmMintNFTDialog.propTypes = {
     showMessage: PropTypes.func.isRequired,
     sign: PropTypes.func.isRequired,
     signInProgress: PropTypes.bool.isRequired,
-    suffixCount: PropTypes.number.isRequired,
     transferStatus: PropTypes.bool.isRequired,
     txHashInProgress: PropTypes.bool.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
@@ -576,6 +575,7 @@ ConfirmMintNFTDialog.propTypes = {
         navigate: PropTypes.func.isRequired,
     }),
     suffix: PropTypes.object,
+    suffixCount: PropTypes.number,
 };
 
 const stateToProps = (state) => {

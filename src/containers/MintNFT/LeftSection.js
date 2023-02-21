@@ -68,11 +68,15 @@ const LeftSection = (props) => {
                         <SuffixStartTextField/>
                     </div>
                 </div>
-                <div className="row row_reverse">
+                <div className="row row_reverse description_section">
                     <div className="label_info">
                         <p className="title">{variables[props.lang]['nft_description']}</p>
                     </div>
                     <DescriptionTextField/>
+                    <p className="description_characters">
+                        {props.description && props.description.length > 0 ? props.description.length : 0} /
+                        256
+                    </p>
                 </div>
                 <div className="row">
                     <div className="label_info">
@@ -168,6 +172,7 @@ LeftSection.propTypes = {
     txHashInProgress: PropTypes.bool.isRequired,
     whiteListValue: PropTypes.array.isRequired,
     collection: PropTypes.object,
+    description: PropTypes.string,
     suffix: PropTypes.object,
     suffixCount: PropTypes.any,
 };
@@ -183,6 +188,8 @@ const stateToProps = (state) => {
         royaltyShareStatus: state.mintNFT.royaltyShare.status,
         suffix: state.mintNFT.suffix.value,
         suffixCount: state.mintNFT.suffix.count,
+
+        description: state.mintNFT.description.value,
     };
 };
 

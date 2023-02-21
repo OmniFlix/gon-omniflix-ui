@@ -88,19 +88,6 @@ const NFTsTable = (props) => {
             },
         },
     }, {
-        name: 'nft_type',
-        label: 'NFT Type',
-        options: {
-            sort: false,
-            customBodyRender: function (value) {
-                return (
-                    <div className="table_value">
-                        Native
-                    </div>
-                );
-            },
-        },
-    }, {
         name: 'actions',
         label: 'Actions',
         options: {
@@ -126,7 +113,6 @@ const NFTsTable = (props) => {
             item,
             item.id,
             item,
-            item,
         ]) : [];
 
     return (
@@ -146,10 +132,10 @@ NFTsTable.propTypes = {
     fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
-    limit: PropTypes.number.isRequired,
     showBurnDialog: PropTypes.func.isRequired,
     showTransferDialog: PropTypes.func.isRequired,
     skip: PropTypes.number.isRequired,
+    limit: PropTypes.number,
 };
 
 const stateToProps = (state) => {

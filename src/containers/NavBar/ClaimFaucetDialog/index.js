@@ -72,11 +72,6 @@ ClaimFaucetDialog.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
-    router: PropTypes.shape({
-        params: PropTypes.shape({
-            collectionID: PropTypes.string,
-        }).isRequired,
-    }).isRequired,
     setFaucetSuccess: PropTypes.func.isRequired,
 };
 

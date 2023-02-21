@@ -5,9 +5,10 @@
 }
 
 .create_collection .header > h2 {
-    font-family: 'Quantico', sans-serif;
-    font-weight: normal;
-    font-size: 30px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
     line-height: 43px;
     display: flex;
     align-items: center;
@@ -18,7 +19,7 @@
 .create_collection form {
     background: #1B1B1B;
     border-radius: 5px;
-    margin-top: 30px;
+    margin-top: 20px;
     padding: 40px;
 }
 
@@ -409,7 +410,7 @@
     line-height: 26px;
     text-align: center;
     color: #E7E7E7;
-    margin: 40px 0 40px 0;
+    margin: 0 0 40px;
 }
 
 .collection_confirm_dialog .section {
@@ -459,6 +460,7 @@
     background: #1B1B1B;
     border-radius: 5px;
     color: #FFFFFF;
+    margin-right: 20px;
 }
 
 .collection_confirm_dialog .actions > button {
@@ -478,6 +480,10 @@
     position: absolute;
     bottom: 10px;
     right: 35px;
+}
+
+.collection_content .copy_schema {
+    min-height: 100px;
 }
 
 .create_collection .collection_content .field_width {
@@ -504,4 +510,18 @@
 .collection_content .field_width .tab_switch button {
     width: 50%;
     padding: 10px 0;
+}
+
+.collection_content .row.description_section {
+    position: relative;
+}
+
+.collection_content .row .description_characters {
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+    line-height: 23px;
+    color: #696969;
 }
