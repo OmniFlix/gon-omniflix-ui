@@ -19,9 +19,10 @@ export const hideTransferDialog = () => {
     };
 };
 
-export const showBurnDialog = () => {
+export const showBurnDialog = (value) => {
     return {
         type: BURN_DIALOG_SHOW,
+        value,
     };
 };
 

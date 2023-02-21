@@ -62,16 +62,19 @@ const transferDialog = (state = {
 
 const burnDialog = (state = {
     open: false,
+    value: {},
 }, action) => {
     switch (action.type) {
     case BURN_DIALOG_SHOW:
         return {
             open: true,
+            value: action.value,
         };
 
     case BURN_DIALOG_HIDE:
         return {
             open: false,
+            value: {},
         };
 
     default:

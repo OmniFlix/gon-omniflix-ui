@@ -105,13 +105,13 @@ const NFTsTable = (props) => {
         label: 'Actions',
         options: {
             sort: false,
-            customBodyRender: function (address) {
+            customBodyRender: function (value) {
                 return (
-                    address === props.address && <div className="table_actions center_actions">
+                    (value.owner === props.address) && <div className="table_actions center_actions">
                         <Button className="primary_button" onClick={props.showTransferDialog}>
                             {variables[props.lang].transfer}
                         </Button>
-                        <Button className="burn_button" onClick={props.showBurnDialog}>
+                        <Button className="burn_button" onClick={() => props.showBurnDialog(value)}>
                             {variables[props.lang].burn}
                         </Button>
                     </div>
@@ -126,7 +126,7 @@ const NFTsTable = (props) => {
             item,
             item.id,
             item,
-            item.owner,
+            item,
         ]) : [];
 
     return (

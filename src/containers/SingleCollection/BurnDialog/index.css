@@ -14,6 +14,7 @@
     position: absolute;
     top: 20px;
     right: 30px;
+    cursor: pointer;
 }
 
 .burn_dialog .transfer_dialog_content > h2 {
@@ -113,7 +114,7 @@
     color: #FFFFFF;
 }
 
-.burn_dialog .transfer_dialog_content.success_transfer .tx_hash > p {
+.burn_dialog .transfer_dialog_content .tx_hash > p {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 500;
@@ -123,7 +124,7 @@
     color: #FFFFFF;
 }
 
-.burn_dialog .transfer_dialog_content.success_transfer .tx_hash > div {
+.burn_dialog .transfer_dialog_content .tx_hash > div {
     background: rgba(20, 20, 20, 0.9);
     border-radius: 50px;
     display: flex;
@@ -132,7 +133,7 @@
     margin: 10px 0 20px 0;
 }
 
-.burn_dialog .transfer_dialog_content.success_transfer .tx_hash .hash_text {
+.burn_dialog .transfer_dialog_content .tx_hash .hash_text {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 500;
@@ -146,7 +147,7 @@
     padding: 8px 16px;
 }
 
-.burn_dialog .transfer_dialog_content.success_transfer .tx_hash .hash_text > p {
+.burn_dialog .transfer_dialog_content .tx_hash .hash_text > p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
