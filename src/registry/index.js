@@ -15,6 +15,7 @@ import {
     MsgTransferONFT,
     MsgUpdateDenom,
 } from './omniflix_custom_ts_types/onft/v1beta1/tx';
+import { MsgTransfer } from './omniflix_custom_ts_types/gen/ibc/applications/nft_transfer/v1/tx';
 
 export const customTypes = {
     CreateDenom: {
@@ -39,7 +40,7 @@ export const customTypes = {
     },
     IBCTransferONFT: {
         typeUrl: '/ibc.applications.nft_transfer.v1.MsgTransfer',
-        type: MsgTransferONFT,
+        type: MsgTransfer,
     },
     BurnONFT: {
         typeUrl: '/OmniFlix.onft.v1beta1.MsgBurnONFT',

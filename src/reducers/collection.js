@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import {
     BURN_DIALOG_HIDE,
     BURN_DIALOG_SHOW,
+    BURN_FAIL_SET,
+    BURN_SUCCESS_SET,
     CHAIN_ID_SET,
     CLASS_TRACE_FETCH_ERROR,
     CLASS_TRACE_FETCH_IN_PROGRESS,
@@ -91,18 +93,37 @@ const transferDialog = (state = {
 
 const burnDialog = (state = {
     open: false,
+    value: {},
+    success: false,
+    fail: false,
+    hash: '',
 }, action) => {
     switch (action.type) {
     case BURN_DIALOG_SHOW:
         return {
+            ...state,
             open: true,
+            value: action.value,
         };
-
+    case BURN_SUCCESS_SET:
+        return {
+            ...state,
+            success: true,
+            hash: action.hash,
+        };
+    case BURN_FAIL_SET:
+        return {
+            ...state,
+            fail: true,
+        };
     case BURN_DIALOG_HIDE:
         return {
             open: false,
+            value: {},
+            success: false,
+            fail: false,
+            hash: '',
         };
-
     default:
         return state;
     }

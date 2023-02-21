@@ -8,6 +8,7 @@ import {
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
     TX_SIGN_ERROR,
 } from '../constants/wallet';
+import { FAUCET_CLAIM_FETCH_ERROR, FAUCET_CLAIM_FETCH_SUCCESS } from '../constants/navBar';
 
 const snackbar = (state = {
     open: false,
@@ -15,6 +16,8 @@ const snackbar = (state = {
     explorer: null,
 }, action) => {
     switch (action.type) {
+    case FAUCET_CLAIM_FETCH_ERROR:
+    case FAUCET_CLAIM_FETCH_SUCCESS:
     case VERIFY_ACCOUNT_ERROR:
     case TX_SIGN_AND_BROAD_CAST_ERROR:
     case TX_SIGN_ERROR:

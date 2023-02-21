@@ -107,4 +107,5 @@
     line-height: 18px;
     color: #EB5757;
     margin-left: 10px;
+    text-transform: capitalize;
 }

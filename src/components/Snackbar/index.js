@@ -69,12 +69,12 @@ const Snackbar = (props) => {
                 {props.hash && <div className="tx_hash">
                     <span>TxnHash</span>
                     <p>{props.hash}</p>
-                    <CopyButton data={explorer + '/txs/' + props.hash} icon={copyIcon}/>
+                    <CopyButton data={explorer + '/tx/' + props.hash} icon={copyIcon}/>
                     <img
                         alt="share"
                         height="18" src={shareIcon}
                         width="18"
-                        onClick={() => window.open(explorer + '/txs/' + props.hash)}/>
+                        onClick={() => window.open(explorer + '/tx/' + props.hash)}/>
                 </div>}
                 {(props.variant === 'success' || props.variant === 'processing') && props.progress
                     ? <div className="snackbar_linear_progress">

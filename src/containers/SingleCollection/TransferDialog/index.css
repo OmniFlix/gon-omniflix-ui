@@ -14,6 +14,7 @@
     position: absolute;
     top: 20px;
     right: 30px;
+    cursor: pointer;
 }
 
 .transfer_dialog .transfer_dialog_content > h2 {
@@ -104,6 +105,10 @@
     color: #757575;
 }
 
+.transfer_dialog .transfer_dialog_content .fields .chains_field fieldset {
+    border: unset;
+}
+
 .transfer_dialog .transfer_dialog_content .actions {
     margin-top: 20px;
 }
@@ -167,4 +172,30 @@
     width: 100px;
     height: 100px;
     margin-bottom: 20px;
+}
+
+.chains_menu_item {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #757575;
+    background: unset !important;
+    margin: 6px 10px;
+}
+
+.chains_menu_item > img {
+    margin-right: 10px;
+}
+
+.chains_menu_item:hover {
+    background-color: #33333F !important;
+    border-radius: 5px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #FFFFFF;
 }

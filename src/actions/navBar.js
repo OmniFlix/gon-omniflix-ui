@@ -102,11 +102,11 @@ const addFaucetBalanceError = (message) => {
     };
 };
 
-export const addFaucetBalance = (chain, data, cb) => (dispatch) => {
+export const addFaucetBalance = (address, cb) => (dispatch) => {
     dispatch(addFaucetBalanceInProgress());
 
-    const url = urlAddFaucet(chain);
-    Axios.post(url, data, {
+    const url = urlAddFaucet(address);
+    Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
         },

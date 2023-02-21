@@ -14,6 +14,7 @@ import failedIcon from '../../../assets/failed.svg';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import { mediaReference } from '../../../utils/ipfs';
 import NativeButton from './NativeButton';
+// import IBCButton from './IBCButton';
 
 const TransferDialog = (props) => {
     return (
@@ -109,9 +110,12 @@ const TransferDialog = (props) => {
                             <AddressTextField/>
                         </div>
                         <div className="actions">
-                            {props.chainID === 'omniflix'
-                                ? <NativeButton/>
-                                : null}
+                            {props.chainID === ''
+                                ? null
+                                : props.chainID === 'omniflix'
+                                    ? <NativeButton/>
+                                    : null}
+                            {/* : <IBCButton/>} */}
                         </div>
                     </DialogContent>}
         </Dialog>

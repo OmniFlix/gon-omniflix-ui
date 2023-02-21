@@ -15,6 +15,8 @@ const MenuProps = {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
             width: 250,
+            background: '#292935',
+            borderRadius: '10px',
         },
     },
 };
@@ -32,14 +34,11 @@ const ChainSelectField = (props) => {
                 defaultValue={true}
                 input={<OutlinedInput/>}
                 value={props.value}
-                onChange={handleChange}
-            >
-                <MenuItem disabled value="">
-                    <em>Placeholder</em>
-                </MenuItem>
+                onChange={handleChange}>
                 {list.map((item) => (
                     <MenuItem
                         key={item.value}
+                        className="chains_menu_item"
                         value={item.value}>
                         <img alt={item.value} src={item.icon}/>
                         {item.name}

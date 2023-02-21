@@ -3,16 +3,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextField from '../../../components/TextField';
 import variables from '../../../utils/variables';
-import { config } from '../../../config';
 import { decodeFromBech32 } from '../../../utils/address';
 import { setTransferAddress } from '../../../actions/collection';
+import { ChainsList } from '../../../chains';
 
 const AddressTextField = (props) => {
     const handleChange = (value) => {
         props.onChange(value);
     };
 
-    const valid = props.value && decodeFromBech32(props.value) && (props.value.indexOf(config.PREFIX) > -1);
+    const prefix = props.chainID && ChainsList[props.chainID] && ChainsList[props.chainID].PREFIX;
+    const valid = props.value && decodeFromBech32(props.value) && (props.value.indexOf(prefix) > -1);
 
     return (
         <TextField

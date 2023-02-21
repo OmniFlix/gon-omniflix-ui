@@ -3,6 +3,8 @@ import Axios from 'axios';
 import {
     BURN_DIALOG_HIDE,
     BURN_DIALOG_SHOW,
+    BURN_FAIL_SET,
+    BURN_SUCCESS_SET,
     CHAIN_ID_SET,
     CLASS_TRACE_FETCH_ERROR,
     CLASS_TRACE_FETCH_IN_PROGRESS,
@@ -44,15 +46,29 @@ export const setTransferFail = () => {
     };
 };
 
-export const showBurnDialog = () => {
+export const showBurnDialog = (value) => {
     return {
         type: BURN_DIALOG_SHOW,
+        value,
     };
 };
 
 export const hideBurnDialog = () => {
     return {
         type: BURN_DIALOG_HIDE,
+    };
+};
+
+export const setBurnSuccess = (hash) => {
+    return {
+        type: BURN_SUCCESS_SET,
+        hash,
+    };
+};
+
+export const setBurnFail = () => {
+    return {
+        type: BURN_FAIL_SET,
     };
 };
 

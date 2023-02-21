@@ -22,7 +22,8 @@ import { fetchBalance } from '../../../actions/account/BCDetails';
 import withRouter from '../../../components/WithRouter';
 import Long from 'long';
 import { fetchTimeoutHeight } from '../../../actions/account/IBCTokens';
-import { sourceChannel } from '../../../chains';
+import { ChainsList, sourceChannel } from '../../../chains';
+import { decodeFromBech32 } from '../../../utils/address';
 
 const IBCButton = (props) => {
     const handleClick = () => {
@@ -40,7 +41,7 @@ const IBCButton = (props) => {
                     token_ids: [
                         props.value && props.value.id,
                     ],
-                    recipient: props.toAddress,
+                    receiver: props.toAddress,
                     sender: props.address,
                     timeout_height: {
                         revisionNumber: revisionNumber || undefined,
@@ -157,7 +158,9 @@ const IBCButton = (props) => {
     };
 
     const inProgress = props.broadCastInProgress || props.txHashInProgress;
-    const disable = props.toAddress === '' || props.signInProgress || inProgress;
+    const prefix = props.chainID && ChainsList[props.chainID] && ChainsList[props.chainID].PREFIX;
+    const valid = props.toAddress && decodeFromBech32(props.toAddress) && (props.toAddress.indexOf(prefix) > -1);
+    const disable = props.toAddress === '' || props.signInProgress || inProgress || !valid;
 
     return (
         <Button
@@ -168,7 +171,7 @@ const IBCButton = (props) => {
                 ? variables[props.lang]['approval_pending'] + '....'
                 : inProgress
                     ? variables[props.lang].processing + '....'
-                    : variables[props.lang]['native_transfer']}
+                    : variables[props.lang]['ibc_transfer']}
         </Button>
     );
 };

@@ -111,7 +111,7 @@ const NFTsTable = (props) => {
                         <Button className="primary_button" onClick={() => props.showTransferDialog(value)}>
                             {variables[props.lang].transfer}
                         </Button>
-                        <Button className="burn_button" onClick={props.showBurnDialog}>
+                        <Button className="burn_button" onClick={() => props.showBurnDialog(value)}>
                             {variables[props.lang].burn}
                         </Button>
                     </div>
