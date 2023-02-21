@@ -32,6 +32,7 @@ const variables = {
         origin_chain: 'Origin Chain',
         transfer: 'Transfer',
         burn: 'Burn',
+        invalid_address: 'Invalid Address',
 
         create_collection: 'Create collection',
         update_collection: 'Update collection',

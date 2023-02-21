@@ -20,6 +20,7 @@ import {
 import { showMessage } from '../../../actions/snackbar';
 import { fetchBalance } from '../../../actions/account/BCDetails';
 import withRouter from '../../../components/WithRouter';
+import { decodeFromBech32 } from '../../../utils/address';
 
 const NativeButton = (props) => {
     const handleClick = () => {
@@ -82,9 +83,7 @@ const NativeButton = (props) => {
             Tx.fee.granter = granterInfo.granter;
         }
 
-        console.log('5555555', Tx, props.address);
         props.sign(Tx, props.address, (result, txBytes) => {
-            console.log('22222', result, txBytes);
             if (result) {
                 const data = {
                     tx_bytes: txBytes,
@@ -141,7 +140,8 @@ const NativeButton = (props) => {
     };
 
     const inProgress = props.broadCastInProgress || props.txHashInProgress;
-    const disable = props.toAddress === '' || inProgress;
+    const valid = props.toAddress && decodeFromBech32(props.toAddress) && (props.toAddress.indexOf(config.PREFIX) > -1);
+    const disable = props.toAddress === '' || props.signInProgress || inProgress || !valid;
 
     return (
         <Button

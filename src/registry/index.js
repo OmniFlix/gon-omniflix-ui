@@ -37,6 +37,10 @@ export const customTypes = {
         typeUrl: '/OmniFlix.onft.v1beta1.MsgTransferONFT',
         type: MsgTransferONFT,
     },
+    IBCTransferONFT: {
+        typeUrl: '/ibc.applications.nft_transfer.v1.MsgTransfer',
+        type: MsgTransferONFT,
+    },
     BurnONFT: {
         typeUrl: '/OmniFlix.onft.v1beta1.MsgBurnONFT',
         type: MsgBurnONFT,
@@ -86,6 +90,9 @@ export const customRegistry = [[
 ], [
     customTypes.TransferONFT.typeUrl,
     customTypes.TransferONFT.type,
+], [
+    customTypes.IBCTransferONFT.typeUrl,
+    customTypes.IBCTransferONFT.type,
 ], [
     customTypes.BurnONFT.typeUrl,
     customTypes.BurnONFT.type,
