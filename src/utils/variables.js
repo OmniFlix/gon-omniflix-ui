@@ -100,6 +100,8 @@ const variables = {
         enter_your: 'Enter your ',
         account_address: ' account address',
         ibc_native_transfer: 'IBC Native Transfer',
+        ibc_transfer: 'IBC Transfer',
+        native_transfer: 'Native Transfer',
         transfer_success: 'IBC Transfer fo your NFT is now successful',
         tx_hash: 'Transaction Hash',
         yay: 'Yay!',

@@ -14,17 +14,33 @@ import {
     TRANSFER_ADDRESS_SET,
     TRANSFER_DIALOG_HIDE,
     TRANSFER_DIALOG_SHOW,
+    TRANSFER_FAIL_SET,
+    TRANSFER_SUCCESS_SET,
 } from '../constants/collection';
 
-export const showTransferDialog = () => {
+export const showTransferDialog = (value) => {
     return {
         type: TRANSFER_DIALOG_SHOW,
+        value,
     };
 };
 
 export const hideTransferDialog = () => {
     return {
         type: TRANSFER_DIALOG_HIDE,
+    };
+};
+
+export const setTransferSuccess = (hash) => {
+    return {
+        type: TRANSFER_SUCCESS_SET,
+        hash,
+    };
+};
+
+export const setTransferFail = () => {
+    return {
+        type: TRANSFER_FAIL_SET,
     };
 };
 

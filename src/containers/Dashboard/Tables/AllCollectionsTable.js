@@ -26,7 +26,7 @@ const AllCollectionsTable = (props) => {
             },
         },
         responsive: 'standard',
-        serverSide: true,
+        serverSide: false,
         pagination: true,
         selectableRows: 'none',
         download: false,

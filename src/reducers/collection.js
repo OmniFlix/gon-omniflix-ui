@@ -13,6 +13,8 @@ import {
     TRANSFER_ADDRESS_SET,
     TRANSFER_DIALOG_HIDE,
     TRANSFER_DIALOG_SHOW,
+    TRANSFER_FAIL_SET,
+    TRANSFER_SUCCESS_SET,
 } from '../constants/collection';
 import { DEFAULT_LIMIT, DEFAULT_SKIP, DEFAULT_TOTAL } from '../config';
 
@@ -51,18 +53,37 @@ const collection = (state = {
 
 const transferDialog = (state = {
     open: false,
+    value: {},
+    success: false,
+    fail: false,
+    hash: '',
 }, action) => {
     switch (action.type) {
     case TRANSFER_DIALOG_SHOW:
         return {
+            ...state,
             open: true,
+            value: action.value,
         };
-
+    case TRANSFER_SUCCESS_SET:
+        return {
+            ...state,
+            success: true,
+            hash: action.hash,
+        };
+    case TRANSFER_FAIL_SET:
+        return {
+            ...state,
+            fail: true,
+        };
     case TRANSFER_DIALOG_HIDE:
         return {
             open: false,
+            value: {},
+            success: false,
+            fail: false,
+            hash: '',
         };
-
     default:
         return state;
     }
@@ -87,7 +108,7 @@ const burnDialog = (state = {
     }
 };
 
-const chainID = (state = 'OmniFlix Hub', action) => {
+const chainID = (state = 'omniflix', action) => {
     switch (action.type) {
     case CHAIN_ID_SET:
         return action.value;
