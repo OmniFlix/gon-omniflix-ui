@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, Dialog, DialogContent } from '@mui/material';
-import { hideBurnDialog, hideTransferDialog } from '../../../actions/collection';
+import { hideBurnDialog } from '../../../actions/collection';
 import React, { useState } from 'react';
 import successIcon from '../../../assets/success.svg';
 import variables from '../../../utils/variables';
