@@ -7,6 +7,7 @@ import collections from './collections';
 import dashboard from './dashboard';
 import navBar from './navBar';
 import collection from './collection';
+import mintNFT from './mintNFT';
 
 export default combineReducers({
     account,
@@ -17,4 +18,5 @@ export default combineReducers({
     dashboard,
     navBar,
     collection,
+    mintNFT,
 });

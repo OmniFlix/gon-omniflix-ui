@@ -58,3 +58,17 @@ export const schemaPropertyTypes = [{
 }, {
     name: 'textarea',
 }];
+
+export const suffixOptions = [{
+    name: 'NFT - 1',
+    value: ' - ',
+}, {
+    name: 'NFT #1',
+    value: ' #',
+}, {
+    name: 'NFT (1)',
+    value: ' ()',
+}, {
+    name: 'No Suffix',
+    value: null,
+}];

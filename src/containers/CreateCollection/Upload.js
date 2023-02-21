@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import { getAssetType } from '../../utils/strings';
-import { IPFS_URL } from '../../config';
+import { IPFS_REFERENCE_PATH } from '../../config';
 import DotsLoading from '../../components/DotsLoading';
 import variables from '../../utils/variables';
 import { showMessage } from '../../actions/snackbar';
@@ -21,7 +21,12 @@ const Upload = (props) => {
         if (selectedFiles && selectedFiles.length > 0 && selectedFiles[0]) {
             props.avatarUpload(selectedFiles[0], (res) => {
                 if (res) {
-                    const url = `${IPFS_URL}/${res.Hash}`;
+                    const url = IPFS_REFERENCE_PATH + res.Hash;
+                    if (props.handleSet) {
+                        props.handleSet(url);
+                        return;
+                    }
+
                     props.setCollectionImageUrl(url);
                 }
             });
@@ -60,6 +65,7 @@ const Upload = (props) => {
 Upload.propTypes = {
     avatarInProgress: PropTypes.bool.isRequired,
     avatarUpload: PropTypes.func.isRequired,
+    handleSet: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setCollectionImageUrl: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
