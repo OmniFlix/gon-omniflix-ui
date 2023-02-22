@@ -74,7 +74,7 @@ class NavBar extends Component {
                     {this.props.address !== '' &&
                         <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
                             <FaucetIcon/>
-                            {variables[this.props.lang]['claim_faucet']}
+                            {variables[this.props.lang].faucet}
                         </Button>}
                     <CreatePopover/>
                     <div className="connect_account">

@@ -160,6 +160,16 @@ const variables = {
         nsfw: 'NSFW (not safe for work)',
         ibc: 'IBC',
         native: 'Native',
+
+        welcome_to_gon: 'Welcome to Game of NFTs',
+        welcome_gon_content: 'Game of NFTs (GoN) is an event with public incentivized testnets and a hackathon where you can test the Interchain NFTs and build your NFT applications.',
+        connect_view_nfts: 'Connect to view NFTs',
+        connect_view_content: 'lorem ipsum dores asd sadasdj sadad asdsad sad lipsum dores',
+        create_nfts: 'Create NFTs in minutes',
+        create_nfts_content: 'lorem ipsum dores asd sadasdj sadad asdsad sad lipsum dores',
+        transfer_nfts: 'Transfer NFTs to other chains',
+        transfer_nfts_content: 'lorem ipsum dores asd sadasdj sadad asdsad sad lipsum dores asdsada sadsadasd',
+        powered_by: 'powered by',
     },
 };
 

@@ -1,6 +1,5 @@
 .navbar {
     background: rgba(20, 20, 20, 0.9);
-    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -61,7 +60,7 @@
     margin-left: 16px;
 }
 
-.navbar .right_section .connect_button {
+.app .main_content .connect_button {
     background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
     border-radius: 50px;
     font-family: 'Source Sans Pro', sans-serif;

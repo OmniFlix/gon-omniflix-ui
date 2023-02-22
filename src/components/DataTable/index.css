@@ -74,8 +74,8 @@
     cursor: pointer;
 }
 
-.data_table table tbody tr:hover {
-    background: rgba(20, 20, 20, 0.9);
+.data_table div table tbody tr:hover {
+    background: #292935 !important;
 }
 
 .data_table table tbody tr:last-child td {
