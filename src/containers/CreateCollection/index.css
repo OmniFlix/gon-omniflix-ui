@@ -60,6 +60,10 @@
     border-radius: 5px;
 }
 
+.create_collection .collection_content {
+    padding-bottom: 50px;
+}
+
 .collection_content h1 > span {
     font-family: 'Quantico', sans-serif;
     font-size: 14px;

@@ -7,7 +7,7 @@ import { config } from '../config';
 
 export const list = [{
     icon: OmniIcon,
-    name: 'OmniFlix Hub',
+    name: 'OmniFlix',
     value: 'omniflix',
 }, {
     icon: StargazeIcon,

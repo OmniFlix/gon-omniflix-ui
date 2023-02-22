@@ -19,6 +19,7 @@ import {
     TRANSFER_SUCCESS_SET,
 } from '../constants/collection';
 import { DEFAULT_LIMIT, DEFAULT_SKIP, DEFAULT_TOTAL } from '../config';
+import { CLEAR_COLLECTION_SET } from '../constants/collections';
 
 const collection = (state = {
     inProgress: false,
@@ -47,6 +48,11 @@ const collection = (state = {
         return {
             ...state,
             inProgress: false,
+        };
+    case CLEAR_COLLECTION_SET:
+        return {
+            ...state,
+            value: {},
         };
     default:
         return state;

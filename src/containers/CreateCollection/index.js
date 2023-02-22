@@ -70,7 +70,7 @@ class CreateCollection extends Component {
                 (!this.props.collection.preview_uri ? this.props.imageUrl === '' : this.props.imageUrl === this.props.collection.preview_uri)));
 
         return (
-            <div className="create_collection scroll_bar">
+            <div className="create_collection">
                 <div className="header">
                     {this.props.router && this.props.router.params && this.props.router.params.collectionID
                         ? <h2>{variables[this.props.lang]['update_collection']}</h2>
