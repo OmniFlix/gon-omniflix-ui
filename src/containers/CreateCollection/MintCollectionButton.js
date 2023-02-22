@@ -112,7 +112,7 @@ const MintCollectionButton = (props) => {
                             props.fetchTxHash(res1.txhash, (hashResult) => {
                                 if (hashResult) {
                                     if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                        props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
+                                        props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
                                         props.setTxHashInProgressFalse();
                                         clearInterval(time);
 
@@ -133,7 +133,7 @@ const MintCollectionButton = (props) => {
                                 counter++;
                                 if (counter === 3) {
                                     if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                        props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
+                                        props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
                                         props.setTxHashInProgressFalse();
                                         clearInterval(time);
 

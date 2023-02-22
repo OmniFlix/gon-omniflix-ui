@@ -27,7 +27,7 @@ export const ChainsList = {
 };
 
 export const sourceChannel = {
-    iris: 'channel-19',
+    iris: 'channel-24',
     uptick: 'channel-20',
     stargaze: 'channel-17',
     juno: 'channel-18',
