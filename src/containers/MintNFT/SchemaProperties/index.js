@@ -70,8 +70,8 @@ SchemaProperties.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        schemaValues: state.createAssets.nft.schemaValues.value,
-        valid: state.createAssets.nft.schemaValues.valid,
+        schemaValues: state.mintNFT.schemaValues.value,
+        valid: state.mintNFT.schemaValues.valid,
     };
 };
 
