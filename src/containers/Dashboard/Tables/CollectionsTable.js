@@ -25,6 +25,12 @@ const CollectionsTable = (props) => {
                 titleAria: 'Show/Hide Table Columns',
             },
         },
+        onRowClick: (rowData, rowState) => {
+            const rowIndex = rowState.rowIndex;
+            const id = list && list.value[rowIndex] &&
+                list.value[rowIndex].id;
+            handleRedirect('', id);
+        },
         responsive: 'standard',
         serverSide: false,
         pagination: true,
