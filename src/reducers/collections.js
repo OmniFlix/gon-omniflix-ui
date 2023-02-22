@@ -21,13 +21,11 @@ import {
     CREATE_COLLECTION_NAME_SET,
     CREATE_COLLECTION_SYMBOL_SET,
     JSON_TAB_SWITCH_SET,
-    SCHEMA_FETCH_ERROR,
-    SCHEMA_FETCH_IN_PROGRESS,
-    SCHEMA_FETCH_SUCCESS,
     SCHEMA_SET,
     UPDATE_COLLECTION_SET,
 } from '../constants/collections';
 import { TX_HASH_IN_PROGRESS_FALSE_SET } from '../constants/wallet';
+import { schemaList } from '../utils/defaultOptions';
 
 const collectionSList = (state = {
     inProgress: false,
@@ -229,26 +227,10 @@ const tabSwitch = (state = 'code', action) => {
 
 const schemas = (state = {
     inProgress: false,
-    list: [],
+    list: schemaList,
     value: null,
 }, action) => {
     switch (action.type) {
-    case SCHEMA_FETCH_IN_PROGRESS:
-        return {
-            ...state,
-            inProgress: true,
-        };
-    case SCHEMA_FETCH_SUCCESS:
-        return {
-            ...state,
-            inProgress: false,
-            list: action.value,
-        };
-    case SCHEMA_FETCH_ERROR:
-        return {
-            ...state,
-            inProgress: false,
-        };
     case SCHEMA_SET:
         return {
             ...state,

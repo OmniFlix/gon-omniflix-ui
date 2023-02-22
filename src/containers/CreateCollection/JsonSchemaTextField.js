@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import TextField from '../../components/TextField';
 import variables from '../../utils/variables';
@@ -8,16 +8,9 @@ import { Button, InputAdornment } from '@mui/material';
 import { customSchema, noSchema } from '../../utils/defaultOptions';
 import AddSchemaProperties from './AddSchemaProperties';
 import CopyButton from '../../components/CopyButton';
-import { fetchSchema, setCollectionJsonSchema, setJsonTabSwitch, setSchema } from '../../actions/collections';
+import { setCollectionJsonSchema, setJsonTabSwitch, setSchema } from '../../actions/collections';
 
 const JsonSchemaTextField = (props) => {
-    const {
-        fetchSchema,
-    } = props;
-    useEffect(() => {
-        fetchSchema();
-    }, [fetchSchema]);
-
     const handleChange = (value) => {
         props.onChange(value, true);
     };
@@ -92,7 +85,6 @@ const JsonSchemaTextField = (props) => {
 };
 
 JsonSchemaTextField.propTypes = {
-    fetchSchema: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     schemas: PropTypes.array.isRequired,
     schemasInProgress: PropTypes.bool.isRequired,
@@ -119,7 +111,6 @@ const stateToProps = (state) => {
 
 const actionsToProps = {
     onChange: setCollectionJsonSchema,
-    fetchSchema,
     setSchema,
     setJsonTabSwitch,
 };

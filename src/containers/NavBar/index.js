@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { ReactComponent as FaucetIcon } from '../../assets/navBar/faucet.svg';
-// import { ReactComponent as CreateIcon } from '../../assets/navBar/create.svg';
 import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import ConnectButton from './ConnectButton';
@@ -15,6 +14,7 @@ import Tabs from './Tabs';
 import CreatePopover from './CreatePopover';
 import { showClaimFaucetDialog } from '../../actions/navBar';
 import ClaimFaucetDialog from './ClaimFaucetDialog';
+import { setEmptyValue } from '../../actions/account';
 
 class NavBar extends Component {
     componentDidMount () {
@@ -31,8 +31,8 @@ class NavBar extends Component {
 
         window.addEventListener('keplr_keystorechange', () => {
             this.props.setDisconnect();
+            this.props.setEmptyValue();
             this.initKeplr();
-            localStorage.removeItem('acToken_gon_of');
             localStorage.removeItem('gon_of_address');
         });
     }
@@ -97,6 +97,7 @@ NavBar.propTypes = {
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setDisconnect: PropTypes.func.isRequired,
+    setEmptyValue: PropTypes.func.isRequired,
     showClaimFaucetDialog: PropTypes.func.isRequired,
 };
 
@@ -113,6 +114,7 @@ const actionToProps = {
     fetchBalance,
     initializeChain,
     setDisconnect,
+    setEmptyValue,
     showClaimFaucetDialog,
 };
 

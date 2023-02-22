@@ -8,7 +8,7 @@ import CollectionsTable from './Tables/CollectionsTable';
 import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
 import { fetchAllCollections, fetchCollections } from '../../actions/collections';
-import { DEFAULT_SKIP } from '../../constants/url';
+import { DEFAULT_SKIP } from '../../config';
 import withRouter from '../../components/WithRouter';
 import AllCollectionsTable from './Tables/AllCollectionsTable';
 

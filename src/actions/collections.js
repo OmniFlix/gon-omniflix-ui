@@ -20,16 +20,13 @@ import {
     CREATE_COLLECTION_NAME_SET,
     CREATE_COLLECTION_SYMBOL_SET,
     JSON_TAB_SWITCH_SET,
-    SCHEMA_FETCH_ERROR,
-    SCHEMA_FETCH_IN_PROGRESS,
-    SCHEMA_FETCH_SUCCESS,
     SCHEMA_SET,
     SCHEMA_VALUES_SET,
     UPDATE_COLLECTION_SET,
 } from '../constants/collections';
 import Axios from 'axios';
 import { urlFetchAllCollections, urlFetchCollections } from '../chains/collections';
-import { AVATAR_UPLOAD_URL, SCHEMA_LIST_URL, urlFetchCollectionInfo } from '../constants/url';
+import { AVATAR_UPLOAD_URL, urlFetchCollectionInfo } from '../constants/url';
 
 export const setCollectionName = (value) => {
     return {
@@ -153,50 +150,6 @@ export const fetchCollections = (chain, address, skip, limit, cb) => (dispatch) 
             if (cb) {
                 cb(null);
             }
-        });
-};
-
-const fetchSchemaInProgress = () => {
-    return {
-        type: SCHEMA_FETCH_IN_PROGRESS,
-    };
-};
-
-const fetchSchemaSuccess = (value) => {
-    return {
-        type: SCHEMA_FETCH_SUCCESS,
-        value,
-    };
-};
-
-const fetchSchemaError = (message) => {
-    return {
-        type: SCHEMA_FETCH_ERROR,
-        message,
-    };
-};
-
-export const fetchSchema = () => (dispatch) => {
-    dispatch(fetchSchemaInProgress());
-
-    Axios.get(SCHEMA_LIST_URL, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
-            Authorization: 'Bearer ' + localStorage.getItem('acToken_of_studio'),
-        },
-    })
-        .then((res) => {
-            dispatch(fetchSchemaSuccess(res.data && res.data.result));
-        })
-        .catch((error) => {
-            dispatch(fetchSchemaError(
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : 'Failed!',
-            ));
         });
 };
 
