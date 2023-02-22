@@ -109,7 +109,7 @@ const BurnDialog = (props) => {
 
                                         props.handleClose();
                                         props.fetchBalance(props.address);
-                                        props.fetchCollectionNFTS(denomID, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                        props.fetchCollectionNFTS(props.chainValue, denomID, DEFAULT_SKIP, DEFAULT_LIMIT);
                                         props.setBurnSuccess(res1.txhash);
                                         props.setTxHashInProgressFalse();
                                         clearInterval(time);
@@ -265,6 +265,7 @@ BurnDialog.propTypes = {
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
     burnNFT: PropTypes.object.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fail: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
@@ -291,6 +292,7 @@ BurnDialog.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        chainValue: state.dashboard.chainValue.value,
         lang: state.language,
         open: state.collection.burnDialog.open,
         burnNFT: state.collection.burnDialog.value,

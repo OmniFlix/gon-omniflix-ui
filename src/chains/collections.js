@@ -16,7 +16,7 @@ export const urlFetchCollections = (chain, address, skip, limit) => {
         params.push(`pagination.limit=${limit}`);
     }
 
-    if (url.split('?').length) {
+    if (url.split('?').length > 1) {
         return `${url}&${params.join('&')}`;
     }
 
@@ -37,7 +37,7 @@ export const urlFetchAllCollections = (chain, skip, limit) => {
         params.push(`pagination.limit=${limit}`);
     }
 
-    if (url.split('?').length) {
+    if (url.split('?').length > 1) {
         return `${url}&${params.join('&')}`;
     }
 

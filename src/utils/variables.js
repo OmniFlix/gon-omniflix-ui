@@ -158,6 +158,8 @@ const variables = {
         confirm_mint_nft: 'Confirm Mint NFT',
         schema: 'Schema',
         nsfw: 'NSFW (not safe for work)',
+        ibc: 'IBC',
+        native: 'Native',
     },
 };
 

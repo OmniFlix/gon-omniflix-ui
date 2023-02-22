@@ -117,3 +117,19 @@
 .data_table .copy_button.copy_icon_button svg {
     fill: #828282;
 }
+
+.data_table .chain_type {
+    padding: 10px 20px;
+    background: rgba(17, 255, 212, 0.1);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #11FFD4;
+}
+
+.data_table .ibc_chain_type {
+    background: rgba(186, 255, 39, 0.1);
+    color: #BAFF27;
+}

@@ -123,7 +123,7 @@ const IBCButton = (props) => {
 
                                         props.setTransferSuccess(res1.txhash);
                                         props.fetchBalance(props.address);
-                                        props.fetchCollectionNFTS(props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                        props.fetchCollectionNFTS(props.chainValue, props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
                                         props.setTxHashInProgressFalse();
                                         clearInterval(time);
                                     }
@@ -182,6 +182,7 @@ IBCButton.propTypes = {
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
     chainID: PropTypes.string.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
@@ -214,6 +215,7 @@ const stateToProps = (state) => {
         balance: state.account.bc.balance.value,
         broadCastInProgress: state.account.wallet.broadCast.inProgress,
         chainID: state.collection.chainID,
+        chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
         lang: state.language,
         signInProgress: state.account.bc.protoBufSign.inProgress,

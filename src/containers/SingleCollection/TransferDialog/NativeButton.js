@@ -106,7 +106,7 @@ const NativeButton = (props) => {
 
                                     props.setTransferSuccess(res1.txhash);
                                     props.fetchBalance(props.address);
-                                    props.fetchCollectionNFTS(props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                    props.fetchCollectionNFTS(props.chainValue, props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
                                 }
@@ -162,6 +162,7 @@ NativeButton.propTypes = {
     allowances: PropTypes.array.isRequired,
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
@@ -192,6 +193,7 @@ const stateToProps = (state) => {
         allowances: state.account.bc.allowances.value,
         balance: state.account.bc.balance.value,
         broadCastInProgress: state.account.wallet.broadCast.inProgress,
+        chainValue: state.dashboard.chainValue.value,
         lang: state.language,
         signInProgress: state.account.bc.protoBufSign.inProgress,
         txHashInProgress: state.account.bc.txHash.inProgress,

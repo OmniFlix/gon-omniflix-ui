@@ -43,6 +43,7 @@ const collectionSList = (state = {
                 ...state,
                 inProgress: false,
                 value: {
+                    ...state.value,
                     [action.chain]: {
                         value: action.value,
                         skip: action.skip,
@@ -84,6 +85,7 @@ const allCollectionSList = (state = {
                 ...state,
                 inProgress: false,
                 value: {
+                    ...state.value,
                     [action.chain]: {
                         value: action.value,
                         skip: action.skip,
