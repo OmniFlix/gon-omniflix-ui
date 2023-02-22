@@ -3,11 +3,11 @@ import { IPFS_REFERENCE_PATH, IPFS_URL as URL } from '../config';
 export const mediaReference = (link) => {
     let IPFS_URL = localStorage.getItem('gon_of_ipfs_url');
     let hash = null;
-    if (link.includes(IPFS_REFERENCE_PATH)) {
+    if (link && link.includes(IPFS_REFERENCE_PATH)) {
         IPFS_URL = URL;
-        hash = link.replace(IPFS_REFERENCE_PATH, '');
+        hash = link && link.replace(IPFS_REFERENCE_PATH, '');
     } else {
-        const array = link.split('/');
+        const array = link && link.split('/');
         if (IPFS_URL && array && array.length && array[array.length - 2] &&
             (array[array.length - 2] === 'ipfs') && array[array.length - 1]) {
             hash = array[array.length - 1];

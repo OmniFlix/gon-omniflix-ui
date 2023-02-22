@@ -9,6 +9,7 @@ import './index.css';
 import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import { fetchCollectionNFTS, showBurnDialog, showTransferDialog } from '../../../actions/collection';
+import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
 
 const NFTsTable = (props) => {
     const options = {
@@ -29,14 +30,14 @@ const NFTsTable = (props) => {
                 return;
             }
 
-            props.fetchCollectionNFTS(props.collection.denom && props.collection.denom.id, props.limit * currentPage, props.limit);
+            props.fetchCollectionNFTS(props.chainValue, props.collection.denom && props.collection.denom.id, props.limit * currentPage, props.limit);
         },
         onChangeRowsPerPage: (numberOfRows) => {
             if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
                 return;
             }
 
-            props.fetchCollectionNFTS(props.collection.denom && props.collection.denom.id, props.skip, numberOfRows);
+            props.fetchCollectionNFTS(props.chainValue, props.collection.denom && props.collection.denom.id, props.skip, numberOfRows);
         },
         responsive: 'standard',
         serverSide: true,
@@ -55,16 +56,20 @@ const NFTsTable = (props) => {
         options: {
             sort: false,
             customBodyRender: function (value) {
+                const data = value && value.data && JSON.parse(value.data);
                 return (
                     <div className="collection_info nft_info">
                         <ImageOnLoad
                             alt="thumbnail"
-                            src={value && value.metadata && value.metadata.preview_uri
-                                ? value.metadata.preview_uri
-                                : value && value.metadata && value.metadata.media_uri}/>
+                            preview={(value && value.metadata && value.metadata.preview_uri) || ibcPreview(data)}
+                            src={(value && value.metadata && value.metadata.media_uri) || ibcMedia(data)}/>
                         <div>
-                            <p className="nft_name">{value && value.metadata && value.metadata.name}</p>
-                            <p className="table_value collection_name">{props.collection && props.collection.name}</p>
+                            <p className="nft_name">
+                                {(value && value.metadata && value.metadata.name) || ibcName(data)}
+                            </p>
+                            <p className="table_value collection_name">
+                                {props.collection && props.collection.name}
+                            </p>
                         </div>
                     </div>
                 );
@@ -107,7 +112,11 @@ const NFTsTable = (props) => {
         },
     }];
 
-    const list = props.collection && props.collection.onfts;
+    let list = props.collection && props.collection.onfts;
+    if (props.chainValue === 'iris') {
+        list = props.collection && props.collection.nfts;
+    }
+
     const tableData = list && list.length
         ? list.map((item, index) => [
             item,
@@ -128,6 +137,7 @@ const NFTsTable = (props) => {
 
 NFTsTable.propTypes = {
     address: PropTypes.string.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
@@ -141,6 +151,7 @@ NFTsTable.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
         inProgress: state.collection.collection.inProgress,
         skip: state.collection.collection.skip,

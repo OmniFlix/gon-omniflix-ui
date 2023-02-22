@@ -15,6 +15,7 @@ import DotsLoading from '../../components/DotsLoading';
 import { setTabValue } from '../../actions/dashboard';
 import TransferDialog from './TransferDialog';
 import BurnDialog from './BurnDialog';
+import { ibcName, ibcSymbol } from '../../utils/ibcData';
 
 class SingleCollection extends Component {
     constructor (props) {
@@ -25,7 +26,8 @@ class SingleCollection extends Component {
 
     componentDidMount () {
         if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.inProgress) {
-            this.props.fetchCollectionNFTS(this.props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
+            const updatedID = this.props.router.params.id.replace('_', '/');
+            this.props.fetchCollectionNFTS(this.props.chainValue, updatedID, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
@@ -35,6 +37,9 @@ class SingleCollection extends Component {
     }
 
     render () {
+        let data = this.props.collection && this.props.collection.denom && this.props.collection.denom.data;
+        data = data && JSON.parse(data);
+
         return (
             <div className="home single_collection scroll_bar">
                 <div className="breadcrumb">
@@ -43,7 +48,8 @@ class SingleCollection extends Component {
                     {this.props.inProgress
                         ? <DotsLoading/>
                         : this.props.collection && this.props.collection.denom
-                            ? <div>{this.props.collection.denom.symbol}</div> : null}
+                            ? <div>{this.props.collection.denom.symbol || (data && ibcSymbol(data)) || (data && ibcName(data))}</div>
+                            : null}
                 </div>
                 {this.props.inProgress
                     ? <CircularProgress/>
@@ -63,6 +69,7 @@ class SingleCollection extends Component {
 
 SingleCollection.propTypes = {
     address: PropTypes.string.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
@@ -80,6 +87,7 @@ SingleCollection.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
         inProgress: state.collection.collection.inProgress,
         lang: state.language,

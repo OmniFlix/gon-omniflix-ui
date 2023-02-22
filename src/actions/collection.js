@@ -1,4 +1,5 @@
-import { urlFetchClassTrace, urlFetchCollectionNFTS } from '../constants/url';
+import { urlFetchClassTrace } from '../chains/classTrace';
+import { urlFetchCollectionNFTS } from '../chains/nfts';
 import Axios from 'axios';
 import {
     BURN_DIALOG_HIDE,
@@ -117,10 +118,10 @@ const fetchCollectionNFTSError = (message) => {
     };
 };
 
-export const fetchCollectionNFTS = (id, address, skip, limit, cb) => (dispatch) => {
+export const fetchCollectionNFTS = (chain, id, skip, limit, cb) => (dispatch) => {
     dispatch(fetchCollectionNFTSInProgress());
 
-    const url = urlFetchCollectionNFTS(id, address, skip, limit);
+    const url = urlFetchCollectionNFTS(chain, id, skip, limit);
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
@@ -169,10 +170,10 @@ const fetchClassTraceError = (message) => {
     };
 };
 
-export const fetchClassTrace = (hash, cb) => (dispatch) => {
+export const fetchClassTrace = (chain, hash, cb) => (dispatch) => {
     dispatch(fetchClassTraceInProgress());
 
-    const url = urlFetchClassTrace(hash);
+    const url = urlFetchClassTrace(chain, hash);
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',

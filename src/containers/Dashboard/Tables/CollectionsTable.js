@@ -9,7 +9,8 @@ import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
 import withRouter from '../../../components/WithRouter';
 import { setClearCollection } from '../../../actions/collections';
-import { fetchClassTrace } from '../../../actions/collection';
+import CopyButton from '../../../components/CopyButton';
+import { ibcName, ibcPreview } from '../../../utils/ibcData';
 
 const CollectionsTable = (props) => {
     const options = {
@@ -44,24 +45,8 @@ const CollectionsTable = (props) => {
 
     const handleRedirect = (event, id) => {
         props.setClearCollection();
-        if (props.classTraceInProgress) {
-            return;
-        }
-
-        if (id.indexOf('ibc/') > -1) {
-            const updatedID = id.replace('ibc/', '');
-            if (props.classTrace && props.classTrace[updatedID] && props.classTrace[updatedID].base_class_id) {
-                props.router.navigate(`/collection/${props.classTrace[updatedID].base_class_id}`);
-            } else {
-                props.fetchClassTrace(updatedID, (result) => {
-                    if (result && result.base_class_id) {
-                        props.router.navigate(`/collection/${result.base_class_id}`);
-                    }
-                });
-            }
-        } else {
-            props.router.navigate(`/collection/${id}`);
-        }
+        const updatedID = id.replace('/', '_');
+        props.router.navigate(`/collection/${updatedID}`);
     };
 
     const columns = [{
@@ -70,24 +55,49 @@ const CollectionsTable = (props) => {
         options: {
             sort: false,
             customBodyRender: function (value) {
+                const data = value && value.data && JSON.parse(value.data);
                 return (
                     <div className="collection_info">
-                        <ImageOnLoad alt="thumbnail" src={value.preview_uri}/>
-                        <div className="table_value collection_name">{value.name}</div>
+                        <ImageOnLoad alt="thumbnail" src={(value.preview_uri) || ibcPreview(data)}/>
+                        <div className="table_value collection_name">
+                            {(value.name) || ibcName(data)}
+                        </div>
                     </div>
                 );
             },
         },
     }, {
-        name: 'collection_symbol',
-        label: 'Collection Symbol',
+        name: 'id',
+        label: 'Collection ID',
         options: {
             sort: false,
-            customBodyRender: function (value) {
+            customBodyRender: function (address) {
                 return (
-                    <div className="collection_data">
-                        <div className="table_value collection_name">{value.symbol}</div>
+                    <div className="nft_id">
+                        <div className="hash_text">
+                            <p>{address}</p>
+                            <span>{address && address.slice(address.length - 6, address.length)}</span>
+                        </div>
+                        <CopyButton data={address}/>
                     </div>
+                );
+            },
+        },
+    }, {
+        name: 'chain_type',
+        label: 'Chain Type',
+        options: {
+            sort: false,
+            customBodyRender: function (id) {
+                const ID = id && id.split('ibc/');
+                return (
+                    ID && ID.length > 1
+                        ? <div className="chain_type ibc_chain_type">
+                            {variables[props.lang].ibc}
+                        </div>
+                        : <div className="chain_type native_chain_type">
+                            {variables[props.lang].native}
+                        </div>
                 );
             },
         },
@@ -119,7 +129,8 @@ const CollectionsTable = (props) => {
     const tableData = list && list.value && list.value.length
         ? list.value.map((item, index) => [
             item,
-            item,
+            item.id,
+            item.id,
             item,
         ]) : [];
 
@@ -136,9 +147,6 @@ const CollectionsTable = (props) => {
 
 CollectionsTable.propTypes = {
     chainValue: PropTypes.string.isRequired,
-    classTrace: PropTypes.object.isRequired,
-    classTraceInProgress: PropTypes.bool.isRequired,
-    fetchClassTrace: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     list: PropTypes.object.isRequired,
@@ -151,8 +159,6 @@ CollectionsTable.propTypes = {
 const stateToProps = (state) => {
     return {
         chainValue: state.dashboard.chainValue.value,
-        classTrace: state.collection.classTrace.value,
-        classTraceInProgress: state.collection.classTrace.inProgress,
         inProgress: state.collections.collectionSList.inProgress,
         lang: state.language,
         list: state.collections.collectionSList.value,
@@ -160,7 +166,6 @@ const stateToProps = (state) => {
 };
 
 const actionsToProps = {
-    fetchClassTrace,
     setClearCollection,
 };
 

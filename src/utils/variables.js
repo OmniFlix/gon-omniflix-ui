@@ -158,6 +158,8 @@ const variables = {
         confirm_mint_nft: 'Confirm Mint NFT',
         schema: 'Schema',
         nsfw: 'NSFW (not safe for work)',
+        ibc: 'IBC',
+        native: 'Native',
 
         welcome_to_gon: 'Welcome to Game of NFTs',
         welcome_gon_content: 'Game of NFTs (GoN) is an event with public incentivized testnets and a hackathon where you can test the Interchain NFTs and build your NFT applications.',

@@ -4,18 +4,24 @@ import variables from '../../utils/variables';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import ImageOnLoad from '../../components/ImageOnLoad';
+import { ibcDescription, ibcName, ibcPreview } from '../../utils/ibcData';
 
 const Info = (props) => {
+    let data = props.collection && props.collection.denom && props.collection.denom.data;
+    data = data && JSON.parse(data);
+
     return (
         <div className="collection_section">
             <div className="section1">
                 <ImageOnLoad
                     alt="thumb"
-                    src={props.collection && props.collection.denom && props.collection.denom.preview_uri}/>
+                    src={(props.collection && props.collection.denom && props.collection.denom.preview_uri) ||
+                        (data && ibcPreview(data))}/>
             </div>
             <div className="section2">
                 <div className="row1">
-                    <p>{props.collection && props.collection.denom && props.collection.denom.name}</p>
+                    <p>{(props.collection && props.collection.denom && props.collection.denom.name) ||
+                        (data && ibcName(data))}</p>
                     <div className="row2">
                         <span>{variables[props.lang]['created_by']}</span>
                         <div className="hash_text">
@@ -26,7 +32,8 @@ const Info = (props) => {
                     </div>
                 </div>
                 <div className="row3">
-                    {props.collection && props.collection.denom && props.collection.denom.description}
+                    {(props.collection && props.collection.denom && props.collection.denom.description) ||
+                        (data && ibcDescription(data))}
                 </div>
             </div>
         </div>
