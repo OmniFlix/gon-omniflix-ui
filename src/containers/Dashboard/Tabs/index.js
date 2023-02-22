@@ -6,7 +6,7 @@ import './index.css';
 import { setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
-import { DEFAULT_SKIP } from '../../../constants/url';
+import { DEFAULT_SKIP } from '../../../config';
 
 class HeaderTabs extends Component {
     constructor (props) {

@@ -20,7 +20,7 @@ const ConnectedAccount = (props) => {
         <>
             <div className="connected_account">
                 <div>
-                    {props.balanceInProgress || props.connectInProgress
+                    {props.balanceInProgress
                         ? <DotsLoading/>
                         : balance
                             ? <p className="tokens">
@@ -50,7 +50,6 @@ ConnectedAccount.propTypes = {
     address: PropTypes.string.isRequired,
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
-    connectInProgress: PropTypes.bool.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     setDisconnect: PropTypes.func.isRequired,
@@ -61,7 +60,6 @@ const stateToProps = (state) => {
         address: state.account.wallet.connection.address,
         balance: state.account.bc.balance.value,
         balanceInProgress: state.account.bc.balance.inProgress,
-        connectInProgress: state.account.connect,
         inProgress: state.account.wallet.connection.inProgress,
         lang: state.language,
     };
