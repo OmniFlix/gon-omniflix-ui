@@ -444,12 +444,14 @@ export const fetchTxHash = (hash, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            if (res.data && res.data.code !== undefined && res.data.code !== 0) {
-                dispatch(fetchTxHashError(res.data.logs || res.data.raw_log));
-                cb(res.data);
+            if (res.data && res.data.tx_response && (res.data.tx_response.code !== undefined) && (res.data.tx_response.code !== 0)) {
+                dispatch(fetchTxHashError(res.data.tx_response.logs && res.data.tx_response.logs.length
+                    ? res.data.tx_response.logs
+                    : res.data.tx_response.raw_log));
+                cb(res.data && res.data.tx_response);
             } else {
                 dispatch(fetchTxHashSuccess('success', hash));
-                cb(res.data);
+                cb(res.data && res.data.tx_response);
             }
         })
         .catch((error) => {

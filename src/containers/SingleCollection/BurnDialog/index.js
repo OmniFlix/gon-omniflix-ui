@@ -99,7 +99,7 @@ const BurnDialog = (props) => {
                                 props.fetchTxHash(res1.txhash, (hashResult) => {
                                     if (hashResult) {
                                         if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                            props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
+                                            props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
                                             props.setTxHashInProgressFalse();
                                             props.setBurnFail();
                                             clearInterval(time);
@@ -118,7 +118,7 @@ const BurnDialog = (props) => {
                                     counter++;
                                     if (counter === 3) {
                                         if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                            props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
+                                            props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
                                             props.setTxHashInProgressFalse();
                                             props.setBurnFail();
                                             clearInterval(time);

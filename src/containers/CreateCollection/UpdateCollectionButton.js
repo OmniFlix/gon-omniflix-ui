@@ -129,7 +129,7 @@ const UpdateCollectionButton = (props) => {
                                     counter++;
                                     if (counter === 3) {
                                         if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                            props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
+                                            props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
                                             props.setTxHashInProgressFalse();
                                             clearInterval(time);
 
