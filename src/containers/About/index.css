@@ -1,0 +1,121 @@
+.about_page {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    overflow-x: unset;
+}
+
+.about_page .row1 {
+    display: flex;
+    align-items: center;
+    padding: 60px 10%;
+}
+
+.about_page .row1 .left_section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-right: 50px;
+    flex: 1;
+}
+
+.about_page .row1 .left_section > h2 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 73px;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-align: left;
+    padding-right: 100px;
+}
+
+.about_page .row1 .left_section > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 150%;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.about_page .row1 .left_section > button {
+    margin-top: 40px;
+    padding: 16px 30px;
+    height: unset;
+}
+
+.about_page .row1 .right_section {
+    width: 30%;
+}
+
+.about_page .row1 .right_section > img {
+    width: 100%;
+}
+
+.about_page .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10% 40px;
+}
+
+.about_page .row .section {
+    width: 32%;
+}
+
+.about_page .row .section > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.about_page .row .section > div img {
+    margin-right: 15px;
+}
+
+.about_page .row .section h3 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 29px;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.about_page .row .section p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.about_page .footer {
+    background: #151516;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.about_page .footer > p {
+    font-family:  'Sarabun', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    color: #9A9AFF;
+    margin-right: 30px;
+}
+
+.about_page .footer > img {
+
+}
