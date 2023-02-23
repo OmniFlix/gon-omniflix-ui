@@ -11,6 +11,7 @@ import { fetchAllCollections, fetchCollections } from '../../actions/collections
 import { DEFAULT_SKIP } from '../../config';
 import withRouter from '../../components/WithRouter';
 import AllCollectionsTable from './Tables/AllCollectionsTable';
+import { setTabValue } from '../../actions/dashboard';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -75,6 +76,7 @@ Dashboard.propTypes = {
     fetchCollections: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
+    setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
@@ -98,6 +100,7 @@ const stateToProps = (state) => {
 const actionsToProps = {
     fetchCollections,
     fetchAllCollections,
+    setTabValue,
 };
 
 export default withRouter(connect(stateToProps, actionsToProps)(Dashboard));

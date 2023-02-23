@@ -13,7 +13,7 @@ import {
 } from '../constants/navBar';
 
 const tabValue = (state = {
-    value: 'about',
+    value: 'dashboard',
 }, action) => {
     switch (action.type) {
     case NAV_TABS_SET:

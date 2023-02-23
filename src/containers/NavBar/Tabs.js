@@ -18,10 +18,11 @@ class NavTabs extends Component {
         const route = this.props.router.location && this.props.router.location.pathname &&
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
         if (route === '') {
-            this.props.setNavTabs('about');
-            this.props.router.navigate('/about');
+            this.props.router.navigate('/dashboard');
+            this.props.setNavTabs('dashboard');
         }
         if (this.props.tabValue !== route) {
+            this.props.router.navigate('/' + route);
             this.props.setNavTabs(route);
         }
     }
@@ -31,6 +32,7 @@ class NavTabs extends Component {
             const value = this.props.router.location && this.props.router.location.pathname.split('/')[1];
 
             if (value !== this.props.tabValue) {
+                this.props.router.navigate('/' + value);
                 this.props.setNavTabs(value);
             }
         }
@@ -56,13 +58,13 @@ class NavTabs extends Component {
             <AppBar className="horizontal_tabs" position="static">
                 <div className="tabs_content">
                     <Tab
-                        className={'tab ' + ((route === 'about' || route === '') ? 'active_tab' : '')}
+                        className={'tab ' + ((route === 'about') ? 'active_tab' : '')}
                         label={variables[this.props.lang].about}
                         value="about"
                         onClick={() => this.handleChange('about')}
                         {...a11yProps(0)} />
                     <Tab
-                        className={'tab ' + (route === 'dashboard' ? 'active_tab' : '')}
+                        className={'tab ' + ((route === 'dashboard' || route === '') ? 'active_tab' : '')}
                         label={variables[this.props.lang].dashboard}
                         value="dashboard"
                         onClick={() => this.handleChange('dashboard')}

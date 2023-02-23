@@ -45,7 +45,7 @@ const Router = () => {
                         )}
                         <Route
                             exact
-                            element={<About/>}
+                            element={<Dashboard/>}
                             path="*"/>
                     </Routes>
                 </div>
