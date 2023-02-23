@@ -15,14 +15,6 @@ class HeaderTabs extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount () {
-        if (this.props.address) {
-            this.props.setTabValue('my_collections');
-        } else {
-            this.props.setTabValue('all_collections');
-        }
-    }
-
     handleChange (newValue) {
         if (newValue === this.props.tabValue) {
             return;

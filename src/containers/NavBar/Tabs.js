@@ -6,6 +6,7 @@ import './index.css';
 import variables from '../../utils/variables';
 import { setNavTabs } from '../../actions/navBar';
 import withRouter from '../../components/WithRouter';
+import { setTabValue } from '../../actions/dashboard';
 
 class NavTabs extends Component {
     constructor (props) {
@@ -24,6 +25,9 @@ class NavTabs extends Component {
         if (this.props.tabValue !== route) {
             this.props.router.navigate('/' + route);
             this.props.setNavTabs(route);
+        }
+        if (localStorage.getItem('gon_of_address') && (route === 'dashboard' || route === '')) {
+            this.props.setTabValue('my_collections');
         }
     }
 
@@ -78,6 +82,7 @@ class NavTabs extends Component {
 NavTabs.propTypes = {
     lang: PropTypes.string.isRequired,
     setNavTabs: PropTypes.func.isRequired,
+    setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
@@ -96,6 +101,7 @@ const stateToProps = (state) => {
 
 const actionsToProps = {
     setNavTabs,
+    setTabValue,
 };
 
 export default withRouter(connect(stateToProps, actionsToProps)(NavTabs));
