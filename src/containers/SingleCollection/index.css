@@ -177,3 +177,15 @@
         width: 100%;
     }
 }
+
+@media (max-width: 540px) {
+    .single_collection .collection_section {
+        flex-direction: column;
+    }
+    .single_collection .collection_section .section2 {
+        margin-left: 0;
+        margin-top: 20px;
+        align-items: center;
+    }
+
+}
