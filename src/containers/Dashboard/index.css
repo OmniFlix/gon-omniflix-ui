@@ -98,3 +98,15 @@
 .home .page_section {
     margin: 0 30px 30px 30px;
 }
+
+@media (max-width: 720px) {
+    .chain_popover .list_item {
+        min-width: auto;
+    }
+
+    .chain_popover {
+        overflow-x: auto;
+
+    }
+}
+

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { aminoSignTx, initializeChain } from '../../actions/account/wallet';
 import withRouter from '../../components/WithRouter';
 import { fetchBalance } from '../../actions/account/BCDetails';
+import { setTabValue } from '../../actions/dashboard';
 
 const ConnectButton = (props) => {
     const handleClick = () => {
@@ -13,6 +14,8 @@ const ConnectButton = (props) => {
             if (address.length && address[0] && address[0].address) {
                 localStorage.setItem('gon_of_address', address[0].address);
                 props.fetchBalance(address[0].address);
+                props.router.navigate('/dashboard');
+                props.setTabValue('my_collections');
             }
         });
     };
@@ -30,6 +33,7 @@ ConnectButton.propTypes = {
     fetchBalance: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    setTabValue: PropTypes.func.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),
@@ -46,6 +50,7 @@ const actionToProps = {
     aminoSignTx,
     fetchBalance,
     initializeChain,
+    setTabValue,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(ConnectButton));

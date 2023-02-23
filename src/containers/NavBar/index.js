@@ -15,6 +15,7 @@ import CreatePopover from './CreatePopover';
 import { showClaimFaucetDialog } from '../../actions/navBar';
 import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
+import { config } from '../../config';
 
 class NavBar extends Component {
     componentDidMount () {
@@ -64,6 +65,9 @@ class NavBar extends Component {
     }
 
     render () {
+        let balance = this.props.balance && this.props.balance.length && this.props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+        balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
+
         return (
             <div className="navbar">
                 <div className="left_section">
@@ -71,7 +75,9 @@ class NavBar extends Component {
                 </div>
                 <Tabs/>
                 <div className="right_section">
-                    {this.props.address !== '' &&
+                    {(balance && balance > 0)
+                        ? null
+                        : this.props.address !== '' &&
                         <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
                             <FaucetIcon/>
                             {variables[this.props.lang].faucet}

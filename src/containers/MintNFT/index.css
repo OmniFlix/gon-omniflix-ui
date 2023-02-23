@@ -413,7 +413,7 @@
 .send_many .section .left_section {
     background: #1B1B1B;
     border-radius: 5px;
-    padding: 20px;
+    padding: 40px;
     flex: 1;
     margin-right: 20px;
 }
@@ -498,7 +498,7 @@
 
 .send_many .upload_avatar .select_field_parent:last-child {
     width: max-content;
-    margin-right: 20px;
+    margin-right: 1px;
 }
 
 .send_many .file_upload > button {
