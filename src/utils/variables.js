@@ -34,8 +34,8 @@ const variables = {
         burn: 'Burn',
         invalid_address: 'Invalid Address',
 
-        create_collection: 'Create collection',
-        update_collection: 'Update collection',
+        create_collection: 'Create Collection',
+        update_collection: 'Update Collection',
         create_nft: 'Create NFT',
         created_by: 'Created by',
 
