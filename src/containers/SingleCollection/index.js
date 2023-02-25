@@ -41,7 +41,7 @@ class SingleCollection extends Component {
 
     handleClick () {
         this.props.setTabValue(this.props.tabValue);
-        this.props.router.navigate('/dashboard');
+        this.props.router.navigate('/' + this.props.chainValue + '/dashboard');
     }
 
     render () {

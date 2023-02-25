@@ -17,9 +17,10 @@ class NavTabs extends Component {
 
     componentDidMount () {
         const route = this.props.router.location && this.props.router.location.pathname &&
-            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
+            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[2];
+
         if (route === '') {
-            this.props.router.navigate('/dashboard');
+            this.props.router.navigate('/' + this.props.chainValue + '/dashboard');
             this.props.setNavTabs('dashboard');
         }
         if (this.props.tabValue !== route) {
@@ -33,7 +34,11 @@ class NavTabs extends Component {
 
     handleChange (newValue) {
         this.props.setNavTabs(newValue);
-        this.props.router.navigate('/' + newValue);
+        if (newValue === 'about') {
+            this.props.router.navigate('/' + newValue);
+        } else {
+            this.props.router.navigate('/' + this.props.chainValue + '/' + newValue);
+        }
     }
 
     render () {
@@ -45,13 +50,15 @@ class NavTabs extends Component {
         };
 
         const route = this.props.router.location && this.props.router.location.pathname &&
+            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[2];
+        const routeAbout = this.props.router.location && this.props.router.location.pathname &&
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
         return (
             <AppBar className="horizontal_tabs" position="static">
                 <div className="tabs_content">
                     <Tab
-                        className={'tab ' + ((route === 'about') ? 'active_tab' : '')}
+                        className={'tab ' + ((routeAbout === 'about') ? 'active_tab' : '')}
                         label={variables[this.props.lang].about}
                         value="about"
                         onClick={() => this.handleChange('about')}
@@ -69,6 +76,7 @@ class NavTabs extends Component {
 }
 
 NavTabs.propTypes = {
+    chainValue: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setNavTabs: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
@@ -85,6 +93,7 @@ const stateToProps = (state) => {
     return {
         lang: state.language,
         tabValue: state.navBar.tabValue.value,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 

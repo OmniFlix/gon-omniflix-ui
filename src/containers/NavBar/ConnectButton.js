@@ -14,7 +14,7 @@ const ConnectButton = (props) => {
             if (address.length && address[0] && address[0].address) {
                 localStorage.setItem('gon_of_address', address[0].address);
                 props.fetchBalance(address[0].address);
-                props.router.navigate('/dashboard');
+                props.router.navigate('/' + props.chainValue + '/dashboard');
                 props.setTabValue('my_collections');
             }
         });
@@ -30,6 +30,7 @@ const ConnectButton = (props) => {
 ConnectButton.propTypes = {
     address: PropTypes.string.isRequired,
     aminoSignTx: PropTypes.func.isRequired,
+    chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -43,6 +44,7 @@ const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
         lang: state.language,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 

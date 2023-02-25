@@ -47,7 +47,7 @@ const CollectionsTable = (props) => {
     const handleRedirect = (event, id) => {
         props.setClearCollection();
         const updatedID = id.replace('/', '_');
-        props.router.navigate(`/collection/${updatedID}`);
+        props.router.navigate(`/${props.chainValue}/collection/${updatedID}`);
     };
 
     const columns = [{

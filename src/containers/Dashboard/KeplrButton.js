@@ -31,7 +31,7 @@ const KeplrButton = (props) => {
 
                 props.aminoSignTx(tx, address[0].address, (result) => {
                     if (result) {
-                        props.router.navigate('/dashboard');
+                        props.router.navigate('/' + props.chainValue + '/dashboard');
                     }
                 });
             }
@@ -53,6 +53,7 @@ const KeplrButton = (props) => {
 KeplrButton.propTypes = {
     address: PropTypes.string.isRequired,
     aminoSignTx: PropTypes.func.isRequired,
+    chainValue: PropTypes.string.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     router: PropTypes.shape({
@@ -64,6 +65,7 @@ const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
         lang: state.language,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 

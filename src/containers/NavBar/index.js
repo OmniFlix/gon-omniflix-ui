@@ -17,6 +17,7 @@ import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
 import { config } from '../../config';
 import { setRpcClient } from '../../actions/query';
+import withRouter from '../../components/WithRouter';
 
 class NavBar extends Component {
     componentDidMount () {
@@ -76,7 +77,7 @@ class NavBar extends Component {
         return (
             <div className="navbar">
                 <div className="left_section">
-                    <Logo/>
+                    <Logo onClick={() => this.props.router.navigate('/about')}/>
                 </div>
                 <Tabs/>
                 <div className="right_section">
@@ -113,6 +114,9 @@ NavBar.propTypes = {
     setEmptyValue: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
     showClaimFaucetDialog: PropTypes.func.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -135,4 +139,4 @@ const actionToProps = {
     showClaimFaucetDialog,
 };
 
-export default connect(stateToProps, actionToProps)(NavBar);
+export default withRouter(connect(stateToProps, actionToProps)(NavBar));

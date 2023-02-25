@@ -48,7 +48,7 @@ const AllCollectionsTable = (props) => {
         event && event.stopPropagation();
         props.setClearCollection();
         const updatedID = id.replaceAll('/', '_');
-        props.router.navigate(`/collection/${updatedID}`);
+        props.router.navigate(`/${props.chainValue}/collection/${updatedID}`);
     };
 
     const columns = [{

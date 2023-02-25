@@ -13,19 +13,19 @@ const routes = [{
     path: '/about',
     component: About,
 }, {
-    path: '/dashboard',
+    path: '/:chain/dashboard',
     component: Dashboard,
 }, {
-    path: '/collection/:id',
+    path: '/:chain/collection/:id',
     component: SingleCollection,
 }, {
-    path: '/create-collection',
+    path: '/:chain/create-collection',
     component: CreateCollection,
 }, {
-    path: '/create-collection/:collectionID',
+    path: '/:chain/create-collection/:collectionID',
     component: CreateCollection,
 }, {
-    path: '/mint',
+    path: '/:chain/mint',
     component: MintNFT,
 }];
 
