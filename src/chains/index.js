@@ -47,6 +47,12 @@ export const ChainsList = {
         COIN_DECIMALS: 18,
         PREFIX: 'uptick',
         EXPLORER: 'https://explorer.testnet.uptick.network/uptick-network-testnet',
+        CHANNELS: {
+            omniflix: 'channel-25',
+            iris: 'channel-24',
+            stargaze: 'channel-21',
+            juno: 'channel-22',
+        },
         QueryClientImpl: IrisQueryClientImpl,
         service: 'uptick.collection.v1.Query',
     },
