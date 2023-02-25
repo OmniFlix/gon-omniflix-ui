@@ -45,10 +45,12 @@ const fetchFaucetClaimInProgress = () => {
     };
 };
 
-const fetchFaucetClaimSuccess = (value) => {
+const fetchFaucetClaimSuccess = (value, message) => {
     return {
         type: FAUCET_CLAIM_FETCH_SUCCESS,
         value,
+        message,
+        variant: 'success',
     };
 };
 
@@ -69,7 +71,7 @@ export const fetchFaucetClaim = (address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchFaucetClaimSuccess(res.data));
+            dispatch(fetchFaucetClaimSuccess(res.data, 'success'));
         })
         .catch((error) => {
             dispatch(fetchFaucetClaimError(
@@ -88,9 +90,11 @@ const addFaucetBalanceInProgress = () => {
     };
 };
 
-const addFaucetBalanceSuccess = () => {
+const addFaucetBalanceSuccess = (message) => {
     return {
         type: FAUCET_BALANCE_ADD_SUCCESS,
+        message,
+        variant: 'success',
     };
 };
 
@@ -112,7 +116,7 @@ export const addFaucetBalance = (address, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(addFaucetBalanceSuccess());
+            dispatch(addFaucetBalanceSuccess('Success'));
             cb(null);
         })
         .catch((error) => {
