@@ -25,8 +25,8 @@ import {
     UPDATE_COLLECTION_SET,
 } from '../constants/collections';
 import Axios from 'axios';
-import { urlFetchAllCollections, urlFetchCollections } from '../chains/collections';
 import { AVATAR_UPLOAD_URL, urlFetchCollectionInfo } from '../constants/url';
+import { ChainsList } from '../chains';
 
 export const setCollectionName = (value) => {
     return {
@@ -105,14 +105,11 @@ const fetchCollectionsInProgress = () => {
     };
 };
 
-const fetchCollectionsSuccess = (value, chain, skip, limit, total) => {
+const fetchCollectionsSuccess = (value, chain) => {
     return {
         type: COLLECTIONS_FETCH_SUCCESS,
         value,
         chain,
-        skip,
-        limit,
-        total,
     };
 };
 
@@ -123,23 +120,35 @@ const fetchCollectionsError = (message) => {
     };
 };
 
-export const fetchCollections = (chain, address, skip, limit, cb) => (dispatch) => {
+export const fetchCollections = (rpcClient, chain, address, cb) => (dispatch) => {
     dispatch(fetchCollectionsInProgress());
 
-    const url = urlFetchCollections(chain, address, skip, limit);
-    Axios.get(url, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchCollectionsSuccess(res.data && res.data.denoms, chain, skip, limit,
-                res.data && res.data.pagination && res.data.pagination.total));
+    const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
+    const client = rpcClient && rpcClient[chain];
+    if (!QueryClientImpl) {
+        dispatch(fetchCollectionsError('Failed!'));
+        return;
+    }
+
+    (async () => {
+        const queryService = new QueryClientImpl(client);
+        let request = null;
+
+        if (chain === 'iris') {
+            return;
+        } else {
+            request = {
+                owner: address,
+                pagination: undefined,
+            };
+        }
+
+        queryService.Denoms(request).then((queryResult) => {
+            dispatch(fetchCollectionsSuccess(queryResult && queryResult.denoms, chain));
             if (cb) {
-                cb(res.data && res.data.denoms, res.data && res.data.pagination && res.data.pagination.total);
+                cb(queryResult && queryResult.denoms);
             }
-        })
-        .catch((error) => {
+        }).catch((error) => {
             dispatch(fetchCollectionsError(
                 error.response &&
                 error.response.data &&
@@ -151,6 +160,7 @@ export const fetchCollections = (chain, address, skip, limit, cb) => (dispatch) 
                 cb(null);
             }
         });
+    })();
 };
 
 export const setSchema = (value) => {
@@ -274,14 +284,11 @@ const fetchAllCollectionsInProgress = () => {
     };
 };
 
-const fetchAllCollectionsSuccess = (value, chain, skip, limit, total) => {
+const fetchAllCollectionsSuccess = (value, chain) => {
     return {
         type: ALL_COLLECTIONS_FETCH_SUCCESS,
         value,
         chain,
-        skip,
-        limit,
-        total,
     };
 };
 
@@ -292,23 +299,37 @@ const fetchAllCollectionsError = (message) => {
     };
 };
 
-export const fetchAllCollections = (chain, skip, limit, cb) => (dispatch) => {
+export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
     dispatch(fetchAllCollectionsInProgress());
 
-    const url = urlFetchAllCollections(chain, skip, limit);
-    Axios.get(url, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchAllCollectionsSuccess(res.data && res.data.denoms, chain, skip, limit,
-                res.data && res.data.pagination && res.data.pagination.total));
+    const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
+    const client = rpcClient && rpcClient[chain];
+    if (!QueryClientImpl) {
+        dispatch(fetchAllCollectionsError('Failed!'));
+        return;
+    }
+
+    (async () => {
+        const queryService = new QueryClientImpl(client);
+        let request = null;
+
+        if (chain === 'iris') {
+            request = {
+                pagination: undefined,
+            };
+        } else {
+            request = {
+                owner: '',
+                pagination: undefined,
+            };
+        }
+
+        queryService.Denoms(request).then((queryResult) => {
+            dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain));
             if (cb) {
-                cb(res.data && res.data.denoms, res.data && res.data.pagination && res.data.pagination.total);
+                cb(queryResult && queryResult.denoms);
             }
-        })
-        .catch((error) => {
+        }).catch((error) => {
             dispatch(fetchAllCollectionsError(
                 error.response &&
                 error.response.data &&
@@ -320,4 +341,5 @@ export const fetchAllCollections = (chain, skip, limit, cb) => (dispatch) => {
                 cb(null);
             }
         });
+    })();
 };

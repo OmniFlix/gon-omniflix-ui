@@ -4,7 +4,8 @@ import variables from '../../utils/variables';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import ImageOnLoad from '../../components/ImageOnLoad';
-import { ibcDescription, ibcName, ibcPreview } from '../../utils/ibcData';
+import { ibcDescription, ibcName, ibcPreview, ibcSymbol } from '../../utils/ibcData';
+import { mediaReference } from '../../utils/ipfs';
 
 const Info = (props) => {
     let data = props.collection && props.collection.denom && props.collection.denom.data;
@@ -15,13 +16,19 @@ const Info = (props) => {
             <div className="section1">
                 <ImageOnLoad
                     alt="thumb"
-                    src={(props.collection && props.collection.denom && props.collection.denom.preview_uri) ||
+                    src={(props.collection && props.collection.denom && props.collection.denom.previewUri &&
+                            mediaReference(props.collection.denom.previewUri)) ||
+                        (props.collection && props.collection.denom && props.collection.denom.uri &&
+                            mediaReference(props.collection.denom.uri)) ||
+                        (props.collection && props.collection.denom && props.collection.denom.uriHash &&
+                            mediaReference(props.collection.denom.uriHash)) ||
                         (data && ibcPreview(data))}/>
             </div>
             <div className="section2">
                 <div className="row1">
                     <p>{(props.collection && props.collection.denom && props.collection.denom.name) ||
-                        (data && ibcName(data))}</p>
+                        (props.collection && props.collection.denom && props.collection.denom.symbol) ||
+                        (data && ibcName(data)) || (data && ibcSymbol(data))}</p>
                     <div className="row2">
                         <span>{variables[props.lang]['created_by']}</span>
                         <div className="hash_text">

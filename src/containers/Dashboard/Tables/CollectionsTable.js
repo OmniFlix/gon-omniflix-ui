@@ -11,6 +11,7 @@ import withRouter from '../../../components/WithRouter';
 import { setClearCollection } from '../../../actions/collections';
 import CopyButton from '../../../components/CopyButton';
 import { ibcName, ibcPreview } from '../../../utils/ibcData';
+import { mediaReference } from '../../../utils/ipfs';
 
 const CollectionsTable = (props) => {
     const options = {
@@ -58,9 +59,14 @@ const CollectionsTable = (props) => {
                 const data = value && value.data && JSON.parse(value.data);
                 return (
                     <div className="collection_info">
-                        <ImageOnLoad alt="thumbnail" src={(value.preview_uri) || ibcPreview(data)}/>
+                        <ImageOnLoad
+                            alt="thumbnail"
+                            src={(value.previewUri && mediaReference(value.previewUri)) ||
+                                (value.uri && mediaReference(value.uri)) ||
+                                (value.uriHash && mediaReference(value.uriHash)) ||
+                                (data && ibcPreview(data))}/>
                         <div className="table_value collection_name">
-                            {(value.name) || ibcName(data)}
+                            {(value.name) || (data && ibcName(data))}
                         </div>
                     </div>
                 );

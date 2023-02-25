@@ -19,30 +19,30 @@ const About = (props) => {
                     <h2>{variables[props.lang]['welcome_to_gon']}</h2>
                     <p>{variables[props.lang]['welcome_gon_content']}</p>
                     {props.address === '' && !localStorage.getItem('gon_of_address') &&
-                   <ConnectButton />}
+                        <ConnectButton/>}
                 </div>
                 <div className="right_section">
-                    <img alt="about" src={logoIcon} />
+                    <img alt="about" src={logoIcon}/>
                 </div>
             </div>
             <div className="row">
                 <div className="section">
                     <div>
-                        <img alt="number" src={image1} />
+                        <img alt="number" src={image1}/>
                         <h3>{variables[props.lang]['connect_view_nfts']}</h3>
                     </div>
                     <p>{variables[props.lang]['connect_view_content']}</p>
                 </div>
                 <div className="section">
                     <div>
-                        <img alt="number" src={image2} />
+                        <img alt="number" src={image2}/>
                         <h3>{variables[props.lang]['create_nfts']}</h3>
                     </div>
                     <p>{variables[props.lang]['create_nfts_content']}</p>
                 </div>
                 <div className="section">
                     <div>
-                        <img alt="number" src={image3} />
+                        <img alt="number" src={image3}/>
                         <h3>{variables[props.lang]['transfer_nfts']}</h3>
                     </div>
                     <p>{variables[props.lang]['transfer_nfts_content']}</p>
@@ -50,7 +50,7 @@ const About = (props) => {
             </div>
             <div className="footer">
                 <p>{variables[props.lang].powered_by}</p>
-                <img alt="omniflix" src={omniflixIcon} />
+                <img alt="omniflix" src={omniflixIcon}/>
             </div>
         </div>
     );

@@ -9,7 +9,7 @@ import {
     setTransferSuccess,
 } from '../../../actions/collection';
 import { connect } from 'react-redux';
-import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
+import { config } from '../../../config';
 import { customTypes } from '../../../registry';
 import {
     fetchTxHash,
@@ -106,7 +106,7 @@ const NativeButton = (props) => {
 
                                     props.setTransferSuccess(res1.txhash);
                                     props.fetchBalance(props.address);
-                                    props.fetchCollectionNFTS(props.chainValue, props.router.params.id, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                    props.fetchCollectionNFTS(props.rpcClient, props.chainValue, props.router.params.id);
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
                                 }
@@ -175,6 +175,7 @@ NativeButton.propTypes = {
             id: PropTypes.string,
         }).isRequired,
     }).isRequired,
+    rpcClient: PropTypes.any.isRequired,
     setTransferFail: PropTypes.func.isRequired,
     setTransferSuccess: PropTypes.func.isRequired,
     setTxHashInProgressFalse: PropTypes.func.isRequired,
@@ -200,6 +201,7 @@ const stateToProps = (state) => {
         value: state.collection.transferDialog.value,
         collection: state.collection.collection.value,
         toAddress: state.collection.address,
+        rpcClient: state.query.rpcClient.value,
     };
 };
 

@@ -8,10 +8,10 @@ import CollectionsTable from './Tables/CollectionsTable';
 import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
 import { fetchAllCollections, fetchCollections } from '../../actions/collections';
-import { DEFAULT_SKIP } from '../../config';
 import withRouter from '../../components/WithRouter';
 import AllCollectionsTable from './Tables/AllCollectionsTable';
 import { setTabValue } from '../../actions/dashboard';
+import { setRpcClient } from '../../actions/query';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -22,17 +22,27 @@ class Dashboard extends Component {
 
     componentDidMount () {
         if (this.props.tabValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
-            !this.props.collections[this.props.chainValue] && this.props.address !== '') {
-            this.props.fetchCollections(this.props.chainValue, this.props.address, DEFAULT_SKIP, 500);
+            !this.props.collections[this.props.chainValue] && this.props.address !== '' && this.props.rpcClient &&
+            this.props.rpcClient[this.props.chainValue]) {
+            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
         } else if (this.props.tabValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
-            !this.props.allCollections[this.props.chainValue]) {
-            this.props.fetchAllCollections(this.props.chainValue, DEFAULT_SKIP, 500);
+            !this.props.allCollections[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
+            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue);
         }
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if (this.props.address !== '' && pp.address !== this.props.address) {
-            this.props.fetchCollections(this.props.chainValue, this.props.address, DEFAULT_SKIP, 500);
+        if (this.props.address !== '' && pp.address !== this.props.address && this.props.rpcClient &&
+            this.props.rpcClient[this.props.chainValue]) {
+            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
+        }
+        if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient &&
+            this.props.rpcClient[this.props.chainValue]) {
+            if (this.props.tabValue === 'all_collections') {
+                this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue);
+            } else if (this.props.tabValue === 'my_collections' && this.props.address !== '') {
+                this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
+            }
         }
     }
 
@@ -76,6 +86,9 @@ Dashboard.propTypes = {
     fetchCollections: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
+    rpcClient: PropTypes.any.isRequired,
+    rpcClientInProgress: PropTypes.bool.isRequired,
+    setRpcClient: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
     router: PropTypes.shape({
@@ -93,6 +106,8 @@ const stateToProps = (state) => {
         allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         keys: state.account.wallet.connection.keys,
         lang: state.language,
+        rpcClient: state.query.rpcClient.value,
+        rpcClientInProgress: state.query.rpcClient.inProgress,
         tabValue: state.dashboard.tabValue.value,
     };
 };
@@ -101,6 +116,7 @@ const actionsToProps = {
     fetchCollections,
     fetchAllCollections,
     setTabValue,
+    setRpcClient,
 };
 
 export default withRouter(connect(stateToProps, actionsToProps)(Dashboard));

@@ -19,7 +19,7 @@ import {
     txSignAndBroadCast,
     txSignAndBroadCastAminoSign,
 } from '../../../actions/account/wallet';
-import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
+import { config } from '../../../config';
 import { customTypes } from '../../../registry';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import { fetchBalance } from '../../../actions/account/BCDetails';
@@ -109,7 +109,7 @@ const BurnDialog = (props) => {
 
                                         props.handleClose();
                                         props.fetchBalance(props.address);
-                                        props.fetchCollectionNFTS(props.chainValue, denomID, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                        props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
                                         props.setBurnSuccess(res1.txhash);
                                         props.setTxHashInProgressFalse();
                                         clearInterval(time);
@@ -277,6 +277,7 @@ BurnDialog.propTypes = {
     lang: PropTypes.string.isRequired,
     nftID: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    rpcClient: PropTypes.any.isRequired,
     setBurnFail: PropTypes.func.isRequired,
     setBurnSuccess: PropTypes.func.isRequired,
     setTxHashInProgressFalse: PropTypes.func.isRequired,
@@ -308,6 +309,7 @@ const stateToProps = (state) => {
         broadCastInProgress: state.account.wallet.broadCast.inProgress,
         signInProgress: state.account.bc.protoBufSign.inProgress,
         txHashInProgress: state.account.bc.txHash.inProgress,
+        rpcClient: state.query.rpcClient.value,
     };
 };
 

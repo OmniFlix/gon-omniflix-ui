@@ -16,9 +16,14 @@ import { showClaimFaucetDialog } from '../../actions/navBar';
 import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
 import { config } from '../../config';
+import { setRpcClient } from '../../actions/query';
 
 class NavBar extends Component {
     componentDidMount () {
+        if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
+            this.props.setRpcClient('omniflix');
+        }
+
         if (this.props.address === '' && localStorage.getItem('gon_of_address')) {
             setTimeout(() => {
                 this.initializeKeplr();
@@ -102,8 +107,11 @@ NavBar.propTypes = {
     fetchBalance: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    rpcClient: PropTypes.any.isRequired,
+    rpcClientInProgress: PropTypes.bool.isRequired,
     setDisconnect: PropTypes.func.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
+    setRpcClient: PropTypes.func.isRequired,
     showClaimFaucetDialog: PropTypes.func.isRequired,
 };
 
@@ -113,6 +121,8 @@ const stateToProps = (state) => {
         balance: state.account.bc.balance.value,
         balanceInProgress: state.account.bc.balance.inProgress,
         lang: state.language,
+        rpcClient: state.query.rpcClient.value,
+        rpcClientInProgress: state.query.rpcClient.inProgress,
     };
 };
 
@@ -121,6 +131,7 @@ const actionToProps = {
     initializeChain,
     setDisconnect,
     setEmptyValue,
+    setRpcClient,
     showClaimFaucetDialog,
 };
 

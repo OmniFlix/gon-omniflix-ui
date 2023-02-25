@@ -18,15 +18,11 @@ import {
     TRANSFER_FAIL_SET,
     TRANSFER_SUCCESS_SET,
 } from '../constants/collection';
-import { DEFAULT_LIMIT, DEFAULT_SKIP, DEFAULT_TOTAL } from '../config';
 import { CLEAR_COLLECTION_SET } from '../constants/collections';
 
 const collection = (state = {
     inProgress: false,
     value: {},
-    skip: DEFAULT_SKIP,
-    limit: DEFAULT_LIMIT,
-    total: DEFAULT_TOTAL,
 }, action) => {
     switch (action.type) {
     case COLLECTION_NFT_S_FETCH_IN_PROGRESS:
@@ -39,9 +35,6 @@ const collection = (state = {
             ...state,
             inProgress: false,
             value: action.value,
-            skip: action.skip,
-            limit: action.limit,
-            total: action.total,
         };
     }
     case COLLECTION_NFT_S_FETCH_ERROR:
