@@ -8,7 +8,7 @@ import variables from '../../../utils/variables';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import './index.css';
 import withRouter from '../../../components/WithRouter';
-import { setClearCollection } from '../../../actions/collections';
+import { fetchAllCollections, setClearCollection } from '../../../actions/collections';
 import CopyButton from '../../../components/CopyButton';
 import { ibcName, ibcPreview } from '../../../utils/ibcData';
 import { mediaReference } from '../../../utils/ipfs';
@@ -33,8 +33,22 @@ const AllCollectionsTable = (props) => {
                 list.value[rowIndex].id;
             handleRedirect('', id);
         },
+        onChangePage: (currentPage) => {
+            if (props.chainValue && !props.list[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
+                return;
+            }
+
+            props.fetchAllCollections(props.rpcClient, props.chainValue, props.limit * currentPage, props.limit);
+        },
+        onChangeRowsPerPage: (numberOfRows) => {
+            if (props.chainValue && !props.list[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
+                return;
+            }
+
+            props.fetchAllCollections(props.rpcClient, props.chainValue, props.skip, numberOfRows);
+        },
         responsive: 'standard',
-        serverSide: false,
+        serverSide: true,
         pagination: true,
         selectableRows: 'none',
         download: false,
@@ -161,13 +175,19 @@ const AllCollectionsTable = (props) => {
 
 AllCollectionsTable.propTypes = {
     chainValue: PropTypes.string.isRequired,
+    fetchAllCollections: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    limit: PropTypes.number.isRequired,
     list: PropTypes.object.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }).isRequired,
+    rpcClient: PropTypes.any.isRequired,
+    rpcClientInProgress: PropTypes.bool.isRequired,
     setClearCollection: PropTypes.func.isRequired,
+    skip: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -176,11 +196,19 @@ const stateToProps = (state) => {
         inProgress: state.collections.allCollectionSList.inProgress,
         lang: state.language,
         list: state.collections.allCollectionSList.value,
+
+        total: state.collections.allCollectionSList.total,
+        skip: state.collections.allCollectionSList.skip,
+        limit: state.collections.allCollectionSList.limit,
+
+        rpcClient: state.query.rpcClient.value,
+        rpcClientInProgress: state.query.rpcClient.inProgress,
     };
 };
 
 const actionsToProps = {
     setClearCollection,
+    fetchAllCollections,
 };
 
 export default withRouter(connect(stateToProps, actionsToProps)(AllCollectionsTable));

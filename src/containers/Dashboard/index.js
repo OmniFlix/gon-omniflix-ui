@@ -27,7 +27,7 @@ class Dashboard extends Component {
             this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
         } else if (this.props.tabValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
-            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue);
+            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, 0, 10);
         }
     }
 
@@ -39,7 +39,7 @@ class Dashboard extends Component {
         if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient &&
             this.props.rpcClient[this.props.chainValue]) {
             if (this.props.tabValue === 'all_collections') {
-                this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue);
+                this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, 0, 10);
             } else if (this.props.tabValue === 'my_collections' && this.props.address !== '') {
                 this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
             }

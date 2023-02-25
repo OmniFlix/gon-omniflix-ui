@@ -26,6 +26,7 @@ import {
 } from '../constants/collections';
 import { TX_HASH_IN_PROGRESS_FALSE_SET } from '../constants/wallet';
 import { schemaList } from '../utils/defaultOptions';
+import { DEFAULT_TOTAL } from '../config';
 
 const collectionSList = (state = {
     inProgress: false,
@@ -85,6 +86,9 @@ const allCollectionSList = (state = {
                     ...state.value,
                     [action.chain]: {
                         value: action.value,
+                        skip: action.skip,
+                        limit: action.limit,
+                        total: action.total,
                     },
                 },
             };
