@@ -41,7 +41,7 @@ class SingleCollection extends Component {
 
     handleClick () {
         this.props.setTabValue(this.props.tabValue);
-        this.props.router.navigate('/dashboard');
+        this.props.router.navigate('/' + this.props.chainValue + '/dashboard');
     }
 
     render () {
@@ -88,6 +88,7 @@ SingleCollection.propTypes = {
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
+            chain: PropTypes.string,
             id: PropTypes.string,
         }).isRequired,
     }).isRequired,

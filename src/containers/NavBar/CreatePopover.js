@@ -38,12 +38,12 @@ const CreatePopover = (props) => {
 
     const handleShowUploadDialog = () => {
         // props.showUploadFilesDialog();
-        props.router.navigate('/mint');
+        props.router.navigate('/' + props.chainValue + '/mint');
         setOpen(false);
     };
 
     const handleNFTCollection = () => {
-        props.router.navigate('/create-collection');
+        props.router.navigate('/' + props.chainValue + '/create-collection');
         setOpen(false);
     };
 
@@ -84,6 +84,7 @@ const CreatePopover = (props) => {
 };
 
 CreatePopover.propTypes = {
+    chainValue: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
     showUploadFilesDialog: PropTypes.func.isRequired,
@@ -95,6 +96,7 @@ CreatePopover.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 

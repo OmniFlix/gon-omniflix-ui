@@ -17,11 +17,20 @@ import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
 import { config } from '../../config';
 import { setRpcClient } from '../../actions/query';
+import withRouter from '../../components/WithRouter';
+import { setChainValue } from '../../actions/dashboard';
 
 class NavBar extends Component {
     componentDidMount () {
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
-            this.props.setRpcClient('omniflix');
+            const route = this.props.router.location && this.props.router.location.pathname &&
+                this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
+            if (route === 'iris' || route === 'uptick' || route === 'stargaze' || route === 'juno') {
+                this.props.setChainValue(route);
+                this.props.setRpcClient(route);
+            } else {
+                this.props.setRpcClient('omniflix');
+            }
         }
 
         if (this.props.address === '' && localStorage.getItem('gon_of_address')) {
@@ -76,7 +85,7 @@ class NavBar extends Component {
         return (
             <div className="navbar">
                 <div className="left_section">
-                    <Logo/>
+                    <Logo onClick={() => this.props.router.navigate('/about')}/>
                 </div>
                 <Tabs/>
                 <div className="right_section">
@@ -109,10 +118,17 @@ NavBar.propTypes = {
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
+    setChainValue: PropTypes.func.isRequired,
     setDisconnect: PropTypes.func.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
     showClaimFaucetDialog: PropTypes.func.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -129,10 +145,11 @@ const stateToProps = (state) => {
 const actionToProps = {
     fetchBalance,
     initializeChain,
+    setChainValue,
     setDisconnect,
     setEmptyValue,
     setRpcClient,
     showClaimFaucetDialog,
 };
 
-export default connect(stateToProps, actionToProps)(NavBar);
+export default withRouter(connect(stateToProps, actionToProps)(NavBar));

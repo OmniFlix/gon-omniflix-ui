@@ -53,7 +53,7 @@ const Upload = (props) => {
                             onChange={(e) =>
                                 handleFileChange(e.target.files)
                             }/>
-                        {props.match && props.match.params && props.match.params.collectionID && props.imageUrl
+                        {props.router && props.router.params && props.router.params.collectionID && props.imageUrl
                             ? variables[props.lang]['re_upload_file']
                             : variables[props.lang]['upload_file']}
                     </Button>
@@ -70,7 +70,7 @@ Upload.propTypes = {
     showMessage: PropTypes.func.isRequired,
     handleSet: PropTypes.func,
     imageUrl: PropTypes.any,
-    match: PropTypes.shape({
+    router: PropTypes.shape({
         params: PropTypes.shape({
             collectionID: PropTypes.string.isRequired,
         }),

@@ -47,7 +47,7 @@ class Dashboard extends Component {
     }
 
     handleCreateCollection () {
-        this.props.router.navigate('/create-collection');
+        this.props.router.navigate('/' + this.props.chainValue + '/create-collection');
     }
 
     render () {
