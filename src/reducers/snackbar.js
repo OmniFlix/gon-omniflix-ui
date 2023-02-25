@@ -7,6 +7,7 @@ import {
     TX_SIGN_ERROR,
 } from '../constants/wallet';
 import { FAUCET_BALANCE_ADD_SUCCESS, FAUCET_CLAIM_FETCH_ERROR, FAUCET_CLAIM_FETCH_SUCCESS } from '../constants/navBar';
+import { TIMEOUT_HEIGHT_FETCH_ERROR } from '../constants/IBCTokens';
 
 const snackbar = (state = {
     open: false,
@@ -22,6 +23,7 @@ const snackbar = (state = {
     case TX_SIGN_AND_BROAD_CAST_SUCCESS:
     case TX_HASH_FETCH_SUCCESS:
     case CONNECT_KEPLR_ACCOUNT_ERROR:
+    case TIMEOUT_HEIGHT_FETCH_ERROR:
     case MESSAGE_SHOW:
         return {
             open: true,

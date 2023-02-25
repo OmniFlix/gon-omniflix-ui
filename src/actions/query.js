@@ -30,6 +30,7 @@ export const setRpcClient = (chain, cb) => (dispatch) => {
     dispatch(rpcClientInProgress());
     const RPC_URL = ChainsList[chain] && ChainsList[chain].RPC_URL;
     if (!RPC_URL) {
+        dispatch(rpcClientError('Failed!'));
         return;
     }
 

@@ -55,6 +55,7 @@ const collection = (state = {
 const transferDialog = (state = {
     open: false,
     value: {},
+    chain: 'omniflix',
     success: false,
     fail: false,
     hash: '',
@@ -65,6 +66,7 @@ const transferDialog = (state = {
             ...state,
             open: true,
             value: action.value,
+            chain: action.chain,
         };
     case TRANSFER_SUCCESS_SET:
         return {
@@ -81,6 +83,7 @@ const transferDialog = (state = {
         return {
             open: false,
             value: {},
+            chain: 'omniflix',
             success: false,
             fail: false,
             hash: '',
