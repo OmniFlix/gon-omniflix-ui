@@ -11,6 +11,9 @@ import ImageOnLoad from '../../../components/ImageOnLoad';
 import { fetchCollectionNFTS, showBurnDialog, showTransferDialog } from '../../../actions/collection';
 import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
 import { mediaReference } from '../../../utils/ipfs';
+import { config } from '../../../config';
+import { bech32 } from 'bech32';
+import withRouter from '../../../components/WithRouter';
 
 const NFTsTable = (props) => {
     const options = {
@@ -51,12 +54,12 @@ const NFTsTable = (props) => {
                             preview={(value && value.metadata && value.metadata.previewUri && mediaReference(value.metadata.previewUri)) ||
                                 (value && value.metadata && value.metadata.uri && mediaReference(value.metadata.uri)) ||
                                 (value && value.metadata && value.metadata.uriHash && mediaReference(value.metadata.uriHash)) ||
-                                ibcPreview(data)}
+                                (data && ibcPreview(data))}
                             src={(value && value.metadata && value.metadata.mediaUri &&
-                                mediaReference(value.metadata.mediaUri)) || ibcMedia(data)}/>
+                                mediaReference(value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                         <div>
                             <p className="nft_name">
-                                {(value && value.metadata && value.metadata.name) || ibcName(data)}
+                                {(value && value.metadata && value.metadata.name) || (data && ibcName(data))}
                             </p>
                             <p className="table_value collection_name">
                                 {props.collection && props.collection.name}
@@ -89,14 +92,21 @@ const NFTsTable = (props) => {
         options: {
             sort: false,
             customBodyRender: function (value) {
+                const address = value.owner && bech32.decode(value.owner);
+                const convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+
                 return (
-                    value.owner === props.address && <div className="table_actions center_actions">
-                        <Button className="primary_button" onClick={() => props.showTransferDialog(value)}>
+                    convertedAddress === props.address && <div className="table_actions center_actions">
+                        <Button
+                            className="primary_button"
+                            onClick={() => props.showTransferDialog(value, props.router && props.router.params && props.router.params.chain)}>
                             {variables[props.lang].transfer}
                         </Button>
-                        <Button className="burn_button" onClick={() => props.showBurnDialog(value)}>
-                            {variables[props.lang].burn}
-                        </Button>
+                        {props.router && props.router.params && props.router.params.chain &&
+                        props.router.params.chain === 'omniflix'
+                            ? <Button className="burn_button" onClick={() => props.showBurnDialog(value)}>
+                                {variables[props.lang].burn}
+                            </Button> : null}
                     </div>
                 );
             },
@@ -133,6 +143,11 @@ NFTsTable.propTypes = {
     fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        params: PropTypes.shape({
+            chain: PropTypes.string,
+        }).isRequired,
+    }).isRequired,
     rpcClient: PropTypes.any.isRequired,
     showBurnDialog: PropTypes.func.isRequired,
     showTransferDialog: PropTypes.func.isRequired,
@@ -155,4 +170,4 @@ const actionToProps = {
     showTransferDialog,
 };
 
-export default connect(stateToProps, actionToProps)(NFTsTable);
+export default withRouter(connect(stateToProps, actionToProps)(NFTsTable));

@@ -131,10 +131,14 @@ export const fetchCollections = (rpcClient, chain, address, cb) => (dispatch) =>
     }
 
     (async () => {
-        const queryService = new QueryClientImpl(client);
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+
         let request = null;
 
-        if (chain === 'iris') {
+        if (chain === 'iris' || chain === 'uptick') {
             return;
         } else {
             request = {
@@ -310,10 +314,14 @@ export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
     }
 
     (async () => {
-        const queryService = new QueryClientImpl(client);
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+
         let request = null;
 
-        if (chain === 'iris') {
+        if (chain === 'iris' || chain === 'uptick') {
             request = {
                 pagination: undefined,
             };
@@ -324,12 +332,15 @@ export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
             };
         }
 
+        console.log('1111111', request, queryService, chain, QueryClientImpl);
         queryService.Denoms(request).then((queryResult) => {
+            console.log('55555', queryResult);
             dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain));
             if (cb) {
                 cb(queryResult && queryResult.denoms);
             }
         }).catch((error) => {
+            console.log('222222', error);
             dispatch(fetchAllCollectionsError(
                 error.response &&
                 error.response.data &&

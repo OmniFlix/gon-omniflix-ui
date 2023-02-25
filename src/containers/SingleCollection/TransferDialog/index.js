@@ -15,8 +15,11 @@ import ImageOnLoad from '../../../components/ImageOnLoad';
 import { mediaReference } from '../../../utils/ipfs';
 import NativeButton from './NativeButton';
 import IBCButton from './IBCButton';
+import { ibcMedia, ibcPreview } from '../../../utils/ibcData';
 
 const TransferDialog = (props) => {
+    const data = props.value && props.value.data && JSON.parse(props.value.data);
+
     return (
         <Dialog
             aria-describedby="verify-twitter-dialog-description"
@@ -41,10 +44,12 @@ const TransferDialog = (props) => {
                     <div className="card">
                         <ImageOnLoad
                             alt="nft"
-                            preview={props.value && props.value.metadata && props.value.metadata.preview_uri &&
-                                mediaReference(props.value.metadata.preview_uri)}
-                            src={props.value && props.value.metadata && props.value.metadata.media_uri &&
-                                mediaReference(props.value.metadata.media_uri)}/>
+                            preview={(props.value && props.value.metadata && props.value.metadata.previewUri && mediaReference(props.value.metadata.previewUri)) ||
+                                (props.value && props.value.metadata && props.value.metadata.uri && mediaReference(props.value.metadata.uri)) ||
+                                (props.value && props.value.metadata && props.value.metadata.uriHash && mediaReference(props.value.metadata.uriHash)) ||
+                                (data && ibcPreview(data))}
+                            src={(props.value && props.value.metadata && props.value.metadata.mediaUri &&
+                                mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                         <div>
                             <p className="collection">
                                 {props.collection && props.collection.denom && props.collection.denom.name}
@@ -67,10 +72,12 @@ const TransferDialog = (props) => {
                         <div className="card">
                             <ImageOnLoad
                                 alt="nft"
-                                preview={props.value && props.value.metadata && props.value.metadata.preview_uri &&
-                                    mediaReference(props.value.metadata.preview_uri)}
-                                src={props.value && props.value.metadata && props.value.metadata.media_uri &&
-                                    mediaReference(props.value.metadata.media_uri)}/>
+                                preview={(props.value && props.value.metadata && props.value.metadata.previewUri && mediaReference(props.value.metadata.previewUri)) ||
+                                    (props.value && props.value.metadata && props.value.metadata.uri && mediaReference(props.value.metadata.uri)) ||
+                                    (props.value && props.value.metadata && props.value.metadata.uriHash && mediaReference(props.value.metadata.uriHash)) ||
+                                    (data && ibcPreview(data))}
+                                src={(props.value && props.value.metadata && props.value.metadata.mediaUri &&
+                                    mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                             <div>
                                 <p className="collection">
                                     {props.collection && props.collection.denom && props.collection.denom.name}
@@ -92,10 +99,12 @@ const TransferDialog = (props) => {
                         <div className="card">
                             <ImageOnLoad
                                 alt="nft"
-                                preview={props.value && props.value.metadata && props.value.metadata.preview_uri &&
-                                    mediaReference(props.value.metadata.preview_uri)}
-                                src={props.value && props.value.metadata && props.value.metadata.media_uri &&
-                                    mediaReference(props.value.metadata.media_uri)}/>
+                                preview={(props.value && props.value.metadata && props.value.metadata.previewUri && mediaReference(props.value.metadata.previewUri)) ||
+                                    (props.value && props.value.metadata && props.value.metadata.uri && mediaReference(props.value.metadata.uri)) ||
+                                    (props.value && props.value.metadata && props.value.metadata.uriHash && mediaReference(props.value.metadata.uriHash)) ||
+                                    (data && ibcPreview(data))}
+                                src={(props.value && props.value.metadata && props.value.metadata.mediaUri &&
+                                    mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                             <div>
                                 <p className="collection">
                                     {props.collection && props.collection.denom && props.collection.denom.name}
@@ -112,7 +121,7 @@ const TransferDialog = (props) => {
                         <div className="actions">
                             {props.chainID === ''
                                 ? null
-                                : props.chainID === 'omniflix'
+                                : props.chainID === props.chain
                                     ? <NativeButton/>
                                     : <IBCButton/>}
                         </div>
@@ -122,6 +131,7 @@ const TransferDialog = (props) => {
 };
 
 TransferDialog.propTypes = {
+    chain: PropTypes.string.isRequired,
     chainID: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fail: PropTypes.bool.isRequired,
@@ -141,6 +151,7 @@ const stateToProps = (state) => {
         lang: state.language,
         open: state.collection.transferDialog.open,
         value: state.collection.transferDialog.value,
+        chain: state.collection.transferDialog.chain,
         success: state.collection.transferDialog.success,
         collection: state.collection.collection.value,
     };
