@@ -22,10 +22,10 @@ const routes = [{
     path: '/:chain/create-collection',
     component: CreateCollection,
 }, {
-    path: '/:chain/create-collection/:collectionID',
+    path: '/create-collection/:collectionID',
     component: CreateCollection,
 }, {
-    path: '/:chain/mint',
+    path: '/mint',
     component: MintNFT,
 }];
 

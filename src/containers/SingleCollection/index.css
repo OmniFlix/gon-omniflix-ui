@@ -54,9 +54,9 @@
 }
 
 .single_collection .collection_section .section1 {
-    border-radius: 500px;
+    border-radius: 50px;
     width: 174px;
-    height: 174px;
+    /*height: 174px;*/
     display: flex;
     align-items: center;
 }
@@ -64,7 +64,7 @@
 .single_collection .collection_section .section1 img {
     width: 100%;
     height: 100%;
-    border-radius: 500px;
+    border-radius: 50px;
 }
 
 .single_collection .collection_section .section2 {

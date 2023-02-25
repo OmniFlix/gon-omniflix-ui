@@ -127,6 +127,7 @@
 
     .about_page .row1 .left_section {
         margin-right: 0;
+        align-items: center;
     }
 
     .about_page .row1 .right_section {

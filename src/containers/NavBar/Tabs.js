@@ -17,14 +17,13 @@ class NavTabs extends Component {
 
     componentDidMount () {
         const route = this.props.router.location && this.props.router.location.pathname &&
-            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[2];
+            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
-        if (route === '') {
+        if (route === '' || route === 'dashboard') {
             this.props.router.navigate('/' + this.props.chainValue + '/dashboard');
             this.props.setNavTabs('dashboard');
         }
         if (this.props.tabValue !== route) {
-            // this.props.router.navigate('/' + route);
             this.props.setNavTabs(route);
         }
         if (localStorage.getItem('gon_of_address') && (route === 'dashboard' || route === '')) {

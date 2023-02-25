@@ -88,6 +88,7 @@ SingleCollection.propTypes = {
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
+            chain: PropTypes.string,
             id: PropTypes.string,
         }).isRequired,
     }).isRequired,

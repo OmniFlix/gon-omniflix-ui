@@ -8,9 +8,11 @@ import { Button } from '@mui/material';
 import { DEFAULT_SKIP } from '../../../config';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { setRpcClient } from '../../../actions/query';
+import withRouter from '../../../components/WithRouter';
 
 const ChainPopover = (props) => {
     const handleChange = (value) => {
+        props.router.navigate(`/${value}/dashboard`);
         if (props.rpcClient && props.rpcClient[value]) {
             handleFetch(value, props.rpcClient[value]);
         } else {
@@ -66,6 +68,9 @@ ChainPopover.propTypes = {
     setRpcClient: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -89,4 +94,4 @@ const actionsToProps = {
     setTabValue,
 };
 
-export default connect(stateToProps, actionsToProps)(ChainPopover);
+export default withRouter(connect(stateToProps, actionsToProps)(ChainPopover));
