@@ -115,8 +115,11 @@ const UpdateCollectionButton = (props) => {
                                             return;
                                         }
 
-                                        props.fetch(props.chainValue, props.address, DEFAULT_SKIP, 500);
-                                        props.fetchAllCollections(props.chainValue, DEFAULT_SKIP, 500);
+                                        if (props.chainValue === 'omniflix') {
+                                            props.fetch(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, 500);
+                                        }
+
+                                        props.fetchAllCollections(props.rpcClient, props.chainValue, DEFAULT_SKIP, 500);
                                         props.setSchema(null);
                                         props.fetchBalance(props.address);
                                         props.setTxHashInProgressFalse();
@@ -184,6 +187,7 @@ UpdateCollectionButton.propTypes = {
             collectionID: PropTypes.string,
         }).isRequired,
     }).isRequired,
+    rpcClient: PropTypes.any.isRequired,
     setSchema: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     setTxHashInProgressFalse: PropTypes.func.isRequired,
@@ -213,6 +217,7 @@ const stateToProps = (state) => {
         description: state.collections.createCollection.description,
         imageUrl: state.collections.createCollection.imageUrl,
         collection: state.collections.singleCollection.value,
+        rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,
     };
 };

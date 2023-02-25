@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {configure, Reader, util, Writer} from "protobufjs/minimal";
-import Long from "long";
+import * as _m0 from "protobufjs/minimal";
 import {Coin} from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "OmniFlix.marketplace.v1beta1";
@@ -20,18 +19,11 @@ export interface WeightedAddress {
 }
 
 function createBaseListing(): Listing {
-    return {
-        id: "",
-        nftId: "",
-        denomId: "",
-        price: undefined,
-        owner: "",
-        splitShares: [],
-    };
+    return {id: "", nftId: "", denomId: "", price: undefined, owner: "", splitShares: []};
 }
 
 export const Listing = {
-    encode(message: Listing, writer: Writer = Writer.create()): Writer {
+    encode(message: Listing, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -53,8 +45,8 @@ export const Listing = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): Listing {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): Listing {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseListing();
         while (reader.pos < end) {
@@ -76,9 +68,7 @@ export const Listing = {
                     message.owner = reader.string();
                     break;
                 case 6:
-                    message.splitShares.push(
-                        WeightedAddress.decode(reader, reader.uint32())
-                    );
+                    message.splitShares.push(WeightedAddress.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -106,17 +96,18 @@ export const Listing = {
         message.id !== undefined && (obj.id = message.id);
         message.nftId !== undefined && (obj.nftId = message.nftId);
         message.denomId !== undefined && (obj.denomId = message.denomId);
-        message.price !== undefined &&
-        (obj.price = message.price ? Coin.toJSON(message.price) : undefined);
+        message.price !== undefined && (obj.price = message.price ? Coin.toJSON(message.price) : undefined);
         message.owner !== undefined && (obj.owner = message.owner);
         if (message.splitShares) {
-            obj.splitShares = message.splitShares.map((e) =>
-                e ? WeightedAddress.toJSON(e) : undefined
-            );
+            obj.splitShares = message.splitShares.map((e) => e ? WeightedAddress.toJSON(e) : undefined);
         } else {
             obj.splitShares = [];
         }
         return obj;
+    },
+
+    create<I extends Exact<DeepPartial<Listing>, I>>(base?: I): Listing {
+        return Listing.fromPartial(base ?? {});
     },
 
     fromPartial<I extends Exact<DeepPartial<Listing>, I>>(object: I): Listing {
@@ -124,13 +115,9 @@ export const Listing = {
         message.id = object.id ?? "";
         message.nftId = object.nftId ?? "";
         message.denomId = object.denomId ?? "";
-        message.price =
-            object.price !== undefined && object.price !== null
-                ? Coin.fromPartial(object.price)
-                : undefined;
+        message.price = (object.price !== undefined && object.price !== null) ? Coin.fromPartial(object.price) : undefined;
         message.owner = object.owner ?? "";
-        message.splitShares =
-            object.splitShares?.map((e) => WeightedAddress.fromPartial(e)) || [];
+        message.splitShares = object.splitShares?.map((e) => WeightedAddress.fromPartial(e)) || [];
         return message;
     },
 };
@@ -140,7 +127,7 @@ function createBaseWeightedAddress(): WeightedAddress {
 }
 
 export const WeightedAddress = {
-    encode(message: WeightedAddress, writer: Writer = Writer.create()): Writer {
+    encode(message: WeightedAddress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.address !== "") {
             writer.uint32(10).string(message.address);
         }
@@ -150,8 +137,8 @@ export const WeightedAddress = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): WeightedAddress {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): WeightedAddress {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseWeightedAddress();
         while (reader.pos < end) {
@@ -185,9 +172,11 @@ export const WeightedAddress = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<WeightedAddress>, I>>(
-        object: I
-    ): WeightedAddress {
+    create<I extends Exact<DeepPartial<WeightedAddress>, I>>(base?: I): WeightedAddress {
+        return WeightedAddress.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<WeightedAddress>, I>>(object: I): WeightedAddress {
         const message = createBaseWeightedAddress();
         message.address = object.address ?? "";
         message.weight = object.weight ?? "";
@@ -195,37 +184,16 @@ export const WeightedAddress = {
     },
 };
 
-type Builtin =
-    | Date
-    | Function
-    | Uint8Array
-    | string
-    | number
-    | boolean
-    | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-    ? T
-    : T extends Array<infer U>
-        ? Array<DeepPartial<U>>
-        : T extends ReadonlyArray<infer U>
-            ? ReadonlyArray<DeepPartial<U>>
-            : T extends {}
-                ? { [K in keyof T]?: DeepPartial<T[K]> }
-                : Partial<T>;
+export type DeepPartial<T> = T extends Builtin ? T
+    : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+        : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+            : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-    ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>,
-    never>;
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (util.Long !== Long) {
-    util.Long = Long as any;
-    configure();
-}
+export type Exact<P, I extends P> = P extends Builtin ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
     return value !== null && value !== undefined;

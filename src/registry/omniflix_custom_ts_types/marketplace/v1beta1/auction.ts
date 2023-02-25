@@ -1,8 +1,8 @@
 /* eslint-disable */
-import {configure, Reader, util, Writer} from "protobufjs/minimal";
 import Long from "long";
-import {Timestamp} from "../../google/protobuf/timestamp";
+import * as _m0 from "protobufjs/minimal";
 import {Coin} from "../../cosmos/base/v1beta1/coin";
+import {Timestamp} from "../../google/protobuf/timestamp";
 import {WeightedAddress} from "./listing";
 
 export const protobufPackage = "OmniFlix.marketplace.v1beta1";
@@ -40,8 +40,9 @@ export function auctionStatusToJSON(object: AuctionStatus): string {
             return "AUCTION_STATUS_INACTIVE";
         case AuctionStatus.AUCTION_STATUS_ACTIVE:
             return "AUCTION_STATUS_ACTIVE";
+        case AuctionStatus.UNRECOGNIZED:
         default:
-            return "UNKNOWN";
+            return "UNRECOGNIZED";
     }
 }
 
@@ -81,7 +82,7 @@ function createBaseAuctionListing(): AuctionListing {
 }
 
 export const AuctionListing = {
-    encode(message: AuctionListing, writer: Writer = Writer.create()): Writer {
+    encode(message: AuctionListing, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== 0) {
             writer.uint32(8).uint64(message.id);
         }
@@ -95,16 +96,10 @@ export const AuctionListing = {
             Coin.encode(message.startPrice, writer.uint32(34).fork()).ldelim();
         }
         if (message.startTime !== undefined) {
-            Timestamp.encode(
-                toTimestamp(message.startTime),
-                writer.uint32(42).fork()
-            ).ldelim();
+            Timestamp.encode(toTimestamp(message.startTime), writer.uint32(42).fork()).ldelim();
         }
         if (message.endTime !== undefined) {
-            Timestamp.encode(
-                toTimestamp(message.endTime),
-                writer.uint32(50).fork()
-            ).ldelim();
+            Timestamp.encode(toTimestamp(message.endTime), writer.uint32(50).fork()).ldelim();
         }
         if (message.owner !== "") {
             writer.uint32(58).string(message.owner);
@@ -121,8 +116,8 @@ export const AuctionListing = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): AuctionListing {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): AuctionListing {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseAuctionListing();
         while (reader.pos < end) {
@@ -141,14 +136,10 @@ export const AuctionListing = {
                     message.startPrice = Coin.decode(reader, reader.uint32());
                     break;
                 case 5:
-                    message.startTime = fromTimestamp(
-                        Timestamp.decode(reader, reader.uint32())
-                    );
+                    message.startTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
                 case 6:
-                    message.endTime = fromTimestamp(
-                        Timestamp.decode(reader, reader.uint32())
-                    );
+                    message.endTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
                 case 7:
                     message.owner = reader.string();
@@ -160,9 +151,7 @@ export const AuctionListing = {
                     message.whitelistAccounts.push(reader.string());
                     break;
                 case 10:
-                    message.splitShares.push(
-                        WeightedAddress.decode(reader, reader.uint32())
-                    );
+                    message.splitShares.push(WeightedAddress.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -177,19 +166,11 @@ export const AuctionListing = {
             id: isSet(object.id) ? Number(object.id) : 0,
             nftId: isSet(object.nftId) ? String(object.nftId) : "",
             denomId: isSet(object.denomId) ? String(object.denomId) : "",
-            startPrice: isSet(object.startPrice)
-                ? Coin.fromJSON(object.startPrice)
-                : undefined,
-            startTime: isSet(object.startTime)
-                ? fromJsonTimestamp(object.startTime)
-                : undefined,
-            endTime: isSet(object.endTime)
-                ? fromJsonTimestamp(object.endTime)
-                : undefined,
+            startPrice: isSet(object.startPrice) ? Coin.fromJSON(object.startPrice) : undefined,
+            startTime: isSet(object.startTime) ? fromJsonTimestamp(object.startTime) : undefined,
+            endTime: isSet(object.endTime) ? fromJsonTimestamp(object.endTime) : undefined,
             owner: isSet(object.owner) ? String(object.owner) : "",
-            incrementPercentage: isSet(object.incrementPercentage)
-                ? String(object.incrementPercentage)
-                : "",
+            incrementPercentage: isSet(object.incrementPercentage) ? String(object.incrementPercentage) : "",
             whitelistAccounts: Array.isArray(object?.whitelistAccounts)
                 ? object.whitelistAccounts.map((e: any) => String(e))
                 : [],
@@ -205,49 +186,42 @@ export const AuctionListing = {
         message.nftId !== undefined && (obj.nftId = message.nftId);
         message.denomId !== undefined && (obj.denomId = message.denomId);
         message.startPrice !== undefined &&
-        (obj.startPrice = message.startPrice
-            ? Coin.toJSON(message.startPrice)
-            : undefined);
-        message.startTime !== undefined &&
-        (obj.startTime = message.startTime.toISOString());
-        message.endTime !== undefined &&
-        (obj.endTime = message.endTime.toISOString());
+        (obj.startPrice = message.startPrice ? Coin.toJSON(message.startPrice) : undefined);
+        message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
+        message.endTime !== undefined && (obj.endTime = message.endTime.toISOString());
         message.owner !== undefined && (obj.owner = message.owner);
-        message.incrementPercentage !== undefined &&
-        (obj.incrementPercentage = message.incrementPercentage);
+        message.incrementPercentage !== undefined && (obj.incrementPercentage = message.incrementPercentage);
         if (message.whitelistAccounts) {
             obj.whitelistAccounts = message.whitelistAccounts.map((e) => e);
         } else {
             obj.whitelistAccounts = [];
         }
         if (message.splitShares) {
-            obj.splitShares = message.splitShares.map((e) =>
-                e ? WeightedAddress.toJSON(e) : undefined
-            );
+            obj.splitShares = message.splitShares.map((e) => e ? WeightedAddress.toJSON(e) : undefined);
         } else {
             obj.splitShares = [];
         }
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<AuctionListing>, I>>(
-        object: I
-    ): AuctionListing {
+    create<I extends Exact<DeepPartial<AuctionListing>, I>>(base?: I): AuctionListing {
+        return AuctionListing.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<AuctionListing>, I>>(object: I): AuctionListing {
         const message = createBaseAuctionListing();
         message.id = object.id ?? 0;
         message.nftId = object.nftId ?? "";
         message.denomId = object.denomId ?? "";
-        message.startPrice =
-            object.startPrice !== undefined && object.startPrice !== null
-                ? Coin.fromPartial(object.startPrice)
-                : undefined;
+        message.startPrice = (object.startPrice !== undefined && object.startPrice !== null)
+            ? Coin.fromPartial(object.startPrice)
+            : undefined;
         message.startTime = object.startTime ?? undefined;
         message.endTime = object.endTime ?? undefined;
         message.owner = object.owner ?? "";
         message.incrementPercentage = object.incrementPercentage ?? "";
         message.whitelistAccounts = object.whitelistAccounts?.map((e) => e) || [];
-        message.splitShares =
-            object.splitShares?.map((e) => WeightedAddress.fromPartial(e)) || [];
+        message.splitShares = object.splitShares?.map((e) => WeightedAddress.fromPartial(e)) || [];
         return message;
     },
 };
@@ -257,7 +231,7 @@ function createBaseBid(): Bid {
 }
 
 export const Bid = {
-    encode(message: Bid, writer: Writer = Writer.create()): Writer {
+    encode(message: Bid, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.auctionId !== 0) {
             writer.uint32(8).uint64(message.auctionId);
         }
@@ -268,16 +242,13 @@ export const Bid = {
             Coin.encode(message.amount, writer.uint32(26).fork()).ldelim();
         }
         if (message.time !== undefined) {
-            Timestamp.encode(
-                toTimestamp(message.time),
-                writer.uint32(34).fork()
-            ).ldelim();
+            Timestamp.encode(toTimestamp(message.time), writer.uint32(34).fork()).ldelim();
         }
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): Bid {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): Bid {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseBid();
         while (reader.pos < end) {
@@ -293,9 +264,7 @@ export const Bid = {
                     message.amount = Coin.decode(reader, reader.uint32());
                     break;
                 case 4:
-                    message.time = fromTimestamp(
-                        Timestamp.decode(reader, reader.uint32())
-                    );
+                    message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -316,23 +285,24 @@ export const Bid = {
 
     toJSON(message: Bid): unknown {
         const obj: any = {};
-        message.auctionId !== undefined &&
-        (obj.auctionId = Math.round(message.auctionId));
+        message.auctionId !== undefined && (obj.auctionId = Math.round(message.auctionId));
         message.bidder !== undefined && (obj.bidder = message.bidder);
-        message.amount !== undefined &&
-        (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
+        message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
         message.time !== undefined && (obj.time = message.time.toISOString());
         return obj;
+    },
+
+    create<I extends Exact<DeepPartial<Bid>, I>>(base?: I): Bid {
+        return Bid.fromPartial(base ?? {});
     },
 
     fromPartial<I extends Exact<DeepPartial<Bid>, I>>(object: I): Bid {
         const message = createBaseBid();
         message.auctionId = object.auctionId ?? 0;
         message.bidder = object.bidder ?? "";
-        message.amount =
-            object.amount !== undefined && object.amount !== null
-                ? Coin.fromPartial(object.amount)
-                : undefined;
+        message.amount = (object.amount !== undefined && object.amount !== null)
+            ? Coin.fromPartial(object.amount)
+            : undefined;
         message.time = object.time ?? undefined;
         return message;
     },
@@ -341,43 +311,36 @@ export const Bid = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
-    if (typeof globalThis !== "undefined") return globalThis;
-    if (typeof self !== "undefined") return self;
-    if (typeof window !== "undefined") return window;
-    if (typeof global !== "undefined") return global;
+var tsProtoGlobalThis: any = (() => {
+    if (typeof globalThis !== "undefined") {
+        return globalThis;
+    }
+    if (typeof self !== "undefined") {
+        return self;
+    }
+    if (typeof window !== "undefined") {
+        return window;
+    }
+    if (typeof global !== "undefined") {
+        return global;
+    }
     throw "Unable to locate global object";
 })();
 
-type Builtin =
-    | Date
-    | Function
-    | Uint8Array
-    | string
-    | number
-    | boolean
-    | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-    ? T
-    : T extends Array<infer U>
-        ? Array<DeepPartial<U>>
-        : T extends ReadonlyArray<infer U>
-            ? ReadonlyArray<DeepPartial<U>>
-            : T extends {}
-                ? { [K in keyof T]?: DeepPartial<T[K]> }
-                : Partial<T>;
+export type DeepPartial<T> = T extends Builtin ? T
+    : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+        : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+            : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-    ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>,
-    never>;
+export type Exact<P, I extends P> = P extends Builtin ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function toTimestamp(date: Date): Timestamp {
-    const newDate = new Date(date);
-    const seconds = newDate.getTime() / 1_000;
-    const nanos = (newDate.getTime() % 1_000) * 1_000_000;
+    const seconds = date.getTime() / 1_000;
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
     return {seconds, nanos};
 }
 
@@ -399,16 +362,16 @@ function fromJsonTimestamp(o: any): Date {
 
 function longToNumber(long: Long): number {
     if (long.gt(Number.MAX_SAFE_INTEGER)) {
-        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+        throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
     }
     return long.toNumber();
 }
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',
 // add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (util.Long !== Long) {
-    util.Long = Long as any;
-    configure();
+if (_m0.util.Long !== Long) {
+    _m0.util.Long = Long as any;
+    _m0.configure();
 }
 
 function isSet(value: any): boolean {

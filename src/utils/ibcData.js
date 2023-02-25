@@ -8,6 +8,10 @@ export const ibcName = (value) => {
     }
 
     Object.keys(value).map((key) => {
+        if (name) {
+            return name;
+        }
+
         const val = key && key.split(':name');
         if (val && val.length && val.length > 1) {
             name = value[key].value;
@@ -27,6 +31,10 @@ export const ibcSymbol = (value) => {
     }
 
     Object.keys(value).map((key) => {
+        if (symbol) {
+            return symbol;
+        }
+
         const val = key && key.split(':symbol');
         if (val && val.length && val.length > 1) {
             symbol = value[key].value;
@@ -46,6 +54,10 @@ export const ibcDescription = (value) => {
     }
 
     Object.keys(value).map((key) => {
+        if (description) {
+            return description;
+        }
+
         const val = key && key.split(':description');
         if (val && val.length && val.length > 1) {
             description = value[key].value;

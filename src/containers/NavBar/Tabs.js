@@ -23,22 +23,11 @@ class NavTabs extends Component {
             this.props.setNavTabs('dashboard');
         }
         if (this.props.tabValue !== route) {
-            this.props.router.navigate('/' + route);
+            // this.props.router.navigate('/' + route);
             this.props.setNavTabs(route);
         }
         if (localStorage.getItem('gon_of_address') && (route === 'dashboard' || route === '')) {
             this.props.setTabValue('my_collections');
-        }
-    }
-
-    componentDidUpdate (pp, ps, ss) {
-        if (pp.router.location.pathname !== (this.props.router.location && this.props.router.location.pathname)) {
-            const value = this.props.router.location && this.props.router.location.pathname.split('/')[1];
-
-            if (value !== this.props.tabValue) {
-                this.props.router.navigate('/' + value);
-                this.props.setNavTabs(value);
-            }
         }
     }
 

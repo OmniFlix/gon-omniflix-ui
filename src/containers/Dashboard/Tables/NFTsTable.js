@@ -10,6 +10,7 @@ import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import { fetchCollectionNFTS, showBurnDialog, showTransferDialog } from '../../../actions/collection';
 import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
+import { mediaReference } from '../../../utils/ipfs';
 
 const NFTsTable = (props) => {
     const options = {
@@ -25,22 +26,8 @@ const NFTsTable = (props) => {
                 titleAria: 'Show/Hide Table Columns',
             },
         },
-        onChangePage: (currentPage) => {
-            if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
-                return;
-            }
-
-            props.fetchCollectionNFTS(props.chainValue, props.collection.denom && props.collection.denom.id, props.limit * currentPage, props.limit);
-        },
-        onChangeRowsPerPage: (numberOfRows) => {
-            if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
-                return;
-            }
-
-            props.fetchCollectionNFTS(props.chainValue, props.collection.denom && props.collection.denom.id, props.skip, numberOfRows);
-        },
         responsive: 'standard',
-        serverSide: true,
+        serverSide: false,
         pagination: true,
         selectableRows: 'none',
         download: false,
@@ -61,8 +48,12 @@ const NFTsTable = (props) => {
                     <div className="collection_info nft_info">
                         <ImageOnLoad
                             alt="thumbnail"
-                            preview={(value && value.metadata && value.metadata.preview_uri) || ibcPreview(data)}
-                            src={(value && value.metadata && value.metadata.media_uri) || ibcMedia(data)}/>
+                            preview={(value && value.metadata && value.metadata.previewUri && mediaReference(value.metadata.previewUri)) ||
+                                (value && value.metadata && value.metadata.uri && mediaReference(value.metadata.uri)) ||
+                                (value && value.metadata && value.metadata.uriHash && mediaReference(value.metadata.uriHash)) ||
+                                ibcPreview(data)}
+                            src={(value && value.metadata && value.metadata.mediaUri &&
+                                mediaReference(value.metadata.mediaUri)) || ibcMedia(data)}/>
                         <div>
                             <p className="nft_name">
                                 {(value && value.metadata && value.metadata.name) || ibcName(data)}
@@ -142,10 +133,9 @@ NFTsTable.propTypes = {
     fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    rpcClient: PropTypes.any.isRequired,
     showBurnDialog: PropTypes.func.isRequired,
     showTransferDialog: PropTypes.func.isRequired,
-    skip: PropTypes.number.isRequired,
-    limit: PropTypes.number,
 };
 
 const stateToProps = (state) => {
@@ -154,9 +144,8 @@ const stateToProps = (state) => {
         chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
         inProgress: state.collection.collection.inProgress,
-        skip: state.collection.collection.skip,
-        limit: state.collection.collection.limit,
         lang: state.language,
+        rpcClient: state.query.rpcClient.value,
     };
 };
 

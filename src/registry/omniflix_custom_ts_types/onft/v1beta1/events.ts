@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {configure, Reader, util, Writer} from "protobufjs/minimal";
-import Long from "long";
+import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "OmniFlix.onft.v1beta1";
 
@@ -56,7 +55,7 @@ function createBaseEventCreateDenom(): EventCreateDenom {
 }
 
 export const EventCreateDenom = {
-    encode(message: EventCreateDenom, writer: Writer = Writer.create()): Writer {
+    encode(message: EventCreateDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -72,8 +71,8 @@ export const EventCreateDenom = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): EventCreateDenom {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateDenom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseEventCreateDenom();
         while (reader.pos < end) {
@@ -117,9 +116,11 @@ export const EventCreateDenom = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EventCreateDenom>, I>>(
-        object: I
-    ): EventCreateDenom {
+    create<I extends Exact<DeepPartial<EventCreateDenom>, I>>(base?: I): EventCreateDenom {
+        return EventCreateDenom.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventCreateDenom>, I>>(object: I): EventCreateDenom {
         const message = createBaseEventCreateDenom();
         message.id = object.id ?? "";
         message.symbol = object.symbol ?? "";
@@ -134,7 +135,7 @@ function createBaseEventUpdateDenom(): EventUpdateDenom {
 }
 
 export const EventUpdateDenom = {
-    encode(message: EventUpdateDenom, writer: Writer = Writer.create()): Writer {
+    encode(message: EventUpdateDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -150,8 +151,8 @@ export const EventUpdateDenom = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): EventUpdateDenom {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateDenom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseEventUpdateDenom();
         while (reader.pos < end) {
@@ -195,9 +196,11 @@ export const EventUpdateDenom = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EventUpdateDenom>, I>>(
-        object: I
-    ): EventUpdateDenom {
+    create<I extends Exact<DeepPartial<EventUpdateDenom>, I>>(base?: I): EventUpdateDenom {
+        return EventUpdateDenom.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventUpdateDenom>, I>>(object: I): EventUpdateDenom {
         const message = createBaseEventUpdateDenom();
         message.id = object.id ?? "";
         message.symbol = object.symbol ?? "";
@@ -212,10 +215,7 @@ function createBaseEventTransferDenom(): EventTransferDenom {
 }
 
 export const EventTransferDenom = {
-    encode(
-        message: EventTransferDenom,
-        writer: Writer = Writer.create()
-    ): Writer {
+    encode(message: EventTransferDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -231,8 +231,8 @@ export const EventTransferDenom = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): EventTransferDenom {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventTransferDenom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseEventTransferDenom();
         while (reader.pos < end) {
@@ -276,9 +276,11 @@ export const EventTransferDenom = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EventTransferDenom>, I>>(
-        object: I
-    ): EventTransferDenom {
+    create<I extends Exact<DeepPartial<EventTransferDenom>, I>>(base?: I): EventTransferDenom {
+        return EventTransferDenom.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventTransferDenom>, I>>(object: I): EventTransferDenom {
         const message = createBaseEventTransferDenom();
         message.id = object.id ?? "";
         message.symbol = object.symbol ?? "";
@@ -293,7 +295,7 @@ function createBaseEventMintONFT(): EventMintONFT {
 }
 
 export const EventMintONFT = {
-    encode(message: EventMintONFT, writer: Writer = Writer.create()): Writer {
+    encode(message: EventMintONFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.denomId !== "") {
             writer.uint32(10).string(message.denomId);
         }
@@ -309,8 +311,8 @@ export const EventMintONFT = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): EventMintONFT {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventMintONFT {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseEventMintONFT();
         while (reader.pos < end) {
@@ -354,9 +356,11 @@ export const EventMintONFT = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EventMintONFT>, I>>(
-        object: I
-    ): EventMintONFT {
+    create<I extends Exact<DeepPartial<EventMintONFT>, I>>(base?: I): EventMintONFT {
+        return EventMintONFT.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventMintONFT>, I>>(object: I): EventMintONFT {
         const message = createBaseEventMintONFT();
         message.denomId = object.denomId ?? "";
         message.id = object.id ?? "";
@@ -371,7 +375,7 @@ function createBaseEventTransferONFT(): EventTransferONFT {
 }
 
 export const EventTransferONFT = {
-    encode(message: EventTransferONFT, writer: Writer = Writer.create()): Writer {
+    encode(message: EventTransferONFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.denomId !== "") {
             writer.uint32(10).string(message.denomId);
         }
@@ -387,8 +391,8 @@ export const EventTransferONFT = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): EventTransferONFT {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventTransferONFT {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseEventTransferONFT();
         while (reader.pos < end) {
@@ -432,9 +436,11 @@ export const EventTransferONFT = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EventTransferONFT>, I>>(
-        object: I
-    ): EventTransferONFT {
+    create<I extends Exact<DeepPartial<EventTransferONFT>, I>>(base?: I): EventTransferONFT {
+        return EventTransferONFT.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventTransferONFT>, I>>(object: I): EventTransferONFT {
         const message = createBaseEventTransferONFT();
         message.denomId = object.denomId ?? "";
         message.id = object.id ?? "";
@@ -449,7 +455,7 @@ function createBaseEventBurnONFT(): EventBurnONFT {
 }
 
 export const EventBurnONFT = {
-    encode(message: EventBurnONFT, writer: Writer = Writer.create()): Writer {
+    encode(message: EventBurnONFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.denomId !== "") {
             writer.uint32(10).string(message.denomId);
         }
@@ -462,8 +468,8 @@ export const EventBurnONFT = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): EventBurnONFT {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): EventBurnONFT {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseEventBurnONFT();
         while (reader.pos < end) {
@@ -502,9 +508,11 @@ export const EventBurnONFT = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EventBurnONFT>, I>>(
-        object: I
-    ): EventBurnONFT {
+    create<I extends Exact<DeepPartial<EventBurnONFT>, I>>(base?: I): EventBurnONFT {
+        return EventBurnONFT.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<EventBurnONFT>, I>>(object: I): EventBurnONFT {
         const message = createBaseEventBurnONFT();
         message.denomId = object.denomId ?? "";
         message.id = object.id ?? "";
@@ -513,37 +521,16 @@ export const EventBurnONFT = {
     },
 };
 
-type Builtin =
-    | Date
-    | Function
-    | Uint8Array
-    | string
-    | number
-    | boolean
-    | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-    ? T
-    : T extends Array<infer U>
-        ? Array<DeepPartial<U>>
-        : T extends ReadonlyArray<infer U>
-            ? ReadonlyArray<DeepPartial<U>>
-            : T extends {}
-                ? { [K in keyof T]?: DeepPartial<T[K]> }
-                : Partial<T>;
+export type DeepPartial<T> = T extends Builtin ? T
+    : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+        : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+            : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-    ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>,
-    never>;
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (util.Long !== Long) {
-    util.Long = Long as any;
-    configure();
-}
+export type Exact<P, I extends P> = P extends Builtin ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
     return value !== null && value !== undefined;

@@ -1,10 +1,10 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import {Collection} from "./onft";
+import {Collection} from "./nft";
 
-export const protobufPackage = "OmniFlix.onft.v1beta1";
+export const protobufPackage = "irismod.nft";
 
-/** GenesisState defines the nft module's genesis state. */
+/** GenesisState defines the NFT module's genesis state */
 export interface GenesisState {
     collections: Collection[];
 }

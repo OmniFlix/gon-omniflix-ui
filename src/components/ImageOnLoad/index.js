@@ -89,7 +89,13 @@ const ImageOnLoad = (props) => {
             }
 
             return (
-                <img {...obj} alt="thumbnail"/>
+                <img
+                    {...obj}
+                    alt="thumbnail"
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src = thumbnail;
+                    }}/>
             );
         } else if (loadedPreview) {
             const obj = {
@@ -101,7 +107,13 @@ const ImageOnLoad = (props) => {
             }
 
             return (
-                <img {...obj} alt="thumbnail"/>
+                <img
+                    {...obj}
+                    alt="thumbnail"
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src = thumbnail;
+                    }}/>
             );
         } else if (cdn) {
             const obj = {
@@ -113,7 +125,13 @@ const ImageOnLoad = (props) => {
             }
 
             return (
-                <img {...obj} alt="thumbnail"/>
+                <img
+                    {...obj}
+                    alt="thumbnail"
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src = thumbnail;
+                    }}/>
             );
         }
     }
@@ -128,7 +146,13 @@ const ImageOnLoad = (props) => {
         }
 
         return (
-            <img {...obj} alt="thumbnail"/>
+            <img
+                {...obj}
+                alt="thumbnail"
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = thumbnail;
+                }}/>
         );
     } else if (loadedSrc) {
         const obj = {
@@ -140,7 +164,13 @@ const ImageOnLoad = (props) => {
         }
 
         return (
-            <img {...obj} alt="thumbnail"/>
+            <img
+                {...obj}
+                alt="thumbnail"
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = thumbnail;
+                }}/>
         );
     } else if (loadedPreview) {
         const obj = {
@@ -152,7 +182,13 @@ const ImageOnLoad = (props) => {
         }
 
         return (
-            <img {...obj} alt="thumbnail"/>
+            <img
+                {...obj}
+                alt="thumbnail"
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = thumbnail;
+                }}/>
         );
     }
 

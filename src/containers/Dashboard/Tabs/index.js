@@ -6,7 +6,6 @@ import './index.css';
 import { setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
-import { DEFAULT_SKIP } from '../../../config';
 
 class HeaderTabs extends Component {
     constructor (props) {
@@ -24,12 +23,12 @@ class HeaderTabs extends Component {
 
         if (newValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
-            this.props.fetchCollections(this.props.chainValue, this.props.address, DEFAULT_SKIP, 500);
+            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
         }
 
         if (newValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue]) {
-            this.props.fetchAllCollections(this.props.chainValue, DEFAULT_SKIP, 500);
+            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue);
         }
     }
 
@@ -50,7 +49,7 @@ class HeaderTabs extends Component {
                         value="all_collections"
                         onClick={() => this.handleChange('all_collections')}
                         {...a11yProps(0)} />
-                    {this.props.address &&
+                    {this.props.address && this.props.chainValue === 'omniflix' &&
                         <Tab
                             className={'tab ' + (this.props.tabValue === 'my_collections' ? 'active_tab' : '')}
                             label={<p className="text">{variables[this.props.lang]['my_collections']}</p>}
@@ -73,6 +72,7 @@ HeaderTabs.propTypes = {
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    rpcClient: PropTypes.any.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
 };
@@ -86,6 +86,7 @@ const stateToProps = (state) => {
         allCollections: state.collections.allCollectionSList.value,
         allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         lang: state.language,
+        rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,
     };
 };

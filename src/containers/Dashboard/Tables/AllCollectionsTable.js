@@ -11,6 +11,7 @@ import withRouter from '../../../components/WithRouter';
 import { setClearCollection } from '../../../actions/collections';
 import CopyButton from '../../../components/CopyButton';
 import { ibcName, ibcPreview } from '../../../utils/ibcData';
+import { mediaReference } from '../../../utils/ipfs';
 
 const AllCollectionsTable = (props) => {
     const options = {
@@ -27,7 +28,7 @@ const AllCollectionsTable = (props) => {
             },
         },
         onRowClick: (rowData, rowState) => {
-            const rowIndex = rowState.rowIndex;
+            const rowIndex = rowState.dataIndex;
             const id = list && list.value[rowIndex] &&
                 list.value[rowIndex].id;
             handleRedirect('', id);
@@ -44,8 +45,9 @@ const AllCollectionsTable = (props) => {
     };
 
     const handleRedirect = (event, id) => {
+        event && event.stopPropagation();
         props.setClearCollection();
-        const updatedID = id.replace('/', '_');
+        const updatedID = id.replaceAll('/', '_');
         props.router.navigate(`/collection/${updatedID}`);
     };
 
@@ -60,7 +62,10 @@ const AllCollectionsTable = (props) => {
                     <div className="collection_info">
                         <ImageOnLoad
                             alt="thumbnail"
-                            src={(value.preview_uri) || ibcPreview(data)}/>
+                            src={(value.previewUri && mediaReference(value.previewUri)) ||
+                                (value.uri && mediaReference(value.uri)) ||
+                                (value.uriHash && mediaReference(value.uriHash)) ||
+                                (data && ibcPreview(data))}/>
                         <div className="table_value collection_name">
                             {(value.name) || ibcName(data)}
                         </div>

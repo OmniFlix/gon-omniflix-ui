@@ -1,29 +1,24 @@
-import { NFT_S_FETCH_ERROR, NFT_S_FETCH_IN_PROGRESS, NFT_S_FETCH_SUCCESS } from '../constants/nfts';
 import { combineReducers } from 'redux';
+import { RPC_CLIENT_ERROR, RPC_CLIENT_IN_PROGRESS, RPC_CLIENT_SUCCESS } from '../constants/query';
 
-const nftSList = (state = {
+const rpcClient = (state = {
     inProgress: false,
     value: {},
 }, action) => {
     switch (action.type) {
-    case NFT_S_FETCH_IN_PROGRESS:
+    case RPC_CLIENT_IN_PROGRESS:
         return {
             ...state,
             inProgress: true,
         };
-    case NFT_S_FETCH_SUCCESS: {
+    case RPC_CLIENT_SUCCESS: {
         if (action.chain) {
             return {
                 ...state,
                 inProgress: false,
                 value: {
-                    [action.chain]: {
-                        value: action.value,
-                        skip: action.skip,
-                        limit: action.limit,
-                        search: action.search,
-                        total: action.total,
-                    },
+                    ...state.value,
+                    [action.chain]: action.value,
                 },
             };
         }
@@ -33,7 +28,7 @@ const nftSList = (state = {
             inProgress: false,
         };
     }
-    case NFT_S_FETCH_ERROR:
+    case RPC_CLIENT_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -44,5 +39,5 @@ const nftSList = (state = {
 };
 
 export default combineReducers({
-    nftSList,
+    rpcClient,
 });

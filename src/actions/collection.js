@@ -1,5 +1,4 @@
 import { urlFetchClassTrace } from '../chains/classTrace';
-import { urlFetchCollectionNFTS } from '../chains/nfts';
 import Axios from 'axios';
 import {
     BURN_DIALOG_HIDE,
@@ -20,6 +19,7 @@ import {
     TRANSFER_FAIL_SET,
     TRANSFER_SUCCESS_SET,
 } from '../constants/collection';
+import { ChainsList } from '../chains';
 
 export const showTransferDialog = (value) => {
     return {
@@ -100,13 +100,10 @@ const fetchCollectionNFTSInProgress = () => {
     };
 };
 
-const fetchCollectionNFTSSuccess = (value, skip, limit, total) => {
+const fetchCollectionNFTSSuccess = (value) => {
     return {
         type: COLLECTION_NFT_S_FETCH_SUCCESS,
         value,
-        skip,
-        limit,
-        total,
     };
 };
 
@@ -118,23 +115,38 @@ const fetchCollectionNFTSError = (message) => {
     };
 };
 
-export const fetchCollectionNFTS = (chain, id, skip, limit, cb) => (dispatch) => {
+export const fetchCollectionNFTS = (rpcClient, chain, id, cb) => (dispatch) => {
     dispatch(fetchCollectionNFTSInProgress());
 
-    const url = urlFetchCollectionNFTS(chain, id, skip, limit);
-    Axios.get(url, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchCollectionNFTSSuccess(res.data && res.data.collection, skip, limit,
-                res.data && res.data.pagination && res.data.pagination.total));
+    const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
+    const client = rpcClient && rpcClient[chain];
+    if (!QueryClientImpl) {
+        dispatch(fetchCollectionNFTSError('Failed!'));
+        return;
+    }
+
+    (async () => {
+        const queryService = new QueryClientImpl(client);
+        let request = null;
+
+        if (chain === 'iris') {
+            request = {
+                denomId: id,
+                pagination: undefined,
+            };
+        } else {
+            request = {
+                denomId: id,
+                pagination: undefined,
+            };
+        }
+
+        queryService.Collection(request).then((queryResult) => {
+            dispatch(fetchCollectionNFTSSuccess(queryResult && queryResult.collection, chain));
             if (cb) {
-                cb(res.data && res.data.collection);
+                cb(queryResult && queryResult.collection);
             }
-        })
-        .catch((error) => {
+        }).catch((error) => {
             dispatch(fetchCollectionNFTSError(
                 error.response &&
                 error.response.data &&
@@ -146,6 +158,7 @@ export const fetchCollectionNFTS = (chain, id, skip, limit, cb) => (dispatch) =>
                 cb(null);
             }
         });
+    })();
 };
 
 const fetchClassTraceInProgress = () => {

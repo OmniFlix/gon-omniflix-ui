@@ -107,7 +107,7 @@
 }
 
 .about_page .footer > p {
-    font-family:  'Sarabun', sans-serif;
+    font-family: 'Sarabun', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
@@ -141,6 +141,15 @@
     .about_page .row .section {
         width: 100%;
         margin-bottom: 20px;
+    }
+
+    .about_page .row1 .left_section > h2 {
+        text-align: center;
+        padding: unset;
+    }
+
+    .about_page .row1 .left_section > p {
+        text-align: center;
     }
 }
 

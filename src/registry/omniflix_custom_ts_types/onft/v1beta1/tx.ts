@@ -1,7 +1,6 @@
 /* eslint-disable */
-import {configure, Reader, util, Writer} from "protobufjs/minimal";
-import Long from "long";
-import {Metadata} from "../../onft/v1beta1/onft";
+import * as _m0 from "protobufjs/minimal";
+import {Metadata} from "./onft";
 
 export const protobufPackage = "OmniFlix.onft.v1beta1";
 
@@ -13,6 +12,9 @@ export interface MsgCreateDenom {
     previewUri: string;
     schema: string;
     sender: string;
+    uri: string;
+    uriHash: string;
+    data: string;
 }
 
 export interface MsgCreateDenomResponse {
@@ -82,11 +84,14 @@ function createBaseMsgCreateDenom(): MsgCreateDenom {
         previewUri: "",
         schema: "",
         sender: "",
+        uri: "",
+        uriHash: "",
+        data: "",
     };
 }
 
 export const MsgCreateDenom = {
-    encode(message: MsgCreateDenom, writer: Writer = Writer.create()): Writer {
+    encode(message: MsgCreateDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -108,11 +113,20 @@ export const MsgCreateDenom = {
         if (message.sender !== "") {
             writer.uint32(58).string(message.sender);
         }
+        if (message.uri !== "") {
+            writer.uint32(66).string(message.uri);
+        }
+        if (message.uriHash !== "") {
+            writer.uint32(74).string(message.uriHash);
+        }
+        if (message.data !== "") {
+            writer.uint32(82).string(message.data);
+        }
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgCreateDenom {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateDenom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgCreateDenom();
         while (reader.pos < end) {
@@ -139,6 +153,15 @@ export const MsgCreateDenom = {
                 case 7:
                     message.sender = reader.string();
                     break;
+                case 8:
+                    message.uri = reader.string();
+                    break;
+                case 9:
+                    message.uriHash = reader.string();
+                    break;
+                case 10:
+                    message.data = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -156,6 +179,9 @@ export const MsgCreateDenom = {
             previewUri: isSet(object.previewUri) ? String(object.previewUri) : "",
             schema: isSet(object.schema) ? String(object.schema) : "",
             sender: isSet(object.sender) ? String(object.sender) : "",
+            uri: isSet(object.uri) ? String(object.uri) : "",
+            uriHash: isSet(object.uriHash) ? String(object.uriHash) : "",
+            data: isSet(object.data) ? String(object.data) : "",
         };
     },
 
@@ -164,17 +190,21 @@ export const MsgCreateDenom = {
         message.id !== undefined && (obj.id = message.id);
         message.symbol !== undefined && (obj.symbol = message.symbol);
         message.name !== undefined && (obj.name = message.name);
-        message.description !== undefined &&
-        (obj.description = message.description);
+        message.description !== undefined && (obj.description = message.description);
         message.previewUri !== undefined && (obj.previewUri = message.previewUri);
         message.schema !== undefined && (obj.schema = message.schema);
         message.sender !== undefined && (obj.sender = message.sender);
+        message.uri !== undefined && (obj.uri = message.uri);
+        message.uriHash !== undefined && (obj.uriHash = message.uriHash);
+        message.data !== undefined && (obj.data = message.data);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgCreateDenom>, I>>(
-        object: I
-    ): MsgCreateDenom {
+    create<I extends Exact<DeepPartial<MsgCreateDenom>, I>>(base?: I): MsgCreateDenom {
+        return MsgCreateDenom.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgCreateDenom>, I>>(object: I): MsgCreateDenom {
         const message = createBaseMsgCreateDenom();
         message.id = object.id ?? "";
         message.symbol = object.symbol ?? "";
@@ -183,6 +213,9 @@ export const MsgCreateDenom = {
         message.previewUri = object.previewUri ?? "";
         message.schema = object.schema ?? "";
         message.sender = object.sender ?? "";
+        message.uri = object.uri ?? "";
+        message.uriHash = object.uriHash ?? "";
+        message.data = object.data ?? "";
         return message;
     },
 };
@@ -192,12 +225,12 @@ function createBaseMsgCreateDenomResponse(): MsgCreateDenomResponse {
 }
 
 export const MsgCreateDenomResponse = {
-    encode(_: MsgCreateDenomResponse, writer: Writer = Writer.create()): Writer {
+    encode(_: MsgCreateDenomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgCreateDenomResponse {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateDenomResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgCreateDenomResponse();
         while (reader.pos < end) {
@@ -220,9 +253,11 @@ export const MsgCreateDenomResponse = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgCreateDenomResponse>, I>>(
-        _: I
-    ): MsgCreateDenomResponse {
+    create<I extends Exact<DeepPartial<MsgCreateDenomResponse>, I>>(base?: I): MsgCreateDenomResponse {
+        return MsgCreateDenomResponse.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgCreateDenomResponse>, I>>(_: I): MsgCreateDenomResponse {
         const message = createBaseMsgCreateDenomResponse();
         return message;
     },
@@ -233,7 +268,7 @@ function createBaseMsgUpdateDenom(): MsgUpdateDenom {
 }
 
 export const MsgUpdateDenom = {
-    encode(message: MsgUpdateDenom, writer: Writer = Writer.create()): Writer {
+    encode(message: MsgUpdateDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -252,8 +287,8 @@ export const MsgUpdateDenom = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgUpdateDenom {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateDenom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgUpdateDenom();
         while (reader.pos < end) {
@@ -296,16 +331,17 @@ export const MsgUpdateDenom = {
         const obj: any = {};
         message.id !== undefined && (obj.id = message.id);
         message.name !== undefined && (obj.name = message.name);
-        message.description !== undefined &&
-        (obj.description = message.description);
+        message.description !== undefined && (obj.description = message.description);
         message.previewUri !== undefined && (obj.previewUri = message.previewUri);
         message.sender !== undefined && (obj.sender = message.sender);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgUpdateDenom>, I>>(
-        object: I
-    ): MsgUpdateDenom {
+    create<I extends Exact<DeepPartial<MsgUpdateDenom>, I>>(base?: I): MsgUpdateDenom {
+        return MsgUpdateDenom.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgUpdateDenom>, I>>(object: I): MsgUpdateDenom {
         const message = createBaseMsgUpdateDenom();
         message.id = object.id ?? "";
         message.name = object.name ?? "";
@@ -321,12 +357,12 @@ function createBaseMsgUpdateDenomResponse(): MsgUpdateDenomResponse {
 }
 
 export const MsgUpdateDenomResponse = {
-    encode(_: MsgUpdateDenomResponse, writer: Writer = Writer.create()): Writer {
+    encode(_: MsgUpdateDenomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgUpdateDenomResponse {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateDenomResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgUpdateDenomResponse();
         while (reader.pos < end) {
@@ -349,9 +385,11 @@ export const MsgUpdateDenomResponse = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgUpdateDenomResponse>, I>>(
-        _: I
-    ): MsgUpdateDenomResponse {
+    create<I extends Exact<DeepPartial<MsgUpdateDenomResponse>, I>>(base?: I): MsgUpdateDenomResponse {
+        return MsgUpdateDenomResponse.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgUpdateDenomResponse>, I>>(_: I): MsgUpdateDenomResponse {
         const message = createBaseMsgUpdateDenomResponse();
         return message;
     },
@@ -362,7 +400,7 @@ function createBaseMsgTransferDenom(): MsgTransferDenom {
 }
 
 export const MsgTransferDenom = {
-    encode(message: MsgTransferDenom, writer: Writer = Writer.create()): Writer {
+    encode(message: MsgTransferDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -375,8 +413,8 @@ export const MsgTransferDenom = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgTransferDenom {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferDenom {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgTransferDenom();
         while (reader.pos < end) {
@@ -415,9 +453,11 @@ export const MsgTransferDenom = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgTransferDenom>, I>>(
-        object: I
-    ): MsgTransferDenom {
+    create<I extends Exact<DeepPartial<MsgTransferDenom>, I>>(base?: I): MsgTransferDenom {
+        return MsgTransferDenom.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgTransferDenom>, I>>(object: I): MsgTransferDenom {
         const message = createBaseMsgTransferDenom();
         message.id = object.id ?? "";
         message.sender = object.sender ?? "";
@@ -431,18 +471,12 @@ function createBaseMsgTransferDenomResponse(): MsgTransferDenomResponse {
 }
 
 export const MsgTransferDenomResponse = {
-    encode(
-        _: MsgTransferDenomResponse,
-        writer: Writer = Writer.create()
-    ): Writer {
+    encode(_: MsgTransferDenomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
-    decode(
-        input: Reader | Uint8Array,
-        length?: number
-    ): MsgTransferDenomResponse {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferDenomResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgTransferDenomResponse();
         while (reader.pos < end) {
@@ -465,9 +499,11 @@ export const MsgTransferDenomResponse = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgTransferDenomResponse>, I>>(
-        _: I
-    ): MsgTransferDenomResponse {
+    create<I extends Exact<DeepPartial<MsgTransferDenomResponse>, I>>(base?: I): MsgTransferDenomResponse {
+        return MsgTransferDenomResponse.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgTransferDenomResponse>, I>>(_: I): MsgTransferDenomResponse {
         const message = createBaseMsgTransferDenomResponse();
         return message;
     },
@@ -489,7 +525,7 @@ function createBaseMsgMintONFT(): MsgMintONFT {
 }
 
 export const MsgMintONFT = {
-    encode(message: MsgMintONFT, writer: Writer = Writer.create()): Writer {
+    encode(message: MsgMintONFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -523,8 +559,8 @@ export const MsgMintONFT = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgMintONFT {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintONFT {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgMintONFT();
         while (reader.pos < end) {
@@ -572,18 +608,12 @@ export const MsgMintONFT = {
         return {
             id: isSet(object.id) ? String(object.id) : "",
             denomId: isSet(object.denomId) ? String(object.denomId) : "",
-            metadata: isSet(object.metadata)
-                ? Metadata.fromJSON(object.metadata)
-                : undefined,
+            metadata: isSet(object.metadata) ? Metadata.fromJSON(object.metadata) : undefined,
             data: isSet(object.data) ? String(object.data) : "",
-            transferable: isSet(object.transferable)
-                ? Boolean(object.transferable)
-                : false,
+            transferable: isSet(object.transferable) ? Boolean(object.transferable) : false,
             extensible: isSet(object.extensible) ? Boolean(object.extensible) : false,
             nsfw: isSet(object.nsfw) ? Boolean(object.nsfw) : false,
-            royaltyShare: isSet(object.royaltyShare)
-                ? String(object.royaltyShare)
-                : "",
+            royaltyShare: isSet(object.royaltyShare) ? String(object.royaltyShare) : "",
             sender: isSet(object.sender) ? String(object.sender) : "",
             recipient: isSet(object.recipient) ? String(object.recipient) : "",
         };
@@ -593,32 +623,28 @@ export const MsgMintONFT = {
         const obj: any = {};
         message.id !== undefined && (obj.id = message.id);
         message.denomId !== undefined && (obj.denomId = message.denomId);
-        message.metadata !== undefined &&
-        (obj.metadata = message.metadata
-            ? Metadata.toJSON(message.metadata)
-            : undefined);
+        message.metadata !== undefined && (obj.metadata = message.metadata ? Metadata.toJSON(message.metadata) : undefined);
         message.data !== undefined && (obj.data = message.data);
-        message.transferable !== undefined &&
-        (obj.transferable = message.transferable);
+        message.transferable !== undefined && (obj.transferable = message.transferable);
         message.extensible !== undefined && (obj.extensible = message.extensible);
         message.nsfw !== undefined && (obj.nsfw = message.nsfw);
-        message.royaltyShare !== undefined &&
-        (obj.royaltyShare = message.royaltyShare);
+        message.royaltyShare !== undefined && (obj.royaltyShare = message.royaltyShare);
         message.sender !== undefined && (obj.sender = message.sender);
         message.recipient !== undefined && (obj.recipient = message.recipient);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgMintONFT>, I>>(
-        object: I
-    ): MsgMintONFT {
+    create<I extends Exact<DeepPartial<MsgMintONFT>, I>>(base?: I): MsgMintONFT {
+        return MsgMintONFT.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgMintONFT>, I>>(object: I): MsgMintONFT {
         const message = createBaseMsgMintONFT();
         message.id = object.id ?? "";
         message.denomId = object.denomId ?? "";
-        message.metadata =
-            object.metadata !== undefined && object.metadata !== null
-                ? Metadata.fromPartial(object.metadata)
-                : undefined;
+        message.metadata = (object.metadata !== undefined && object.metadata !== null)
+            ? Metadata.fromPartial(object.metadata)
+            : undefined;
         message.data = object.data ?? "";
         message.transferable = object.transferable ?? false;
         message.extensible = object.extensible ?? false;
@@ -635,12 +661,12 @@ function createBaseMsgMintONFTResponse(): MsgMintONFTResponse {
 }
 
 export const MsgMintONFTResponse = {
-    encode(_: MsgMintONFTResponse, writer: Writer = Writer.create()): Writer {
+    encode(_: MsgMintONFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgMintONFTResponse {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintONFTResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgMintONFTResponse();
         while (reader.pos < end) {
@@ -663,9 +689,11 @@ export const MsgMintONFTResponse = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgMintONFTResponse>, I>>(
-        _: I
-    ): MsgMintONFTResponse {
+    create<I extends Exact<DeepPartial<MsgMintONFTResponse>, I>>(base?: I): MsgMintONFTResponse {
+        return MsgMintONFTResponse.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgMintONFTResponse>, I>>(_: I): MsgMintONFTResponse {
         const message = createBaseMsgMintONFTResponse();
         return message;
     },
@@ -676,7 +704,7 @@ function createBaseMsgTransferONFT(): MsgTransferONFT {
 }
 
 export const MsgTransferONFT = {
-    encode(message: MsgTransferONFT, writer: Writer = Writer.create()): Writer {
+    encode(message: MsgTransferONFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -692,8 +720,8 @@ export const MsgTransferONFT = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgTransferONFT {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferONFT {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgTransferONFT();
         while (reader.pos < end) {
@@ -737,9 +765,11 @@ export const MsgTransferONFT = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgTransferONFT>, I>>(
-        object: I
-    ): MsgTransferONFT {
+    create<I extends Exact<DeepPartial<MsgTransferONFT>, I>>(base?: I): MsgTransferONFT {
+        return MsgTransferONFT.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgTransferONFT>, I>>(object: I): MsgTransferONFT {
         const message = createBaseMsgTransferONFT();
         message.id = object.id ?? "";
         message.denomId = object.denomId ?? "";
@@ -754,12 +784,12 @@ function createBaseMsgTransferONFTResponse(): MsgTransferONFTResponse {
 }
 
 export const MsgTransferONFTResponse = {
-    encode(_: MsgTransferONFTResponse, writer: Writer = Writer.create()): Writer {
+    encode(_: MsgTransferONFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgTransferONFTResponse {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferONFTResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgTransferONFTResponse();
         while (reader.pos < end) {
@@ -782,9 +812,11 @@ export const MsgTransferONFTResponse = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgTransferONFTResponse>, I>>(
-        _: I
-    ): MsgTransferONFTResponse {
+    create<I extends Exact<DeepPartial<MsgTransferONFTResponse>, I>>(base?: I): MsgTransferONFTResponse {
+        return MsgTransferONFTResponse.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgTransferONFTResponse>, I>>(_: I): MsgTransferONFTResponse {
         const message = createBaseMsgTransferONFTResponse();
         return message;
     },
@@ -795,7 +827,7 @@ function createBaseMsgBurnONFT(): MsgBurnONFT {
 }
 
 export const MsgBurnONFT = {
-    encode(message: MsgBurnONFT, writer: Writer = Writer.create()): Writer {
+    encode(message: MsgBurnONFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
@@ -808,8 +840,8 @@ export const MsgBurnONFT = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgBurnONFT {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgBurnONFT {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgBurnONFT();
         while (reader.pos < end) {
@@ -848,9 +880,11 @@ export const MsgBurnONFT = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgBurnONFT>, I>>(
-        object: I
-    ): MsgBurnONFT {
+    create<I extends Exact<DeepPartial<MsgBurnONFT>, I>>(base?: I): MsgBurnONFT {
+        return MsgBurnONFT.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgBurnONFT>, I>>(object: I): MsgBurnONFT {
         const message = createBaseMsgBurnONFT();
         message.id = object.id ?? "";
         message.denomId = object.denomId ?? "";
@@ -864,12 +898,12 @@ function createBaseMsgBurnONFTResponse(): MsgBurnONFTResponse {
 }
 
 export const MsgBurnONFTResponse = {
-    encode(_: MsgBurnONFTResponse, writer: Writer = Writer.create()): Writer {
+    encode(_: MsgBurnONFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): MsgBurnONFTResponse {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgBurnONFTResponse {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseMsgBurnONFTResponse();
         while (reader.pos < end) {
@@ -892,9 +926,11 @@ export const MsgBurnONFTResponse = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<MsgBurnONFTResponse>, I>>(
-        _: I
-    ): MsgBurnONFTResponse {
+    create<I extends Exact<DeepPartial<MsgBurnONFTResponse>, I>>(base?: I): MsgBurnONFTResponse {
+        return MsgBurnONFTResponse.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<MsgBurnONFTResponse>, I>>(_: I): MsgBurnONFTResponse {
         const message = createBaseMsgBurnONFTResponse();
         return message;
     },
@@ -916,8 +952,10 @@ export interface Msg {
 
 export class MsgClientImpl implements Msg {
     private readonly rpc: Rpc;
+    private readonly service: string;
 
-    constructor(rpc: Rpc) {
+    constructor(rpc: Rpc, opts?: { service?: string }) {
+        this.service = opts?.service || "OmniFlix.onft.v1beta1.Msg";
         this.rpc = rpc;
         this.CreateDenom = this.CreateDenom.bind(this);
         this.UpdateDenom = this.UpdateDenom.bind(this);
@@ -929,112 +967,55 @@ export class MsgClientImpl implements Msg {
 
     CreateDenom(request: MsgCreateDenom): Promise<MsgCreateDenomResponse> {
         const data = MsgCreateDenom.encode(request).finish();
-        const promise = this.rpc.request(
-            "OmniFlix.onft.v1beta1.Msg",
-            "CreateDenom",
-            data
-        );
-        return promise.then((data) =>
-            MsgCreateDenomResponse.decode(new Reader(data))
-        );
+        const promise = this.rpc.request(this.service, "CreateDenom", data);
+        return promise.then((data) => MsgCreateDenomResponse.decode(new _m0.Reader(data)));
     }
 
     UpdateDenom(request: MsgUpdateDenom): Promise<MsgUpdateDenomResponse> {
         const data = MsgUpdateDenom.encode(request).finish();
-        const promise = this.rpc.request(
-            "OmniFlix.onft.v1beta1.Msg",
-            "UpdateDenom",
-            data
-        );
-        return promise.then((data) =>
-            MsgUpdateDenomResponse.decode(new Reader(data))
-        );
+        const promise = this.rpc.request(this.service, "UpdateDenom", data);
+        return promise.then((data) => MsgUpdateDenomResponse.decode(new _m0.Reader(data)));
     }
 
     TransferDenom(request: MsgTransferDenom): Promise<MsgTransferDenomResponse> {
         const data = MsgTransferDenom.encode(request).finish();
-        const promise = this.rpc.request(
-            "OmniFlix.onft.v1beta1.Msg",
-            "TransferDenom",
-            data
-        );
-        return promise.then((data) =>
-            MsgTransferDenomResponse.decode(new Reader(data))
-        );
+        const promise = this.rpc.request(this.service, "TransferDenom", data);
+        return promise.then((data) => MsgTransferDenomResponse.decode(new _m0.Reader(data)));
     }
 
     MintONFT(request: MsgMintONFT): Promise<MsgMintONFTResponse> {
         const data = MsgMintONFT.encode(request).finish();
-        const promise = this.rpc.request(
-            "OmniFlix.onft.v1beta1.Msg",
-            "MintONFT",
-            data
-        );
-        return promise.then((data) => MsgMintONFTResponse.decode(new Reader(data)));
+        const promise = this.rpc.request(this.service, "MintONFT", data);
+        return promise.then((data) => MsgMintONFTResponse.decode(new _m0.Reader(data)));
     }
 
     TransferONFT(request: MsgTransferONFT): Promise<MsgTransferONFTResponse> {
         const data = MsgTransferONFT.encode(request).finish();
-        const promise = this.rpc.request(
-            "OmniFlix.onft.v1beta1.Msg",
-            "TransferONFT",
-            data
-        );
-        return promise.then((data) =>
-            MsgTransferONFTResponse.decode(new Reader(data))
-        );
+        const promise = this.rpc.request(this.service, "TransferONFT", data);
+        return promise.then((data) => MsgTransferONFTResponse.decode(new _m0.Reader(data)));
     }
 
     BurnONFT(request: MsgBurnONFT): Promise<MsgBurnONFTResponse> {
         const data = MsgBurnONFT.encode(request).finish();
-        const promise = this.rpc.request(
-            "OmniFlix.onft.v1beta1.Msg",
-            "BurnONFT",
-            data
-        );
-        return promise.then((data) => MsgBurnONFTResponse.decode(new Reader(data)));
+        const promise = this.rpc.request(this.service, "BurnONFT", data);
+        return promise.then((data) => MsgBurnONFTResponse.decode(new _m0.Reader(data)));
     }
 }
 
 interface Rpc {
-    request(
-        service: string,
-        method: string,
-        data: Uint8Array
-    ): Promise<Uint8Array>;
+    request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-type Builtin =
-    | Date
-    | Function
-    | Uint8Array
-    | string
-    | number
-    | boolean
-    | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-    ? T
-    : T extends Array<infer U>
-        ? Array<DeepPartial<U>>
-        : T extends ReadonlyArray<infer U>
-            ? ReadonlyArray<DeepPartial<U>>
-            : T extends {}
-                ? { [K in keyof T]?: DeepPartial<T[K]> }
-                : Partial<T>;
+export type DeepPartial<T> = T extends Builtin ? T
+    : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+        : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+            : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-    ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>,
-    never>;
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (util.Long !== Long) {
-    util.Long = Long as any;
-    configure();
-}
+export type Exact<P, I extends P> = P extends Builtin ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
     return value !== null && value !== undefined;
