@@ -320,6 +320,12 @@ export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
         } else {
             request = {
                 owner: '',
+                // pagination: {
+                //     key: new Uint8Array(),
+                //     countTotal: true,
+                //     limit: 10,
+                //     offset: 0,
+                // },
                 pagination: undefined,
             };
         }
