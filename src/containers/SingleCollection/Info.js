@@ -10,6 +10,8 @@ import { mediaReference } from '../../utils/ipfs';
 const Info = (props) => {
     let data = props.collection && props.collection.denom && props.collection.denom.data;
     data = data && JSON.parse(data);
+    const id = props.collection && props.collection.denom && props.collection.denom.id &&
+        props.collection.denom.id.split('ibc/');
 
     return (
         <div className="collection_section">
@@ -37,6 +39,15 @@ const Info = (props) => {
                                 props.collection.denom.creator.slice(props.collection.denom.creator.length - 6, props.collection.denom.creator.length)}</span>
                         </div>
                     </div>
+                </div>
+                <div className="type">
+                    {id && id.length > 1
+                        ? <div className="chain_type ibc_chain_type">
+                            {variables[props.lang].ibc}
+                        </div>
+                        : <div className="chain_type native_chain_type">
+                            {variables[props.lang].native}
+                        </div>}
                 </div>
                 <div className="row3">
                     {(props.collection && props.collection.denom && props.collection.denom.description) ||

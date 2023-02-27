@@ -148,6 +148,26 @@
     overflow-y: auto;
 }
 
+.single_collection .collection_section .type {
+    margin-top: 10px;
+}
+
+.single_collection .collection_section .chain_type {
+    padding: 10px 20px;
+    background: rgba(17, 255, 212, 0.1);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #11FFD4;
+}
+
+.single_collection .collection_section .ibc_chain_type {
+    background: rgba(186, 255, 39, 0.1);
+    color: #BAFF27;
+}
+
 @media (max-width: 960px) {
     .single_collection .coll_page {
         flex-direction: column;
