@@ -5,7 +5,7 @@ import './index.css';
 import { setChainValue, setTabValue } from '../../../actions/dashboard';
 import { list } from '../../../utils/defaultOptions';
 import { Button } from '@mui/material';
-import { DEFAULT_SKIP } from '../../../config';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { setRpcClient } from '../../../actions/query';
 import withRouter from '../../../components/WithRouter';
@@ -27,14 +27,14 @@ const ChainPopover = (props) => {
             props.setChainValue(value);
             props.setTabValue('all_collections');
             if (!props.allCollectionsInProgress && value && !props.allCollections[value]) {
-                props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, 500);
+                props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
 
             return;
         }
 
         if (props.tabValue === 'all_collections' && !props.allCollectionsInProgress && value && !props.allCollections[value]) {
-            props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, 500);
+            props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
         props.setChainValue(value);

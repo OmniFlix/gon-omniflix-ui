@@ -85,6 +85,9 @@ const allCollectionSList = (state = {
                     ...state.value,
                     [action.chain]: {
                         value: action.value,
+                        skip: action.skip,
+                        limit: action.limit,
+                        total: action.total,
                     },
                 },
             };

@@ -288,11 +288,14 @@ const fetchAllCollectionsInProgress = () => {
     };
 };
 
-const fetchAllCollectionsSuccess = (value, chain) => {
+const fetchAllCollectionsSuccess = (value, chain, skip, limit, total) => {
     return {
         type: ALL_COLLECTIONS_FETCH_SUCCESS,
         value,
         chain,
+        skip,
+        limit,
+        total,
     };
 };
 
@@ -303,7 +306,7 @@ const fetchAllCollectionsError = (message) => {
     };
 };
 
-export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
+export const fetchAllCollections = (rpcClient, chain, skip, limit, cb) => (dispatch) => {
     dispatch(fetchAllCollectionsInProgress());
 
     const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
@@ -328,12 +331,18 @@ export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
         } else {
             request = {
                 owner: '',
-                pagination: undefined,
+                pagination: {
+                    key: new Uint8Array(),
+                    countTotal: true,
+                    limit: limit,
+                    offset: skip,
+                },
             };
         }
 
         queryService.Denoms(request).then((queryResult) => {
-            dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain));
+            dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain,
+                skip, limit, (queryResult.pagination && queryResult.pagination.total)));
             if (cb) {
                 cb(queryResult && queryResult.denoms);
             }
