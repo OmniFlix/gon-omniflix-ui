@@ -1,7 +1,6 @@
 import { RPC_CLIENT_ERROR, RPC_CLIENT_IN_PROGRESS, RPC_CLIENT_SUCCESS } from '../constants/query';
 import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
 import { createProtobufRpcClient, QueryClient } from '@cosmjs/stargate';
-import { QueryClientImpl } from '../registry/irismod/nft/query';
 // import { config } from '../config';
 import { ChainsList } from '../chains';
 
@@ -59,55 +58,6 @@ export const setRpcClient = (chain, cb) => (dispatch) => {
             if (cb) {
                 cb(null);
             }
-        }
-    })();
-};
-
-// export const fetchDenoms = (client, cb) => (dispatch) => {
-//     dispatch(rpcClientInProgress());
-//     (async () => {
-//         try {
-//             // Here we instantiate a specific query client which will have the custom methods defined in the .proto file
-//             const queryService = new QueryClientImpl(client);
-//
-//             console.log('222222', queryService);
-//             const queryResult = await queryService.Denoms({
-//                 owner: '',
-//                 pagination: undefined,
-//             });
-//             console.log('33333', queryResult);
-//
-//             dispatch(rpcClientSuccess(queryResult));
-//             // cb(queryResult);
-//         } catch (e) {
-//             dispatch(rpcClientError(e && e.message));
-//             // cb(null);
-//         }
-//     })();
-// };
-
-export const fetchDenoms = (client, cb) => (dispatch) => {
-    dispatch(rpcClientInProgress());
-    (async () => {
-        try {
-            // Here we instantiate a specific query client which will have the custom methods defined in the .proto file
-            const queryService = new QueryClientImpl(client);
-
-            console.log('222222', queryService);
-            const queryResult = await queryService.Denoms({
-                pagination: undefined,
-            });
-            // const queryResult = await queryService.Collection({
-            //     denomId: 'ibc/35F0C3AF65B6C22944502EFB81775F8E2324EA67C360127572817B374102A65F',
-            //     pagination: undefined,
-            // });
-            console.log('33333', queryResult);
-
-            dispatch(rpcClientSuccess(queryResult));
-            // cb(queryResult);
-        } catch (e) {
-            dispatch(rpcClientError(e && e.message));
-            // cb(null);
         }
     })();
 };
