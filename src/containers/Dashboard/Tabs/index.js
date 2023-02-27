@@ -59,7 +59,13 @@ class HeaderTabs extends Component {
                     {this.props.address && this.props.chainValue === 'omniflix' &&
                         <Tab
                             className={'tab ' + (this.props.tabValue === 'my_collections' ? 'active_tab' : '')}
-                            label={<p className="text">{variables[this.props.lang]['my_collections']}</p>}
+                            label={<p className="text">
+                                {variables[this.props.lang]['my_collections']}
+                                {this.props.chainValue === 'omniflix' && this.props.collections &&
+                                this.props.collections[this.props.chainValue] && this.props.collections[this.props.chainValue].total
+                                    ? ` (${this.props.collections[this.props.chainValue].total})`
+                                    : null}
+                            </p>}
                             value="my_collections"
                             onClick={() => this.handleChange('my_collections')}
                             {...a11yProps(1)} />}

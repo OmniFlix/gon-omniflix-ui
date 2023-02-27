@@ -5,7 +5,7 @@ import { showMessage } from '../../actions/snackbar';
 import { connect } from 'react-redux';
 import './index.css';
 import { Button } from '@mui/material';
-import { config, DEFAULT_SKIP } from '../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 import { customTypes } from '../../registry';
 import {
     aminoSignTx,
@@ -116,10 +116,10 @@ const UpdateCollectionButton = (props) => {
                                         }
 
                                         if (props.chainValue === 'omniflix') {
-                                            props.fetch(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, 500);
+                                            props.fetch(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
                                         }
 
-                                        props.fetchAllCollections(props.rpcClient, props.chainValue, DEFAULT_SKIP, 500);
+                                        props.fetchAllCollections(props.rpcClient, props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
                                         props.setSchema(null);
                                         props.fetchBalance(props.address);
                                         props.setTxHashInProgressFalse();

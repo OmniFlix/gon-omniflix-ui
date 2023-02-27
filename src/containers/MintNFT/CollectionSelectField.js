@@ -5,6 +5,7 @@ import variables from '../../utils/variables';
 import { setCollection } from '../../actions/mintNFT';
 import CreatableSelectField from '../../components/SelectField/CreatableSelectField';
 import { fetchCollections } from '../../actions/collections';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 
 class CollectionSelectField extends Component {
     componentDidMount () {
@@ -14,18 +15,18 @@ class CollectionSelectField extends Component {
 
         if (this.props.address !== '' && this.props.options && (this.props.options.length === 0) &&
             this.props.rpcClient && this.props.rpcClient.omniflix) {
-            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address);
+            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
     componentDidUpdate (pp, ps, ss) {
         if (this.props.address && (pp.address !== this.props.address) && this.props.rpcClient &&
             this.props.rpcClient.omniflix) {
-            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address);
+            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
         if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient && this.props.rpcClient.omniflix &&
             this.props.address !== '' && this.props.options && (this.props.options.length === 0)) {
-            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address);
+            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
