@@ -89,9 +89,15 @@ class NavBar extends Component {
                 </div>
                 <Tabs/>
                 <div className="right_section">
-                    {(balance && balance > 0)
+                    {this.props.balanceInProgress
                         ? null
-                        : this.props.address !== '' &&
+                        : (balance && balance > 0)
+                            ? this.props.address !== '' &&
+                        <Button className="claim_button claimed">
+                            <FaucetIcon/>
+                            {variables[this.props.lang].claimed}
+                        </Button>
+                            : this.props.address !== '' &&
                         <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
                             <FaucetIcon/>
                             {variables[this.props.lang].faucet}
