@@ -21,10 +21,10 @@ import {
 import { showMessage } from '../../../actions/snackbar';
 import { fetchBalance } from '../../../actions/account/BCDetails';
 import withRouter from '../../../components/WithRouter';
-import Long from 'long';
 import { fetchTimeoutHeight } from '../../../actions/account/IBCTokens';
 import { ChainsList } from '../../../chains';
 import { decodeFromBech32 } from '../../../utils/address';
+import { getTimestampInNanoSeconds } from '../../../utils/date';
 
 const IBCButton = (props) => {
     const handleClick = () => {
@@ -36,135 +36,124 @@ const IBCButton = (props) => {
         props.initializeChainIBC(chainConfig, props.chain, (address) => {
             if (address.length && address[0] && address[0].address) {
                 const ibcAddress = address[0].address;
-                props.fetchTimeoutHeight(chainConfig.REST_URL, chainConfig.CHANNELS && chainConfig.CHANNELS[props.chainID], (result) => {
-                    if (result) {
-                        const revisionNumber = result && result.proof_height && result.proof_height.revision_number &&
-                            Long.fromNumber(result.proof_height.revision_number);
-                        const revisionHeight = result && result.proof_height && result.proof_height.revision_height;
+                const updatedID = props.router.params.id.replaceAll('_', '/');
+                const object = [{
+                    type: '/ibc.applications.nft_transfer.v1.MsgTransfer',
+                    value: {
+                        source_port: 'nft-transfer',
+                        source_channel: chainConfig.CHANNELS && chainConfig.CHANNELS[props.chainID],
+                        class_id: updatedID,
+                        token_ids: [
+                            props.value && props.value.id,
+                        ],
+                        receiver: props.toAddress,
+                        sender: props.value && props.value.owner,
+                        timeout_height: undefined,
+                        timeout_timestamp: getTimestampInNanoSeconds(),
+                    },
+                }];
 
-                        const updatedID = props.router.params.id.replaceAll('_', '/');
-                        const object = [{
-                            type: '/ibc.applications.nft_transfer.v1.MsgTransfer',
-                            value: {
-                                source_port: 'nft-transfer',
-                                source_channel: chainConfig.CHANNELS && chainConfig.CHANNELS[props.chainID],
-                                class_id: updatedID,
-                                token_ids: [
-                                    props.value && props.value.id,
-                                ],
-                                receiver: props.toAddress,
-                                sender: props.value && props.value.owner,
-                                timeout_height: {
-                                    revisionNumber: revisionNumber || undefined,
-                                    revisionHeight: Long.fromNumber(parseInt(revisionHeight) + 150) || undefined,
-                                },
-                                timeout_timestamp: undefined,
-                            },
-                        }];
+                let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+                balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
 
-                        let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-                        balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
+                const Tx = {
+                    msgs: object,
+                    msgType: 'IBCTransferONFT',
+                    fee: {
+                        amount: [{
+                            amount: String(5000),
+                            denom: config.COIN_MINIMAL_DENOM,
+                        }],
+                        gasLimit: String(300000),
+                    },
+                    memo: '',
+                };
 
-                        const Tx = {
-                            msgs: object,
-                            msgType: 'IBCTransferONFT',
-                            fee: {
-                                amount: [{
-                                    amount: String(5000),
-                                    denom: config.COIN_MINIMAL_DENOM,
-                                }],
-                                gasLimit: String(300000),
-                            },
-                            memo: '',
-                        };
-
-                        const type = customTypes && customTypes.IBCTransferONFT && customTypes.IBCTransferONFT.typeUrl;
-                        const granterInfo = {};
-                        if (props.allowances && props.allowances.length) {
-                            props.allowances.map((val) => {
-                                if (val && val.allowance && val.allowance.spend_limit && val.allowance.spend_limit.length) {
-                                    const amount = val.allowance.spend_limit.find((val1) => (val1.denom === config.COIN_MINIMAL_DENOM) &&
-                                        val1.amount && (val1.amount > 0.1 * (10 ** config.COIN_DECIMALS)));
-                                    if (amount && amount.amount) {
-                                        granterInfo.granter = val.granter;
-                                        granterInfo.amount = amount.amount / 10 ** config.COIN_DECIMALS;
-                                    }
-                                } else if (val && val.allowance && val.allowance.allowed_messages &&
-                                    type && val.allowance.allowed_messages.indexOf(type) > -1) {
-                                    if (val && val.allowance && val.allowance.allowance &&
-                                        val.allowance.allowance.spend_limit && val.allowance.allowance.spend_limit.length) {
-                                        const amount = val.allowance.allowance.spend_limit.find((val1) => (val1.denom === config.COIN_MINIMAL_DENOM) &&
-                                            val1.amount && (val1.amount > 0.1 * (10 ** config.COIN_DECIMALS)));
-                                        if (amount && amount.amount) {
-                                            granterInfo.granter = val.granter;
-                                            granterInfo.amount = amount.amount / 10 ** config.COIN_DECIMALS;
-                                        }
-                                    }
+                const type = customTypes && customTypes.IBCTransferONFT && customTypes.IBCTransferONFT.typeUrl;
+                const granterInfo = {};
+                if (props.allowances && props.allowances.length) {
+                    props.allowances.map((val) => {
+                        if (val && val.allowance && val.allowance.spend_limit && val.allowance.spend_limit.length) {
+                            const amount = val.allowance.spend_limit.find((val1) => (val1.denom === config.COIN_MINIMAL_DENOM) &&
+                                val1.amount && (val1.amount > 0.1 * (10 ** config.COIN_DECIMALS)));
+                            if (amount && amount.amount) {
+                                granterInfo.granter = val.granter;
+                                granterInfo.amount = amount.amount / 10 ** config.COIN_DECIMALS;
+                            }
+                        } else if (val && val.allowance && val.allowance.allowed_messages &&
+                            type && val.allowance.allowed_messages.indexOf(type) > -1) {
+                            if (val && val.allowance && val.allowance.allowance &&
+                                val.allowance.allowance.spend_limit && val.allowance.allowance.spend_limit.length) {
+                                const amount = val.allowance.allowance.spend_limit.find((val1) => (val1.denom === config.COIN_MINIMAL_DENOM) &&
+                                    val1.amount && (val1.amount > 0.1 * (10 ** config.COIN_DECIMALS)));
+                                if (amount && amount.amount) {
+                                    granterInfo.granter = val.granter;
+                                    granterInfo.amount = amount.amount / 10 ** config.COIN_DECIMALS;
                                 }
-
-                                return null;
-                            });
+                            }
                         }
 
-                        if ((granterInfo && granterInfo.granter && !balance) ||
-                            (granterInfo && granterInfo.granter && balance && (balance < 0.1))) {
-                            Tx.fee.granter = granterInfo.granter;
-                        }
+                        return null;
+                    });
+                }
 
-                        props.sign(chainConfig, Tx, ibcAddress, (result, txBytes) => {
-                            if (result) {
-                                const data = {
-                                    tx_bytes: txBytes,
-                                    mode: 'BROADCAST_MODE_SYNC',
-                                };
-                                props.txSignAndBroadCast(chainConfig, data, (res1) => {
-                                    if (res1 && res1.txhash) {
-                                        let counter = 0;
-                                        const time = setInterval(() => {
-                                            props.fetchTxHash(chainConfig, res1.txhash, (hashResult) => {
-                                                if (hashResult) {
-                                                    if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                                        props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
-                                                        props.setTransferFail();
-                                                        props.setTxHashInProgressFalse();
-                                                        clearInterval(time);
+                if ((granterInfo && granterInfo.granter && !balance) ||
+                    (granterInfo && granterInfo.granter && balance && (balance < 0.1))) {
+                    Tx.fee.granter = granterInfo.granter;
+                }
 
-                                                        return;
-                                                    }
+                props.sign(chainConfig, Tx, ibcAddress, (result, txBytes) => {
+                    if (result) {
+                        const data = {
+                            tx_bytes: txBytes,
+                            mode: 'BROADCAST_MODE_SYNC',
+                        };
+                        props.txSignAndBroadCast(chainConfig, data, (res1) => {
+                            if (res1 && res1.txhash) {
+                                let counter = 0;
+                                const time = setInterval(() => {
+                                    props.fetchTxHash(chainConfig, res1.txhash, (hashResult) => {
+                                        if (hashResult) {
+                                            if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
+                                                props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
+                                                props.setTransferFail();
+                                                props.setTxHashInProgressFalse();
+                                                clearInterval(time);
 
-                                                    props.setTransferSuccess(res1.txhash);
-                                                    props.fetchBalance(props.address);
-                                                    props.fetchCollectionNFTS(props.rpcClient, props.chainValue, props.router.params.id);
-                                                    props.setTxHashInProgressFalse();
-                                                    clearInterval(time);
-                                                }
+                                                return;
+                                            }
 
-                                                counter++;
-                                                if (counter === 3) {
-                                                    if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                                        props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
-                                                        props.setTransferFail();
-                                                        props.setTxHashInProgressFalse();
-                                                        clearInterval(time);
+                                            props.setTransferSuccess(res1.txhash);
+                                            props.fetchBalance(props.address);
+                                            props.fetchCollectionNFTS(props.rpcClient, props.chainValue, props.router.params.id);
+                                            props.setTxHashInProgressFalse();
+                                            clearInterval(time);
+                                        }
 
-                                                        return;
-                                                    }
+                                        counter++;
+                                        if (counter === 3) {
+                                            if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
+                                                props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
+                                                props.setTransferFail();
+                                                props.setTxHashInProgressFalse();
+                                                clearInterval(time);
 
-                                                    props.handleClose();
-                                                    props.showMessage(variables[props.lang]['check_later']);
-                                                    props.setTxHashInProgressFalse();
-                                                    clearInterval(time);
-                                                }
-                                            });
-                                        }, 5000);
-                                    } else {
-                                        props.setTransferFail();
-                                    }
-                                });
+                                                return;
+                                            }
+
+                                            props.handleClose();
+                                            props.showMessage(variables[props.lang]['check_later']);
+                                            props.setTxHashInProgressFalse();
+                                            clearInterval(time);
+                                        }
+                                    });
+                                }, 5000);
                             } else {
                                 props.setTransferFail();
                             }
                         });
+                    } else {
+                        props.setTransferFail();
                     }
                 });
             }

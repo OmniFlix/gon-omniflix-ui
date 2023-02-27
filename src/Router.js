@@ -19,7 +19,7 @@ const routes = [{
     path: '/:chain/collection/:id',
     component: SingleCollection,
 }, {
-    path: '/:chain/create-collection',
+    path: '/create-collection',
     component: CreateCollection,
 }, {
     path: '/create-collection/:collectionID',

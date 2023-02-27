@@ -332,15 +332,12 @@ export const fetchAllCollections = (rpcClient, chain, cb) => (dispatch) => {
             };
         }
 
-        console.log('1111111', request, queryService, chain, QueryClientImpl);
         queryService.Denoms(request).then((queryResult) => {
-            console.log('55555', queryResult);
             dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain));
             if (cb) {
                 cb(queryResult && queryResult.denoms);
             }
         }).catch((error) => {
-            console.log('222222', error);
             dispatch(fetchAllCollectionsError(
                 error.response &&
                 error.response.data &&

@@ -5,7 +5,6 @@ import variables from '../../utils/variables';
 import { setCollection } from '../../actions/mintNFT';
 import CreatableSelectField from '../../components/SelectField/CreatableSelectField';
 import { fetchCollections } from '../../actions/collections';
-import { DEFAULT_SKIP } from '../../config';
 
 class CollectionSelectField extends Component {
     componentDidMount () {
@@ -13,14 +12,20 @@ class CollectionSelectField extends Component {
             return;
         }
 
-        if (this.props.address !== '' && this.props.options && (this.props.options.length === 0)) {
-            this.props.fetch('omniflix', this.props.address, DEFAULT_SKIP, 500);
+        if (this.props.address !== '' && this.props.options && (this.props.options.length === 0) &&
+            this.props.rpcClient && this.props.rpcClient.omniflix) {
+            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address);
         }
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if (this.props.address && (pp.address !== this.props.address)) {
-            this.props.fetch('omniflix', this.props.address, DEFAULT_SKIP, 500);
+        if (this.props.address && (pp.address !== this.props.address) && this.props.rpcClient &&
+            this.props.rpcClient.omniflix) {
+            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address);
+        }
+        if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient && this.props.rpcClient.omniflix &&
+            this.props.address !== '' && this.props.options && (this.props.options.length === 0)) {
+            this.props.fetch(this.props.rpcClient, 'omniflix', this.props.address);
         }
     }
 
@@ -43,6 +48,8 @@ CollectionSelectField.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     options: PropTypes.array.isRequired,
+    rpcClient: PropTypes.any.isRequired,
+    rpcClientInProgress: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
 };
@@ -54,6 +61,8 @@ const stateToProps = (state) => {
         lang: state.language,
         value: state.mintNFT.collection.value,
         options: state.mintNFT.collection.options,
+        rpcClient: state.query.rpcClient.value,
+        rpcClientInProgress: state.query.rpcClient.inProgress,
     };
 };
 

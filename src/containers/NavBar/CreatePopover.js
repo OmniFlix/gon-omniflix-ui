@@ -38,12 +38,12 @@ const CreatePopover = (props) => {
 
     const handleShowUploadDialog = () => {
         // props.showUploadFilesDialog();
-        props.router.navigate('/' + props.chainValue + '/mint');
+        props.router.navigate('/mint');
         setOpen(false);
     };
 
     const handleNFTCollection = () => {
-        props.router.navigate('/' + props.chainValue + '/create-collection');
+        props.router.navigate('/create-collection');
         setOpen(false);
     };
 

@@ -114,7 +114,7 @@ const NFTsTable = (props) => {
     }];
 
     let list = props.collection && props.collection.onfts;
-    if (props.chainValue === 'iris') {
+    if (props.chainValue === 'iris' || props.chainValue === 'uptick') {
         list = props.collection && props.collection.nfts;
     }
 
