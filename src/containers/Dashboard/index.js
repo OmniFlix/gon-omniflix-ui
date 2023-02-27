@@ -9,9 +9,11 @@ import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
 import { fetchAllCollections, fetchCollections } from '../../actions/collections';
 import withRouter from '../../components/WithRouter';
-import AllCollectionsTable from './Tables/AllCollectionsTable';
 import { setTabValue } from '../../actions/dashboard';
 import { setRpcClient } from '../../actions/query';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
+import { list } from '../../utils/defaultOptions';
+import AllCollectionsTable from './Tables/AllCollectionsTable';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -24,30 +26,30 @@ class Dashboard extends Component {
         if (this.props.tabValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '' && this.props.rpcClient &&
             this.props.rpcClient[this.props.chainValue]) {
-            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
+            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         } else if (this.props.tabValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
-            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, 0, 10);
+            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
     componentDidUpdate (pp, ps, ss) {
         if (this.props.address !== '' && pp.address !== this.props.address && this.props.rpcClient &&
             this.props.rpcClient[this.props.chainValue]) {
-            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
+            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
         if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient &&
             this.props.rpcClient[this.props.chainValue]) {
             if (this.props.tabValue === 'all_collections') {
-                this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, 0, 10);
+                this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
             } else if (this.props.tabValue === 'my_collections' && this.props.address !== '') {
-                this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
+                this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
         }
     }
 
     handleCreateCollection () {
-        this.props.router.navigate('/create-collection');
+        this.props.router.navigate('/' + this.props.chainValue + '/create-collection');
     }
 
     render () {
@@ -64,7 +66,14 @@ class Dashboard extends Component {
                     {this.props.tabValue === 'my_collections' &&
                         <div className="data_table collection_data_table"><CollectionsTable/></div>}
                     {this.props.tabValue === 'all_collections' &&
-                        <div className="data_table"><AllCollectionsTable/></div>}
+                        <div className="data_table">
+                            {list.map((item, index) => {
+                                return (
+                                    item && item.value && (item.value === this.props.chainValue) &&
+                                    <AllCollectionsTable key={index}/>
+                                );
+                            })}
+                        </div>}
                     {this.props.tabValue === 'nfts' &&
                         <div className="data_table nfts_table"><NFTsTable/></div>}
                     {this.props.tabValue === 'ibc_nfts' &&

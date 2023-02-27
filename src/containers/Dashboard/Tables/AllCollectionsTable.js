@@ -34,21 +34,33 @@ const AllCollectionsTable = (props) => {
             handleRedirect('', id);
         },
         onChangePage: (currentPage) => {
+            if (props.chainValue && props.chainValue !== 'omniflix') {
+                return;
+            }
+
             if (props.chainValue && !props.list[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
                 return;
             }
 
-            props.fetchAllCollections(props.rpcClient, props.chainValue, props.limit * currentPage, props.limit);
+            if (props.list[props.chainValue] && props.list[props.chainValue].limit) {
+                props.fetchAllCollections(props.rpcClient, props.chainValue, props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit);
+            }
         },
         onChangeRowsPerPage: (numberOfRows) => {
+            if (props.chainValue && props.chainValue !== 'omniflix') {
+                return;
+            }
+
             if (props.chainValue && !props.list[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
                 return;
             }
 
-            props.fetchAllCollections(props.rpcClient, props.chainValue, props.skip, numberOfRows);
+            if (props.list[props.chainValue] && props.list[props.chainValue].skip) {
+                props.fetchAllCollections(props.rpcClient, props.chainValue, props.list[props.chainValue].skip, numberOfRows);
+            }
         },
         responsive: 'standard',
-        serverSide: true,
+        serverSide: props.chainValue && props.chainValue === 'omniflix',
         pagination: true,
         selectableRows: 'none',
         download: false,
@@ -58,11 +70,16 @@ const AllCollectionsTable = (props) => {
         search: false,
     };
 
+    if (props.chainValue && props.chainValue === 'omniflix' && props.list && props.list[props.chainValue]) {
+        options.page = (props.list[props.chainValue].skip / 10);
+        options.count = props.list[props.chainValue].total;
+    }
+
     const handleRedirect = (event, id) => {
         event && event.stopPropagation();
         props.setClearCollection();
         const updatedID = id.replaceAll('/', '_');
-        props.router.navigate(`/collection/${updatedID}`);
+        props.router.navigate(`/${props.chainValue}/collection/${updatedID}`);
     };
 
     const columns = [{
@@ -178,7 +195,6 @@ AllCollectionsTable.propTypes = {
     fetchAllCollections: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
-    limit: PropTypes.number.isRequired,
     list: PropTypes.object.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
@@ -186,8 +202,6 @@ AllCollectionsTable.propTypes = {
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
     setClearCollection: PropTypes.func.isRequired,
-    skip: PropTypes.number.isRequired,
-    total: PropTypes.number.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -196,10 +210,6 @@ const stateToProps = (state) => {
         inProgress: state.collections.allCollectionSList.inProgress,
         lang: state.language,
         list: state.collections.allCollectionSList.value,
-
-        total: state.collections.allCollectionSList.total,
-        skip: state.collections.allCollectionSList.skip,
-        limit: state.collections.allCollectionSList.limit,
 
         rpcClient: state.query.rpcClient.value,
         rpcClientInProgress: state.query.rpcClient.inProgress,

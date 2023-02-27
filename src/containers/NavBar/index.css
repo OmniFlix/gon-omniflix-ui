@@ -28,6 +28,10 @@
     height: 40px;
 }
 
+.navbar .right_section .claim_button.claimed {
+    opacity: 0.4;
+}
+
 .navbar .right_section .claim_button svg {
     margin-right: 10px;
 }

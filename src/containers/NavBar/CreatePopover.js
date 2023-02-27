@@ -84,6 +84,7 @@ const CreatePopover = (props) => {
 };
 
 CreatePopover.propTypes = {
+    chainValue: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
     showUploadFilesDialog: PropTypes.func.isRequired,
@@ -95,6 +96,7 @@ CreatePopover.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 

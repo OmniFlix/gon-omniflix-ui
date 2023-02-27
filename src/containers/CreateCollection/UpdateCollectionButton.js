@@ -124,7 +124,7 @@ const UpdateCollectionButton = (props) => {
                                         props.fetchBalance(props.address);
                                         props.setTxHashInProgressFalse();
                                         props.hideCollectionConfirmDialog();
-                                        props.router.navigate('/dashboard');
+                                        props.router.navigate('/' + props.chainValue + '/dashboard');
                                         props.setTabValue(props.tabValue);
                                         clearInterval(time);
                                     }

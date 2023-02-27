@@ -5,12 +5,14 @@ import './index.css';
 import { setChainValue, setTabValue } from '../../../actions/dashboard';
 import { list } from '../../../utils/defaultOptions';
 import { Button } from '@mui/material';
-import { DEFAULT_SKIP } from '../../../config';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { setRpcClient } from '../../../actions/query';
+import withRouter from '../../../components/WithRouter';
 
 const ChainPopover = (props) => {
     const handleChange = (value) => {
+        props.router.navigate(`/${value}/dashboard`);
         if (props.rpcClient && props.rpcClient[value]) {
             handleFetch(value, props.rpcClient[value]);
         } else {
@@ -25,14 +27,14 @@ const ChainPopover = (props) => {
             props.setChainValue(value);
             props.setTabValue('all_collections');
             if (!props.allCollectionsInProgress && value && !props.allCollections[value]) {
-                props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, 500);
+                props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
 
             return;
         }
 
         if (props.tabValue === 'all_collections' && !props.allCollectionsInProgress && value && !props.allCollections[value]) {
-            props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, 500);
+            props.fetchAllCollections(rpcClient, value, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
         props.setChainValue(value);
@@ -66,6 +68,9 @@ ChainPopover.propTypes = {
     setRpcClient: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -89,4 +94,4 @@ const actionsToProps = {
     setTabValue,
 };
 
-export default connect(stateToProps, actionsToProps)(ChainPopover);
+export default withRouter(connect(stateToProps, actionsToProps)(ChainPopover));

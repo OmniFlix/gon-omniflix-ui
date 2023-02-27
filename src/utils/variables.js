@@ -14,6 +14,7 @@ const variables = {
         asset_via_upload_info: 'create audio, video, document NFTs by uploading files',
         faucet: 'Faucet',
         claim_test_tokens: 'Claim Test Tokens',
+        claimed: 'Claimed',
 
         // Home
         all_collections: 'All Collections',

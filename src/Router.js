@@ -13,10 +13,10 @@ const routes = [{
     path: '/about',
     component: About,
 }, {
-    path: '/dashboard',
+    path: '/:chain/dashboard',
     component: Dashboard,
 }, {
-    path: '/collection/:id',
+    path: '/:chain/collection/:id',
     component: SingleCollection,
 }, {
     path: '/create-collection',

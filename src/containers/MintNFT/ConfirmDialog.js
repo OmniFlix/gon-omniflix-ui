@@ -175,7 +175,7 @@ const ConfirmMintNFTDialog = (props) => {
                                         props.handleClose();
                                         props.fetchBalance(props.address);
                                         props.setTxHashInProgressFalse();
-                                        props.router.navigate('/dashboard');
+                                        props.router.navigate('/' + props.chainValue + '/dashboard');
                                         props.setEmptyValue();
                                         clearInterval(time);
                                     }
@@ -426,7 +426,7 @@ const ConfirmMintNFTDialog = (props) => {
     const handleRedirect = () => {
         props.setEmptyValue();
         props.setBulkMint(false);
-        props.router.navigate('/dashboard');
+        props.router.navigate('/' + props.chainValue + '/dashboard');
     };
 
     let royalty = 0;
@@ -544,6 +544,7 @@ ConfirmMintNFTDialog.propTypes = {
     assetTitle: PropTypes.string.isRequired,
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
+    chainValue: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     extensibleStatus: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
@@ -597,6 +598,7 @@ const stateToProps = (state) => {
         signInProgress: state.account.bc.protoBufSign.inProgress,
         transferStatus: state.mintNFT.transferStatus,
         txHashInProgress: state.account.bc.txHash.inProgress,
+        chainValue: state.dashboard.chainValue.value,
 
         description: state.mintNFT.description.value,
         assetTitle: state.mintNFT.assetTitle.value,

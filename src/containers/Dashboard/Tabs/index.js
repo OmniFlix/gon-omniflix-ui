@@ -6,6 +6,7 @@ import './index.css';
 import { setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 
 class HeaderTabs extends Component {
     constructor (props) {
@@ -23,12 +24,12 @@ class HeaderTabs extends Component {
 
         if (newValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
-            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address);
+            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
         if (newValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue]) {
-            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue);
+            this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
@@ -45,7 +46,13 @@ class HeaderTabs extends Component {
                 <div className="tabs_content">
                     <Tab
                         className={'tab ' + (this.props.tabValue === 'all_collections' ? 'active_tab' : '')}
-                        label={<p className="text">{variables[this.props.lang]['all_collections']}</p>}
+                        label={<p className="text">
+                            {variables[this.props.lang]['all_collections']}
+                            {this.props.chainValue === 'omniflix' && this.props.allCollections &&
+                            this.props.allCollections[this.props.chainValue] && this.props.allCollections[this.props.chainValue].total
+                                ? ` (${this.props.allCollections[this.props.chainValue].total})`
+                                : null}
+                        </p>}
                         value="all_collections"
                         onClick={() => this.handleChange('all_collections')}
                         {...a11yProps(0)} />

@@ -131,10 +131,14 @@ export const fetchCollections = (rpcClient, chain, address, cb) => (dispatch) =>
     }
 
     (async () => {
-        const queryService = new QueryClientImpl(client);
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+
         let request = null;
 
-        if (chain === 'iris') {
+        if (chain === 'iris' || chain === 'uptick') {
             return;
         } else {
             request = {
@@ -313,10 +317,14 @@ export const fetchAllCollections = (rpcClient, chain, skip, limit, cb) => (dispa
     }
 
     (async () => {
-        const queryService = new QueryClientImpl(client);
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+
         let request = null;
 
-        if (chain === 'iris') {
+        if (chain === 'iris' || chain === 'uptick') {
             request = {
                 pagination: undefined,
             };
@@ -326,17 +334,15 @@ export const fetchAllCollections = (rpcClient, chain, skip, limit, cb) => (dispa
                 pagination: {
                     key: new Uint8Array(),
                     countTotal: true,
-                    limit: 10,
-                    offset: 0,
+                    limit: limit,
+                    offset: skip,
                 },
-                // pagination: undefined,
             };
         }
 
         queryService.Denoms(request).then((queryResult) => {
             dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain,
-                skip, limit,
-                (queryResult.pagination && queryResult.pagination.total)));
+                skip, limit, (queryResult.pagination && queryResult.pagination.total)));
             if (cb) {
                 cb(queryResult && queryResult.denoms);
             }
