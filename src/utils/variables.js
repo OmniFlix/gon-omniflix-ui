@@ -104,7 +104,7 @@ const variables = {
         ibc_native_transfer: 'IBC Native Transfer',
         ibc_transfer: 'IBC Transfer',
         native_transfer: 'Native Transfer',
-        transfer_success: 'IBC Transfer fo your NFT is now successful',
+        transfer_success: 'IBC Transfer of your NFT is now successful',
         tx_hash: 'Transaction Hash',
         yay: 'Yay!',
         transfer_failed: 'IBC Transfer not successful',

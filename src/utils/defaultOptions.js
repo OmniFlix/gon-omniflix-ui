@@ -1,26 +1,28 @@
 import IrisIcon from '../assets/chains/iris.svg';
 import OmniIcon from '../assets/chains/omniflix.svg';
-import StargazeIcon from '../assets/chains/stargaze.svg';
-import JunoIcon from '../assets/chains/juno.svg';
 import UpTickIcon from '../assets/chains/uptick.svg';
 
 export const list = [{
     icon: OmniIcon,
     name: 'OmniFlix',
     value: 'omniflix',
-}, {
-    icon: StargazeIcon,
-    name: 'Stargaze',
-    value: 'stargaze',
-}, {
+},
+//     {
+//     icon: StargazeIcon,
+//     name: 'Stargaze',
+//     value: 'stargaze',
+// },
+{
     icon: IrisIcon,
     name: 'IrisNet',
     value: 'iris',
-}, {
-    icon: JunoIcon,
-    name: 'Juno',
-    value: 'juno',
-}, {
+},
+//     {
+//     icon: JunoIcon,
+//     name: 'Juno',
+//     value: 'juno',
+// },
+{
     icon: UpTickIcon,
     name: 'Uptick',
     value: 'uptick',
