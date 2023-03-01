@@ -6,7 +6,9 @@ import Select from '@mui/material/Select';
 import { list } from '../../../utils/defaultOptions';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setChainID } from '../../../actions/collection';
+import { setChainID, setTransferAddress } from '../../../actions/collection';
+import { ChainsList } from '../../../chains';
+import { bech32 } from 'bech32';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -24,6 +26,14 @@ const MenuProps = {
 const ChainSelectField = (props) => {
     const handleChange = (event) => {
         props.onChange(event.target.value);
+        if (props.chain === event.target.value) {
+            return;
+        }
+
+        const prefix = event.target.value && ChainsList[event.target.value] && ChainsList[event.target.value].PREFIX;
+        const address = props.address && bech32.decode(props.address);
+        const convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+        props.setTransferAddress(convertedAddress);
     };
 
     return (
@@ -50,19 +60,25 @@ const ChainSelectField = (props) => {
 };
 
 ChainSelectField.propTypes = {
+    address: PropTypes.string.isRequired,
+    chain: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
+    setTransferAddress: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
+        address: state.account.wallet.connection.address,
+        chain: state.dashboard.chainValue.value,
         lang: state.language,
         value: state.collection.chainID,
     };
 };
 
 const actionsToProps = {
+    setTransferAddress,
     onChange: setChainID,
 };
 
