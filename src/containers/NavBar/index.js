@@ -25,7 +25,11 @@ class NavBar extends Component {
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
             const route = this.props.router.location && this.props.router.location.pathname &&
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
-            if (route === 'iris' || route === 'uptick' || route === 'stargaze' || route === 'juno') {
+            if (route === 'stargaze' || route === 'juno') {
+                return;
+            }
+
+            if (route === 'iris' || route === 'uptick') {
                 this.props.setChainValue(route);
                 this.props.setRpcClient(route);
             } else {

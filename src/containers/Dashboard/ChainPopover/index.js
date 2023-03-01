@@ -7,11 +7,20 @@ import { list } from '../../../utils/defaultOptions';
 import { Button } from '@mui/material';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
-import { setRpcClient } from '../../../actions/query';
+import { fetchAllCollectionsWasm, setRpcClient } from '../../../actions/query';
 import withRouter from '../../../components/WithRouter';
+import { ChainsList } from '../../../chains';
+import { initializeChainIBC } from '../../../actions/account/wallet';
 
 const ChainPopover = (props) => {
     const handleChange = (value) => {
+        const config = ChainsList && ChainsList[value];
+        if (config && config.cosmwasm) {
+            props.router.navigate(`/${value}/dashboard`);
+            props.fetchAllCollectionsWasm(config);
+            return;
+        }
+
         props.router.navigate(`/${value}/dashboard`);
         if (props.rpcClient && props.rpcClient[value]) {
             handleFetch(value, props.rpcClient[value]);
@@ -61,7 +70,9 @@ ChainPopover.propTypes = {
     collections: PropTypes.object.isRequired,
     collectionsInProgress: PropTypes.bool.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
+    fetchAllCollectionsWasm: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    initializeChainIBC: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setChainValue: PropTypes.func.isRequired,
@@ -89,6 +100,8 @@ const stateToProps = (state) => {
 const actionsToProps = {
     fetchCollections,
     fetchAllCollections,
+    fetchAllCollectionsWasm,
+    initializeChainIBC,
     setChainValue,
     setRpcClient,
     setTabValue,
