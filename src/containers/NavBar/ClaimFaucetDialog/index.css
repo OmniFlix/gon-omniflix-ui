@@ -89,3 +89,48 @@
 .claim_faucet_dialog_content .card .right_section button:disabled {
     opacity: 0.5;
 }
+
+.claim_faucet_dialog .discord_links {
+    margin-top: 30px;
+}
+
+.claim_faucet_dialog .discord_links > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: #2D9CDB;
+    margin-bottom: 20px;
+    padding: 0 40px;
+}
+
+.claim_faucet_dialog .discord_links > div button {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-right: 10px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+}
+
+.claim_faucet_dialog .discord_links > div button:last-child {
+    margin-right: 0;
+}
+
+.claim_faucet_dialog .discord_links > div button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.claim_faucet_dialog .discord_links > div button p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    text-decoration-line: underline;
+    color: #FFFFFF;
+    text-transform: initial;
+}
