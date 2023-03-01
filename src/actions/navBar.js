@@ -7,8 +7,8 @@ import {
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
     FAUCET_CLAIM_FETCH_SUCCESS,
-    FAUCET_SUCCESS_SET,
-    NAV_TABS_SET,
+    FAUCET_SUCCESS_SET, HIDE_SIDE_BAR_SET,
+    NAV_TABS_SET, SHOW_SIDE_BAR_SET,
 } from '../constants/navBar';
 import Axios from 'axios';
 import { urlAddFaucet, urlClaimFaucet } from '../constants/url';
@@ -36,6 +36,18 @@ export const hideClaimFaucetDialog = () => {
 export const setFaucetSuccess = () => {
     return {
         type: FAUCET_SUCCESS_SET,
+    };
+};
+
+export const showSideBar = () => {
+    return {
+        type: SHOW_SIDE_BAR_SET,
+    };
+};
+
+export const hideSideBar = () => {
+    return {
+        type: HIDE_SIDE_BAR_SET,
     };
 };
 

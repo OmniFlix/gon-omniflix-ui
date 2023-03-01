@@ -165,12 +165,20 @@ const variables = {
         welcome_to_gon: 'Welcome to Game of NFTs',
         welcome_gon_content: 'Game of NFTs (GoN) is an event with public incentivized testnets and a hackathon where you can test the Interchain NFTs and build your NFT applications.',
         connect_view_nfts: 'Connect to view NFTs',
-        connect_view_content: 'lorem ipsum dores asd sadasdj sadad asdsad sad lipsum dores',
-        create_nfts: 'Create NFTs in minutes',
-        create_nfts_content: 'lorem ipsum dores asd sadasdj sadad asdsad sad lipsum dores',
+        connect_view_content: 'First, connect your web3 account via Keplr to view NFTs & collections',
+        create_nfts: 'Create Collection & NFTs',
+        create_nfts_content: 'You can create collections and mint NFTs in few minutes via user interface',
         transfer_nfts: 'Transfer NFTs to other chains',
-        transfer_nfts_content: 'lorem ipsum dores asd sadasdj sadad asdsad sad lipsum dores asdsada sadsadasd',
+        transfer_nfts_content: 'Feel the power of Interchain NFTs by transferring NFTs to other chains via IBC ',
         powered_by: 'powered by',
+
+        partners_sponsors: 'Partners and Sponsors',
+        ecosystem_partners: 'Ecosystem Partners',
+        institution_partner: 'Institution Partners',
+        tech_initiator: 'Technology Initiator',
+        judges_mentors: 'Judges & Mentors',
+
+        discord_url_content: 'Below are the discord channel links where you can claim faucet',
     },
 };
 

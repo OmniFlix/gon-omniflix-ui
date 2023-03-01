@@ -10,13 +10,14 @@ import image3 from '../../assets/about/3.svg';
 import ConnectButton from '../NavBar/ConnectButton';
 import '../NavBar/index.css';
 import omniflixIcon from '../../assets/omniFlix.svg';
+import Partners from './Partners';
 
 const About = (props) => {
     return (
         <div className="about_page scroll_bar">
             <div className="row1">
                 <div className="left_section">
-                    <h2>{variables[props.lang]['welcome_to_gon']}</h2>
+                    {/* <h2>{variables[props.lang]['welcome_to_gon']}</h2> */}
                     <p>{variables[props.lang]['welcome_gon_content']}</p>
                     {props.address === '' && !localStorage.getItem('gon_of_address') &&
                         <ConnectButton/>}
@@ -29,7 +30,7 @@ const About = (props) => {
                 <div className="section">
                     <div>
                         <img alt="number" src={image1}/>
-                        <h3>{variables[props.lang]['connect_view_nfts']}</h3>
+                        <h3>{variables[props.lang].connect}</h3>
                     </div>
                     <p>{variables[props.lang]['connect_view_content']}</p>
                 </div>
@@ -47,6 +48,10 @@ const About = (props) => {
                     </div>
                     <p>{variables[props.lang]['transfer_nfts_content']}</p>
                 </div>
+            </div>
+            <div className="partners_sponsors">
+                <h2>{variables[props.lang]['partners_sponsors']}</h2>
+                <Partners />
             </div>
             <div className="footer">
                 <p>{variables[props.lang].powered_by}</p>

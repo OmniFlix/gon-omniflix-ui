@@ -8,8 +8,8 @@ import {
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
     FAUCET_CLAIM_FETCH_SUCCESS,
-    FAUCET_SUCCESS_SET,
-    NAV_TABS_SET,
+    FAUCET_SUCCESS_SET, HIDE_SIDE_BAR_SET,
+    NAV_TABS_SET, SHOW_SIDE_BAR_SET,
 } from '../constants/navBar';
 
 const tabValue = (state = {
@@ -110,9 +110,21 @@ const faucetDialog = (state = {
     }
 };
 
+const show = (state = false, action) => {
+    switch (action.type) {
+    case SHOW_SIDE_BAR_SET:
+        return true;
+    case HIDE_SIDE_BAR_SET:
+        return false;
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     tabValue,
     claimFaucetDialog,
     claimFaucet,
     faucetDialog,
+    show,
 });
