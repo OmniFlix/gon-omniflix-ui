@@ -22,13 +22,13 @@ export const list = [{
     name: 'Uptick',
     value: 'uptick',
 }, {
-    icon: OsmoIcon,
-    name: 'Osmosis',
-    value: 'osmosis',
-}, {
     icon: JunoIcon,
     name: 'Juno',
     value: 'juno',
+}, {
+    icon: OsmoIcon,
+    name: 'Osmosis',
+    value: 'osmosis',
 }];
 
 export const schemaList = [{
