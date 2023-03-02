@@ -64,6 +64,7 @@ const ChainPopover = (props) => {
                 <Button
                     key={index}
                     className={props.chain === item.value ? 'active_item list_item' : 'list_item'}
+                    disabled={item.value === 'osmosis' || item.value === 'juno'}
                     onClick={() => handleChange(item.value)}>
                     <img alt={item.icon} src={item.icon}/>
                     {item.name}

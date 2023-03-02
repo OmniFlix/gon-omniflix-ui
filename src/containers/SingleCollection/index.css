@@ -72,6 +72,7 @@
     flex-direction: column;
     align-items: center;
     flex: 1;
+    margin-top: 20px;
 }
 
 .single_collection .collection_section .section2 .row1 {
@@ -150,6 +151,9 @@
 
 .single_collection .collection_section .type {
     margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .single_collection .collection_section .chain_type {
@@ -166,6 +170,14 @@
 .single_collection .collection_section .ibc_chain_type {
     background: rgba(186, 255, 39, 0.1);
     color: #BAFF27;
+}
+
+.single_collection .collection_section .type .export_button {
+
+}
+
+.single_collection .collection_section .type .export_button img {
+    width: 24px;
 }
 
 @media (max-width: 960px) {
@@ -185,6 +197,7 @@
     .single_collection .collection_section .section2 {
         align-items: flex-start;
         margin-left: 20px;
+        margin-top: 0;
     }
 
     .single_collection .collection_section .section2 .row1,

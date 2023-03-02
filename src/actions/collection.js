@@ -12,7 +12,10 @@ import {
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     COLLECTION_NFT_S_FETCH_SUCCESS,
-    NFT_ID_SET,
+    COLLECTION_TRACE_FETCH_ERROR,
+    COLLECTION_TRACE_FETCH_IN_PROGRESS,
+    COLLECTION_TRACE_FETCH_SUCCESS,
+    NFT_ID_SET, TRACE_COLLECTION_SET,
     TRANSFER_ADDRESS_SET,
     TRANSFER_DIALOG_HIDE,
     TRANSFER_DIALOG_SHOW,
@@ -20,6 +23,9 @@ import {
     TRANSFER_SUCCESS_SET,
 } from '../constants/collection';
 import { ChainsList } from '../chains';
+import {
+    QueryClientImpl,
+} from '../registry/omniflix_custom_ts_types/gen/ibc/applications/nft_transfer/v1/query';
 
 export const showTransferDialog = (value, chain) => {
     return {
@@ -92,6 +98,14 @@ export const setNftID = (value) => {
     return {
         type: NFT_ID_SET,
         value,
+    };
+};
+
+export const setTraceCollection = (value, result) => {
+    return {
+        type: TRACE_COLLECTION_SET,
+        value,
+        result,
     };
 };
 
@@ -215,4 +229,53 @@ export const fetchClassTrace = (chain, hash, cb) => (dispatch) => {
                 cb(null);
             }
         });
+};
+
+const fetchCollectionTraceInProgress = () => {
+    return {
+        type: COLLECTION_TRACE_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchCollectionTraceSuccess = (value) => {
+    return {
+        type: COLLECTION_TRACE_FETCH_SUCCESS,
+        value,
+    };
+};
+
+const fetchCollectionTraceError = (message) => {
+    return {
+        type: COLLECTION_TRACE_FETCH_ERROR,
+        message,
+        variant: 'error',
+    };
+};
+
+export const fetchCollectionTrace = (rpcClient, chain, hash, cb) => (dispatch) => {
+    dispatch(fetchCollectionTraceInProgress());
+
+    const client = rpcClient && rpcClient[chain];
+
+    (async () => {
+        const queryService = new QueryClientImpl(client);
+
+        queryService.ClassTrace({ hash }).then((queryResult) => {
+            dispatch(fetchCollectionTraceSuccess(queryResult && queryResult.classTrace, chain));
+            if (cb) {
+                cb(queryResult && queryResult.classTrace);
+            }
+        }).catch((error) => {
+            dispatch(fetchCollectionTraceError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            if (cb) {
+                cb(null);
+            }
+        });
+    })();
 };

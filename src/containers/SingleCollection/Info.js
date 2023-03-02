@@ -6,6 +6,8 @@ import * as PropTypes from 'prop-types';
 import ImageOnLoad from '../../components/ImageOnLoad';
 import { ibcDescription, ibcName, ibcPreview, ibcSymbol } from '../../utils/ibcData';
 import { mediaReference } from '../../utils/ipfs';
+import exportIcon from '../../assets/export.png';
+import { Button } from '@mui/material';
 
 const Info = (props) => {
     let data = props.collection && props.collection.denom && props.collection.denom.data;
@@ -48,6 +50,10 @@ const Info = (props) => {
                         : <div className="chain_type native_chain_type">
                             {variables[props.lang].native}
                         </div>}
+                    {props.traceValue && props.traceResult && props.traceResult.baseClassId &&
+                    <Button className="export_button" onClick={() => props.handleExport(props.traceResult)}>
+                        <img alt="export" src={exportIcon} />
+                    </Button>}
                 </div>
                 <div className="row3">
                     {(props.collection && props.collection.denom && props.collection.denom.description) ||
@@ -60,8 +66,12 @@ const Info = (props) => {
 
 Info.propTypes = {
     address: PropTypes.string.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
+    handleExport: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    traceResult: PropTypes.object.isRequired,
+    traceValue: PropTypes.bool.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -69,6 +79,9 @@ const stateToProps = (state) => {
         address: state.account.wallet.connection.address,
         collection: state.collection.collection.value,
         lang: state.language,
+        chainValue: state.dashboard.chainValue.value,
+        traceValue: state.collection.redirectTrace.trace,
+        traceResult: state.collection.redirectTrace.result,
     };
 };
 

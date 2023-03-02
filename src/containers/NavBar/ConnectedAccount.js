@@ -6,12 +6,27 @@ import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import { setDisconnect } from '../../actions/account/wallet';
 import DisconnectIcon from '../../assets/disconnect.svg';
+import Popover from '@mui/material/Popover';
+import AccountPopover from './AccountPopover';
 
 const ConnectedAccount = (props) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const setDisconnect = () => {
         props.setDisconnect();
         localStorage.removeItem('gon_of_address');
     };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
     balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
@@ -19,7 +34,7 @@ const ConnectedAccount = (props) => {
     return (
         <>
             <div className="connected_account">
-                <div>
+                <div aria-describedby={id} onClick={handleClick}>
                     {props.balanceInProgress
                         ? <DotsLoading/>
                         : balance
@@ -42,6 +57,18 @@ const ConnectedAccount = (props) => {
                     <img alt="disconnect" src={DisconnectIcon}/>
                 </Button>
             </div>
+            <Popover
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                className="my_account_popover"
+                id={id}
+                open={open}
+                onClose={handleClose}>
+                <AccountPopover />
+            </Popover>
         </>
     );
 };

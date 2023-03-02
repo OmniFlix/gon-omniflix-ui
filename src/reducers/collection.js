@@ -11,7 +11,10 @@ import {
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     COLLECTION_NFT_S_FETCH_SUCCESS,
-    NFT_ID_SET,
+    COLLECTION_TRACE_FETCH_ERROR,
+    COLLECTION_TRACE_FETCH_IN_PROGRESS,
+    COLLECTION_TRACE_FETCH_SUCCESS,
+    NFT_ID_SET, TRACE_COLLECTION_SET,
     TRANSFER_ADDRESS_SET,
     TRANSFER_DIALOG_HIDE,
     TRANSFER_DIALOG_SHOW,
@@ -190,6 +193,61 @@ const classTrace = (state = {
     }
 };
 
+const collectionTrace = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case COLLECTION_TRACE_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case COLLECTION_TRACE_FETCH_SUCCESS: {
+        return {
+            ...state,
+            inProgress: false,
+            value: action.value,
+        };
+    }
+    case COLLECTION_TRACE_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case CLEAR_COLLECTION_SET:
+        return {
+            ...state,
+            value: {},
+        };
+
+    default:
+        return state;
+    }
+};
+
+const redirectTrace = (state = {
+    trace: false,
+    result: {},
+}, action) => {
+    switch (action.type) {
+    case TRACE_COLLECTION_SET:
+        return {
+            ...state,
+            trace: action.value,
+            result: action.result,
+        };
+    case CLEAR_COLLECTION_SET:
+        return {
+            ...state,
+            trace: false,
+            result: {},
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     collection,
     transferDialog,
@@ -198,4 +256,6 @@ export default combineReducers({
     address,
     nftID,
     classTrace,
+    collectionTrace,
+    redirectTrace,
 });
