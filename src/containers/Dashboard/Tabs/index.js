@@ -48,10 +48,13 @@ class HeaderTabs extends Component {
                         className={'tab ' + (this.props.tabValue === 'all_collections' ? 'active_tab' : '')}
                         label={<p className="text">
                             {variables[this.props.lang]['all_collections']}
-                            {this.props.chainValue === 'omniflix' && this.props.allCollections &&
-                            this.props.allCollections[this.props.chainValue] && this.props.allCollections[this.props.chainValue].total
-                                ? ` (${this.props.allCollections[this.props.chainValue].total})`
-                                : null}
+                            {this.props.chainValue === 'stargaze' && this.props.gqlAllCollections &&
+                            this.props.gqlAllCollections[this.props.chainValue] && this.props.gqlAllCollections[this.props.chainValue].total
+                                ? ` (${this.props.gqlAllCollections[this.props.chainValue].total})`
+                                : this.props.chainValue === 'omniflix' && this.props.allCollections &&
+                                this.props.allCollections[this.props.chainValue] && this.props.allCollections[this.props.chainValue].total
+                                    ? ` (${this.props.allCollections[this.props.chainValue].total})`
+                                    : null}
                         </p>}
                         value="all_collections"
                         onClick={() => this.handleChange('all_collections')}
@@ -84,6 +87,7 @@ HeaderTabs.propTypes = {
     collectionsInProgress: PropTypes.bool.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    gqlAllCollections: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setTabValue: PropTypes.func.isRequired,
@@ -98,6 +102,7 @@ const stateToProps = (state) => {
         collectionsInProgress: state.collections.collectionSList.inProgress,
         allCollections: state.collections.allCollectionSList.value,
         allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
+        gqlAllCollections: state.collections._gql.allCollectionSList.value,
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,

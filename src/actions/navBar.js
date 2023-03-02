@@ -7,8 +7,10 @@ import {
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
     FAUCET_CLAIM_FETCH_SUCCESS,
-    FAUCET_SUCCESS_SET, HIDE_SIDE_BAR_SET,
-    NAV_TABS_SET, SHOW_SIDE_BAR_SET,
+    FAUCET_SUCCESS_SET,
+    HIDE_SIDE_BAR_SET,
+    NAV_TABS_SET,
+    SHOW_SIDE_BAR_SET,
 } from '../constants/navBar';
 import Axios from 'axios';
 import { urlAddFaucet, urlClaimFaucet } from '../constants/url';

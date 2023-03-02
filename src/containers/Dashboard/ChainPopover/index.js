@@ -9,9 +9,27 @@ import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { setRpcClient } from '../../../actions/query';
 import withRouter from '../../../components/WithRouter';
+import { ChainsList } from '../../../chains';
+import { fetchGqlAllCollections } from '../../../actions/collections.gql';
+import { useLazyQuery } from '@apollo/client';
+import { GET_GQL_COLLECTIONS } from '../../../constants/collections.gql';
 
 const ChainPopover = (props) => {
+    const [getCollections] = useLazyQuery(GET_GQL_COLLECTIONS);
+
     const handleChange = (value) => {
+        const config = ChainsList && ChainsList[value];
+        if (config && config.GRAPHQL_URL) {
+            props.router.navigate(`/${value}/dashboard`);
+            props.fetchGqlAllCollections(() => getCollections({
+                variables: {
+                    offset: DEFAULT_SKIP,
+                    limit: DEFAULT_LIMIT,
+                },
+            }), value);
+            return;
+        }
+
         props.router.navigate(`/${value}/dashboard`);
         if (props.rpcClient && props.rpcClient[value]) {
             handleFetch(value, props.rpcClient[value]);
@@ -62,6 +80,7 @@ ChainPopover.propTypes = {
     collectionsInProgress: PropTypes.bool.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    fetchGqlAllCollections: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setChainValue: PropTypes.func.isRequired,
@@ -87,8 +106,9 @@ const stateToProps = (state) => {
 };
 
 const actionsToProps = {
-    fetchCollections,
     fetchAllCollections,
+    fetchCollections,
+    fetchGqlAllCollections,
     setChainValue,
     setRpcClient,
     setTabValue,

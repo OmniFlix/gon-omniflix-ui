@@ -65,19 +65,19 @@ const ClaimFaucetDialog = (props) => {
                     <p>{variables[props.lang]['discord_url_content']}</p>
                     <div>
                         <Button>
-                            <img alt="stargaze" src={StargazeIcon} />
+                            <img alt="stargaze" src={StargazeIcon}/>
                             <p>Stargaze</p>
                         </Button>
                         <Button>
-                            <img alt="irisNet" src={IrisIcon} />
+                            <img alt="irisNet" src={IrisIcon}/>
                             <p>IrisNet</p>
                         </Button>
                         <Button>
-                            <img alt="juno" src={JunoIcon} />
+                            <img alt="juno" src={JunoIcon}/>
                             <p>Juno</p>
                         </Button>
                         <Button>
-                            <img alt="uptick" src={UpTickIcon} />
+                            <img alt="uptick" src={UpTickIcon}/>
                             <p>Uptick</p>
                         </Button>
                     </div>
