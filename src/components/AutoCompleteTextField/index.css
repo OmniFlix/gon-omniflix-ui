@@ -1,0 +1,70 @@
+.auto_complete div[role='button'] {
+    background: #141414;
+    border-radius: 15px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    color: #BDBDBD;
+    padding: 5px 10px;
+    border: unset;
+}
+
+.auto_complete div[role='button'] > span {
+    padding: unset;
+}
+
+.auto_complete div[role='button'] > svg {
+    fill: #B7B7B7;
+    margin: 0 0 0 10px;
+    width: 16px;
+}
+
+.auto_complete.auto_complete_icon div[role='button'] {
+    background: unset;
+    border: unset;
+}
+
+div[role='presentation'] > div > ul > li[role='option'] {
+    padding: 12px 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    line-height: 23px;
+    color: #B7B7B7;
+    background: #141414;
+    text-align: left;
+}
+
+div[role='presentation'] > div > ul > li[role='option']:hover,
+div[role='presentation'] > div > ul > li[role='option'][aria-selected='true'] {
+    background: #1B1B1B;
+    color: #B7B7B7;
+}
+
+.tags_select_field > div > div {
+    margin: 0 3px;
+    max-width: 100%;
+}
+
+.auto_complete.tags_select_field input {
+    padding: 5px 40px 5px 10px !important;
+    border-radius: 50px;
+    border: 2px solid #353535;
+    width: 90px;
+    min-width: 90px;
+    flex: unset;
+}
+
+.tags_select_field input {
+    background: url('../../assets/createPage/add.png') no-repeat scroll 7px 7px;
+    background-position: calc(100% - 10px) 6px;
+    background-color: #353535;
+}
+
+.auto_complete.tags_select_field input:focus {
+    border: 2px solid #7645ff;
+    background-color: #141414;
+}
+
+.tags_select_field input::placeholder {
+    opacity: 1;
+}

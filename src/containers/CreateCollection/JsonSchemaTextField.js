@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import TextField from '../../components/TextField';
 import variables from '../../utils/variables';
@@ -8,16 +8,9 @@ import { Button, InputAdornment } from '@mui/material';
 import { customSchema, noSchema } from '../../utils/defaultOptions';
 import AddSchemaProperties from './AddSchemaProperties';
 import CopyButton from '../../components/CopyButton';
-import { fetchSchema, setCollectionJsonSchema, setJsonTabSwitch, setSchema } from '../../actions/collections';
+import { setCollectionJsonSchema, setJsonTabSwitch, setSchema } from '../../actions/collections';
 
 const JsonSchemaTextField = (props) => {
-    const {
-        fetchSchema,
-    } = props;
-    useEffect(() => {
-        fetchSchema();
-    }, [fetchSchema]);
-
     const handleChange = (value) => {
         props.onChange(value, true);
     };
@@ -42,24 +35,26 @@ const JsonSchemaTextField = (props) => {
                     <p className="title">{variables[props.lang]['json_schema_properties']}</p>
                     <p className="title_info">{variables[props.lang]['json_schema_properties_info']}</p>
                 </div>
-                <SelectField
-                    id="json-schema"
-                    name={variables[props.lang]['json_schema']}
-                    options={options}
-                    placeholder={variables[props.lang]['json_schema']}
-                    value={props.schema}
-                    onChange={handleJson}/>
-                <div className="tab_switch">
-                    <Button
-                        className={props.tabSwitch === 'visual' ? 'active' : ''}
-                        onClick={() => handleTabSwitch('visual')}>
-                        {variables[props.lang].visual}
-                    </Button>
-                    <Button
-                        className={props.tabSwitch === 'code' ? 'active' : ''}
-                        onClick={() => handleTabSwitch('code')}>
-                        {variables[props.lang].code}
-                    </Button>
+                <div className="upload_avatar field_width">
+                    <SelectField
+                        id="json-schema"
+                        name={variables[props.lang]['json_schema']}
+                        options={options}
+                        placeholder={variables[props.lang]['json_schema']}
+                        value={props.schema}
+                        onChange={handleJson}/>
+                    <div className="tab_switch">
+                        <Button
+                            className={props.tabSwitch === 'visual' ? 'active' : ''}
+                            onClick={() => handleTabSwitch('visual')}>
+                            {variables[props.lang].visual}
+                        </Button>
+                        <Button
+                            className={props.tabSwitch === 'code' ? 'active' : ''}
+                            onClick={() => handleTabSwitch('code')}>
+                            {variables[props.lang].code}
+                        </Button>
+                    </div>
                 </div>
             </div>
             {props.tabSwitch === 'code'
@@ -90,7 +85,6 @@ const JsonSchemaTextField = (props) => {
 };
 
 JsonSchemaTextField.propTypes = {
-    fetchSchema: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     schemas: PropTypes.array.isRequired,
     schemasInProgress: PropTypes.bool.isRequired,
@@ -117,7 +111,6 @@ const stateToProps = (state) => {
 
 const actionsToProps = {
     onChange: setCollectionJsonSchema,
-    fetchSchema,
     setSchema,
     setJsonTabSwitch,
 };

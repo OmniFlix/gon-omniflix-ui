@@ -7,7 +7,6 @@
     font-size: 18px;
     line-height: 23px;
     color: #696969;
-    border-radius: unset;
 }
 
 .text_field input::placeholder {
@@ -20,4 +19,9 @@
 
 .text_field textarea {
     resize: vertical;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    line-height: 23px;
+    color: #696969;
+    -webkit-text-fill-color: unset !important;
 }

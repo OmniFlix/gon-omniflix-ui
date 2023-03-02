@@ -1,12 +1,13 @@
 /* eslint-disable */
-import {configure, Reader, util, Writer} from "protobufjs/minimal";
-import Long from "long";
+import * as _m0 from "protobufjs/minimal";
+import {Duration} from "../../google/protobuf/duration";
 
 export const protobufPackage = "OmniFlix.marketplace.v1beta1";
 
 export interface Params {
     saleCommission: string;
     distribution: Distribution | undefined;
+    bidCloseDuration: Duration | undefined;
 }
 
 export interface Distribution {
@@ -15,25 +16,25 @@ export interface Distribution {
 }
 
 function createBaseParams(): Params {
-    return {saleCommission: "", distribution: undefined};
+    return {saleCommission: "", distribution: undefined, bidCloseDuration: undefined};
 }
 
 export const Params = {
-    encode(message: Params, writer: Writer = Writer.create()): Writer {
+    encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.saleCommission !== "") {
             writer.uint32(10).string(message.saleCommission);
         }
         if (message.distribution !== undefined) {
-            Distribution.encode(
-                message.distribution,
-                writer.uint32(18).fork()
-            ).ldelim();
+            Distribution.encode(message.distribution, writer.uint32(18).fork()).ldelim();
+        }
+        if (message.bidCloseDuration !== undefined) {
+            Duration.encode(message.bidCloseDuration, writer.uint32(26).fork()).ldelim();
         }
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): Params {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseParams();
         while (reader.pos < end) {
@@ -45,6 +46,9 @@ export const Params = {
                 case 2:
                     message.distribution = Distribution.decode(reader, reader.uint32());
                     break;
+                case 3:
+                    message.bidCloseDuration = Duration.decode(reader, reader.uint32());
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -55,33 +59,35 @@ export const Params = {
 
     fromJSON(object: any): Params {
         return {
-            saleCommission: isSet(object.saleCommission)
-                ? String(object.saleCommission)
-                : "",
-            distribution: isSet(object.distribution)
-                ? Distribution.fromJSON(object.distribution)
-                : undefined,
+            saleCommission: isSet(object.saleCommission) ? String(object.saleCommission) : "",
+            distribution: isSet(object.distribution) ? Distribution.fromJSON(object.distribution) : undefined,
+            bidCloseDuration: isSet(object.bidCloseDuration) ? Duration.fromJSON(object.bidCloseDuration) : undefined,
         };
     },
 
     toJSON(message: Params): unknown {
         const obj: any = {};
-        message.saleCommission !== undefined &&
-        (obj.saleCommission = message.saleCommission);
+        message.saleCommission !== undefined && (obj.saleCommission = message.saleCommission);
         message.distribution !== undefined &&
-        (obj.distribution = message.distribution
-            ? Distribution.toJSON(message.distribution)
-            : undefined);
+        (obj.distribution = message.distribution ? Distribution.toJSON(message.distribution) : undefined);
+        message.bidCloseDuration !== undefined &&
+        (obj.bidCloseDuration = message.bidCloseDuration ? Duration.toJSON(message.bidCloseDuration) : undefined);
         return obj;
+    },
+
+    create<I extends Exact<DeepPartial<Params>, I>>(base?: I): Params {
+        return Params.fromPartial(base ?? {});
     },
 
     fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
         const message = createBaseParams();
         message.saleCommission = object.saleCommission ?? "";
-        message.distribution =
-            object.distribution !== undefined && object.distribution !== null
-                ? Distribution.fromPartial(object.distribution)
-                : undefined;
+        message.distribution = (object.distribution !== undefined && object.distribution !== null)
+            ? Distribution.fromPartial(object.distribution)
+            : undefined;
+        message.bidCloseDuration = (object.bidCloseDuration !== undefined && object.bidCloseDuration !== null)
+            ? Duration.fromPartial(object.bidCloseDuration)
+            : undefined;
         return message;
     },
 };
@@ -91,7 +97,7 @@ function createBaseDistribution(): Distribution {
 }
 
 export const Distribution = {
-    encode(message: Distribution, writer: Writer = Writer.create()): Writer {
+    encode(message: Distribution, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         if (message.staking !== "") {
             writer.uint32(10).string(message.staking);
         }
@@ -101,8 +107,8 @@ export const Distribution = {
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): Distribution {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): Distribution {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseDistribution();
         while (reader.pos < end) {
@@ -125,23 +131,22 @@ export const Distribution = {
     fromJSON(object: any): Distribution {
         return {
             staking: isSet(object.staking) ? String(object.staking) : "",
-            communityPool: isSet(object.communityPool)
-                ? String(object.communityPool)
-                : "",
+            communityPool: isSet(object.communityPool) ? String(object.communityPool) : "",
         };
     },
 
     toJSON(message: Distribution): unknown {
         const obj: any = {};
         message.staking !== undefined && (obj.staking = message.staking);
-        message.communityPool !== undefined &&
-        (obj.communityPool = message.communityPool);
+        message.communityPool !== undefined && (obj.communityPool = message.communityPool);
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<Distribution>, I>>(
-        object: I
-    ): Distribution {
+    create<I extends Exact<DeepPartial<Distribution>, I>>(base?: I): Distribution {
+        return Distribution.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<Distribution>, I>>(object: I): Distribution {
         const message = createBaseDistribution();
         message.staking = object.staking ?? "";
         message.communityPool = object.communityPool ?? "";
@@ -149,37 +154,16 @@ export const Distribution = {
     },
 };
 
-type Builtin =
-    | Date
-    | Function
-    | Uint8Array
-    | string
-    | number
-    | boolean
-    | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-    ? T
-    : T extends Array<infer U>
-        ? Array<DeepPartial<U>>
-        : T extends ReadonlyArray<infer U>
-            ? ReadonlyArray<DeepPartial<U>>
-            : T extends {}
-                ? { [K in keyof T]?: DeepPartial<T[K]> }
-                : Partial<T>;
+export type DeepPartial<T> = T extends Builtin ? T
+    : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+        : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+            : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-    ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>,
-    never>;
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (util.Long !== Long) {
-    util.Long = Long as any;
-    configure();
-}
+export type Exact<P, I extends P> = P extends Builtin ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
     return value !== null && value !== undefined;

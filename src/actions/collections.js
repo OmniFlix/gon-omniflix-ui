@@ -1,7 +1,11 @@
 import {
+    ALL_COLLECTIONS_FETCH_ERROR,
+    ALL_COLLECTIONS_FETCH_IN_PROGRESS,
+    ALL_COLLECTIONS_FETCH_SUCCESS,
     AVATAR_UPLOAD_ERROR,
     AVATAR_UPLOAD_IN_PROGRESS,
     AVATAR_UPLOAD_SUCCESS,
+    CLEAR_COLLECTION_SET,
     COLLECTION_CONFIRM_DIALOG_HIDE,
     COLLECTION_CONFIRM_DIALOG_SHOW,
     COLLECTION_FETCH_ERROR,
@@ -16,16 +20,13 @@ import {
     CREATE_COLLECTION_NAME_SET,
     CREATE_COLLECTION_SYMBOL_SET,
     JSON_TAB_SWITCH_SET,
-    SCHEMA_FETCH_ERROR,
-    SCHEMA_FETCH_IN_PROGRESS,
-    SCHEMA_FETCH_SUCCESS,
     SCHEMA_SET,
     SCHEMA_VALUES_SET,
     UPDATE_COLLECTION_SET,
 } from '../constants/collections';
 import Axios from 'axios';
-import { urlFetchCollections } from '../chains/collections';
-import { AVATAR_UPLOAD_URL, SCHEMA_LIST_URL, urlFetchCollectionInfo } from '../constants/url';
+import { AVATAR_UPLOAD_URL, urlFetchCollectionInfo } from '../constants/url';
+import { ChainsList } from '../chains';
 
 export const setCollectionName = (value) => {
     return {
@@ -92,6 +93,12 @@ export const hideCollectionConfirmDialog = () => {
     };
 };
 
+export const setClearCollection = () => {
+    return {
+        type: CLEAR_COLLECTION_SET,
+    };
+};
+
 const fetchCollectionsInProgress = () => {
     return {
         type: COLLECTIONS_FETCH_IN_PROGRESS,
@@ -116,23 +123,45 @@ const fetchCollectionsError = (message) => {
     };
 };
 
-export const fetchCollections = (chain, address, skip, limit, cb) => (dispatch) => {
+export const fetchCollections = (rpcClient, chain, address, skip, limit, cb) => (dispatch) => {
     dispatch(fetchCollectionsInProgress());
 
-    const url = urlFetchCollections(chain, address, skip, limit);
-    Axios.get(url, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchCollectionsSuccess(res.data && res.data.denoms, chain, skip, limit,
-                res.data && res.data.pagination && res.data.pagination.total));
+    const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
+    const client = rpcClient && rpcClient[chain];
+    if (!QueryClientImpl) {
+        dispatch(fetchCollectionsError('Failed!'));
+        return;
+    }
+
+    (async () => {
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+
+        let request = null;
+
+        if (chain === 'iris' || chain === 'uptick') {
+            return;
+        } else {
+            request = {
+                owner: address,
+                pagination: {
+                    key: new Uint8Array(),
+                    countTotal: true,
+                    limit: limit,
+                    offset: skip,
+                },
+            };
+        }
+
+        queryService.Denoms(request).then((queryResult) => {
+            dispatch(fetchCollectionsSuccess(queryResult && queryResult.denoms, chain,
+                skip, limit, (queryResult.pagination && queryResult.pagination.total)));
             if (cb) {
-                cb(res.data && res.data.denoms, res.data && res.data.pagination && res.data.pagination.total);
+                cb(queryResult && queryResult.denoms);
             }
-        })
-        .catch((error) => {
+        }).catch((error) => {
             dispatch(fetchCollectionsError(
                 error.response &&
                 error.response.data &&
@@ -144,50 +173,7 @@ export const fetchCollections = (chain, address, skip, limit, cb) => (dispatch) 
                 cb(null);
             }
         });
-};
-
-const fetchSchemaInProgress = () => {
-    return {
-        type: SCHEMA_FETCH_IN_PROGRESS,
-    };
-};
-
-const fetchSchemaSuccess = (value) => {
-    return {
-        type: SCHEMA_FETCH_SUCCESS,
-        value,
-    };
-};
-
-const fetchSchemaError = (message) => {
-    return {
-        type: SCHEMA_FETCH_ERROR,
-        message,
-    };
-};
-
-export const fetchSchema = () => (dispatch) => {
-    dispatch(fetchSchemaInProgress());
-
-    Axios.get(SCHEMA_LIST_URL, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
-            Authorization: 'Bearer ' + localStorage.getItem('acToken_of_studio'),
-        },
-    })
-        .then((res) => {
-            dispatch(fetchSchemaSuccess(res.data && res.data.result));
-        })
-        .catch((error) => {
-            dispatch(fetchSchemaError(
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : 'Failed!',
-            ));
-        });
+    })();
 };
 
 export const setSchema = (value) => {
@@ -303,4 +289,83 @@ export const setUpdateCollection = (value) => {
         type: UPDATE_COLLECTION_SET,
         value,
     };
+};
+
+const fetchAllCollectionsInProgress = () => {
+    return {
+        type: ALL_COLLECTIONS_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchAllCollectionsSuccess = (value, chain, skip, limit, total) => {
+    return {
+        type: ALL_COLLECTIONS_FETCH_SUCCESS,
+        value,
+        chain,
+        skip,
+        limit,
+        total,
+    };
+};
+
+const fetchAllCollectionsError = (message) => {
+    return {
+        type: ALL_COLLECTIONS_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchAllCollections = (rpcClient, chain, skip, limit, cb) => (dispatch) => {
+    dispatch(fetchAllCollectionsInProgress());
+
+    const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
+    const client = rpcClient && rpcClient[chain];
+    if (!QueryClientImpl) {
+        dispatch(fetchAllCollectionsError('Failed!'));
+        return;
+    }
+
+    (async () => {
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+
+        let request = null;
+
+        if (chain === 'iris' || chain === 'uptick') {
+            request = {
+                pagination: undefined,
+            };
+        } else {
+            request = {
+                owner: '',
+                pagination: {
+                    key: new Uint8Array(),
+                    countTotal: true,
+                    limit: limit,
+                    offset: skip,
+                },
+            };
+        }
+
+        queryService.Denoms(request).then((queryResult) => {
+            dispatch(fetchAllCollectionsSuccess(queryResult && queryResult.denoms, chain,
+                skip, limit, (queryResult.pagination && queryResult.pagination.total)));
+            if (cb) {
+                cb(queryResult && queryResult.denoms);
+            }
+        }).catch((error) => {
+            dispatch(fetchAllCollectionsError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            if (cb) {
+                cb(null);
+            }
+        });
+    })();
 };

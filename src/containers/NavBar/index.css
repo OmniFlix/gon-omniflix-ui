@@ -1,10 +1,10 @@
 .navbar {
     background: rgba(20, 20, 20, 0.9);
-    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
+    height: 60px;
 }
 
 .navbar .right_section {
@@ -27,7 +27,10 @@
     color: #FFFFFF;
     padding: 10px;
     height: 40px;
-    text-transform: capitalize;
+}
+
+.navbar .right_section .claim_button.claimed {
+    opacity: 0.4;
 }
 
 .navbar .right_section .claim_button svg {
@@ -62,7 +65,7 @@
     margin-left: 16px;
 }
 
-.navbar .right_section .connect_button {
+.app .main_content .connect_button {
     background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
     border-radius: 50px;
     font-family: 'Source Sans Pro', sans-serif;
@@ -73,7 +76,7 @@
     display: flex;
     align-items: center;
     color: #FFFFFF;
-    text-transform: unset;
+    text-transform: uppercase;
     padding: 10px 12px;
     height: 40px;
 }
@@ -89,11 +92,17 @@
     text-align: right;
     font-feature-settings: 'salt' on, 'ss02' on;
     color: #FFFFFF;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+}
+
+.connected_account > div {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-evenly;
-    padding: 6px 20px;
+    cursor: pointer;
 }
 
 .connected_account .tokens {
@@ -110,7 +119,7 @@
     margin-bottom: 2px;
 }
 
-.navbar .right_section .connected_account > div {
+.navbar .right_section .connected_account > div .hash_text {
     display: flex;
     align-items: center;
     text-align: right;
@@ -125,39 +134,18 @@
     font-feature-settings: 'salt' on, 'ss02' on;
 }
 
-.navbar .right_section .connected_account > div p {
+.navbar .right_section .connected_account > div .hash_text p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: -1px;
 }
 
-.profile_popover > div:nth-child(3) {
-    background: #292935;
-    border-radius: 10px;
-    padding: 10px;
-    min-width: 150px;
-    min-height: 100px;
-}
-
-.profile_popover .profile_actions {
-    display: flex;
-    align-items: flex-end;
-    width: auto;
-    min-height: 100px;
-}
-
-.profile_popover .profile_actions button {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 18px;
-    color: #FFFFFF;
-    padding: 8px 10px;
-    width: 100%;
-    border-radius: 5px;
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%)
+.connected_account .disconnect_button {
+    max-width: unset;
+    min-width: unset;
+    margin-left: 10px;
+    padding: 0;
 }
 
 /* Tabs */
@@ -265,15 +253,17 @@
     align-items: flex-start;
     justify-content: center;
     margin-left: 20px;
+    text-transform: capitalize;
 }
 
 .create_popover .tab_section .tab_details > span:nth-child(1) {
     font-family: 'Work Sans', sans-serif;
     font-weight: 600;
     font-size: 16px;
-    line-height: 30px;
+    line-height: 24px;
     color: #FFFFFF;
     text-align: left;
+    margin-bottom: 6px;
 }
 
 .create_popover .tab_section .tab_details > span:nth-child(2) {
@@ -287,4 +277,71 @@
 .create_popover .coming_soon {
     opacity: 0.46;
     cursor: unset;
+}
+
+.navbar .menu_icon,
+.navbar .right_section .close_icon,
+.navbar .right_section .horizontal_tabs {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .navbar .right_section {
+        display: none;
+    }
+
+    .navbar .horizontal_tabs {
+        display: none;
+    }
+
+    .navbar .menu_icon {
+        display: initial;
+    }
+
+    .navbar .menu_icon svg,
+    .navbar .show_nav_expansion .close_icon svg {
+        color: #FFFFFF;
+    }
+
+    .navbar .show_nav_expansion .close_icon {
+        display: initial;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .navbar .right_section.show_nav_expansion {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(14, 14, 14, .2);
+        -webkit-backdrop-filter: blur(40px);
+        backdrop-filter: blur(40px);
+        -webkit-animation-name: fadeInDown;
+        animation-name: fadeInDown;
+        box-shadow: 0 0 30px #e7e4e9;
+        padding: 80px 20px 20px;
+        z-index: 999;
+    }
+
+    .navbar .right_section.show_nav_expansion .create_button {
+        margin-left: 0;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .navbar .show_nav_expansion .horizontal_tabs {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .navbar .show_nav_expansion .horizontal_tabs .tabs_content .tab {
+        border-bottom: unset;
+    }
 }

@@ -5,7 +5,7 @@ import { showMessage } from '../../actions/snackbar';
 import { connect } from 'react-redux';
 import './index.css';
 import { Button } from '@mui/material';
-import { config, DEFAULT_SKIP } from '../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 import { customTypes } from '../../registry';
 import {
     aminoSignTx,
@@ -14,7 +14,12 @@ import {
     setTxHashInProgressFalse,
     txSignAndBroadCast,
 } from '../../actions/account/wallet';
-import { fetchCollections, hideCollectionConfirmDialog, setSchema } from '../../actions/collections';
+import {
+    fetchAllCollections,
+    fetchCollections,
+    hideCollectionConfirmDialog,
+    setSchema,
+} from '../../actions/collections';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import withRouter from '../../components/WithRouter';
 import { setTabValue } from '../../actions/dashboard';
@@ -110,20 +115,24 @@ const UpdateCollectionButton = (props) => {
                                             return;
                                         }
 
-                                        props.fetch(props.chainValue, props.address, DEFAULT_SKIP, 500);
+                                        if (props.chainValue === 'omniflix') {
+                                            props.fetch(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                        }
+
+                                        props.fetchAllCollections(props.rpcClient, props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
                                         props.setSchema(null);
                                         props.fetchBalance(props.address);
                                         props.setTxHashInProgressFalse();
                                         props.hideCollectionConfirmDialog();
-                                        props.router.navigate('/dashboard');
-                                        props.setTabValue('collections');
+                                        props.router.navigate('/' + props.chainValue + '/dashboard');
+                                        props.setTabValue(props.tabValue);
                                         clearInterval(time);
                                     }
 
                                     counter++;
                                     if (counter === 3) {
                                         if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
-                                            props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
+                                            props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
                                             props.setTxHashInProgressFalse();
                                             clearInterval(time);
 
@@ -166,6 +175,7 @@ UpdateCollectionButton.propTypes = {
     chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetch: PropTypes.func.isRequired,
+    fetchAllCollections: PropTypes.func.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     hideCollectionConfirmDialog: PropTypes.func.isRequired,
@@ -177,12 +187,14 @@ UpdateCollectionButton.propTypes = {
             collectionID: PropTypes.string,
         }).isRequired,
     }).isRequired,
+    rpcClient: PropTypes.any.isRequired,
     setSchema: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     setTxHashInProgressFalse: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     sign: PropTypes.func.isRequired,
     signInProgress: PropTypes.bool.isRequired,
+    tabValue: PropTypes.string.isRequired,
     txHashInProgress: PropTypes.bool.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
     value: PropTypes.string.isRequired,
@@ -205,6 +217,8 @@ const stateToProps = (state) => {
         description: state.collections.createCollection.description,
         imageUrl: state.collections.createCollection.imageUrl,
         collection: state.collections.singleCollection.value,
+        rpcClient: state.query.rpcClient.value,
+        tabValue: state.dashboard.tabValue.value,
     };
 };
 
@@ -212,6 +226,7 @@ const actionToProps = {
     aminoSignTx,
     txSignAndBroadCast,
     fetch: fetchCollections,
+    fetchAllCollections,
     fetchBalance,
     fetchTxHash,
     showMessage,

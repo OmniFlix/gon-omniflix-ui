@@ -5,9 +5,10 @@
 }
 
 .create_collection .header > h2 {
-    font-family: 'Quantico', sans-serif;
-    font-weight: normal;
-    font-size: 30px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
     line-height: 43px;
     display: flex;
     align-items: center;
@@ -18,7 +19,7 @@
 .create_collection form {
     background: #1B1B1B;
     border-radius: 5px;
-    margin-top: 30px;
+    margin-top: 10px;
     padding: 40px;
 }
 
@@ -57,6 +58,10 @@
     height: calc(100% + 2px);
     z-index: -2;
     border-radius: 5px;
+}
+
+.create_collection .collection_content {
+    padding-bottom: 50px;
 }
 
 .collection_content h1 > span {
@@ -409,7 +414,7 @@
     line-height: 26px;
     text-align: center;
     color: #E7E7E7;
-    margin: 40px 0 40px 0;
+    margin: 0 0 40px;
 }
 
 .collection_confirm_dialog .section {
@@ -459,6 +464,7 @@
     background: #1B1B1B;
     border-radius: 5px;
     color: #FFFFFF;
+    margin-right: 20px;
 }
 
 .collection_confirm_dialog .actions > button {
@@ -478,4 +484,48 @@
     position: absolute;
     bottom: 10px;
     right: 35px;
+}
+
+.collection_content .copy_schema {
+    min-height: 100px;
+}
+
+.create_collection .collection_content .field_width {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.create_collection .collection_content .field_width > div:first-child {
+    flex: 1;
+}
+
+.create_collection .collection_content .field_width > div:last-child {
+    width: 150px;
+    margin-left: 15px;
+}
+
+.create_collection .field_width .file_upload > button {
+    width: 100%;
+    margin-left: 0;
+}
+
+.collection_content .field_width .tab_switch button {
+    width: 50%;
+    padding: 10px 0;
+}
+
+.collection_content .row.description_section {
+    position: relative;
+}
+
+.collection_content .row .description_characters {
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+    line-height: 23px;
+    color: #696969;
 }

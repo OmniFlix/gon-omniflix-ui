@@ -1,5 +1,4 @@
 export const config = {
-    API_URL: 'https://dev-api-gon.omniflix.studio',
     RPC_URL: 'https://rpc.gon-flixnet.omniflix.io',
     REST_URL: 'https://rest.gon-flixnet.omniflix.io',
     DATA_LAYER: 'https://data-layer-gon.omniflix.studio',
@@ -13,15 +12,19 @@ export const config = {
 
 export const IPFS_URL = 'https://ipfs.omniflix.studio/ipfs';
 export const IPFS_REFERENCE_PATH = 'ipfs://';
+export const EXPLORER_URL = 'https://ping-pub-explorer.omniflix.io/omniflix-gon';
 
 export const DEFAULT_TOTAL = 10;
-export const DEFAULT_SORT_BY = 'created_at';
-export const DEFAULT_ORDER = 'desc';
 export const DEFAULT_SKIP = 0;
 export const DEFAULT_LIMIT = 10;
-export const DEFAULT_SEARCH = null;
-export const DEFAULT_LAZY_FETCH_HEIGHT = 256;
-export const TRANSACTION_SET_TIME_OUT = 3000;
+export const GAS_PRICE_STEP_LOW = 0.001;
+export const GAS_PRICE_STEP_AVERAGE = 0.0025;
+export const GAS_PRICE_STEP_HIGH = 0.025;
+
+export const gas = {
+    LIST_NFT: 200000,
+    MINT_NFT: 300000,
+};
 
 export const chainId = config.CHAIN_ID;
 export const chainName = config.CHAIN_NAME;

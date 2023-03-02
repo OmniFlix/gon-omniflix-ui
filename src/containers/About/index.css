@@ -1,0 +1,373 @@
+.about_page {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    overflow-x: unset;
+}
+
+.about_page .row1 {
+    display: flex;
+    align-items: center;
+    padding: 40px 10%;
+}
+
+.about_page .row1 .left_section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-right: 50px;
+    flex: 1;
+}
+
+.about_page .row1 .left_section > h2 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 73px;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-align: left;
+    padding-right: 100px;
+}
+
+.about_page .row1 .left_section > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 150%;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.about_page .row1 .left_section > button {
+    margin-top: 40px;
+    padding: 16px 30px;
+    height: unset;
+}
+
+.about_page .row1 .right_section {
+    width: 30%;
+}
+
+.about_page .row1 .right_section > img {
+    width: 100%;
+}
+
+.about_page .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 10%;
+    background: #2A2A36;
+}
+
+.about_page .row .section {
+    width: 30%;
+}
+
+.about_page .row .section > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+}
+
+.about_page .row .section > div img {
+    margin-right: 10px;
+    margin-left: -40px;
+    width: 30px;
+}
+
+.about_page .row .section h3 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 29px;
+    color: #FFFFFF;
+    text-align: left;
+    margin: 0;
+}
+
+.about_page .row .section p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 150%;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.about_page .footer {
+    background: #151516;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.about_page .footer > p {
+    font-family: 'Sarabun', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    color: #9A9AFF;
+    margin-right: 30px;
+}
+
+/* .partners_sponsors */
+.about_page .partners_sponsors {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10%;
+}
+
+.about_page .partners_sponsors > h2 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 50px;
+    display: flex;
+    align-items: center;
+    color: #9058C7;
+}
+
+.about_page .partners_sponsors .partners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.about_page .partners_sponsors .partners .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.about_page .partners_sponsors .partners .header > span {
+    width: 50px;
+    height: 1px;
+    background-color: #8F8F9F;
+}
+
+.about_page .partners_sponsors .partners .header > p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 33px;
+    display: flex;
+    align-items: center;
+    color: #8F8F9F;
+    margin: 0 10px;
+}
+
+.about_page .partners_sponsors .partners .list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0 50px;
+}
+
+.about_page .partners_sponsors .partners .list img {
+    margin-right: 60px;
+    margin-bottom: 30px;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list {
+
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info {
+    width: 200px;
+    height: 300px;
+    position: relative;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info > img {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 20px;
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 0;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info > div {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 999;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info div .name {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    margin-bottom: 2px;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info div .designation {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.list.judges_list {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-gap: 85px;
+    padding: 20px 0;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info .shadow {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 1;
+}
+
+.about_page .partners_sponsors .partners .list.judges_list .judge_info .shadow img {
+    margin: 0;
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .list.judges_list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 900px) {
+    .list.judges_list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1200px) {
+    .list.judges_list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1536px) {
+    .list.judges_list {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 925px) {
+    .about_page .row1 {
+        flex-direction: column;
+    }
+
+    .about_page .row1 .left_section {
+        margin-right: 0;
+        align-items: center;
+    }
+
+    .about_page .row1 .right_section {
+        width: 40%;
+        margin-top: 50px;
+    }
+
+    .about_page .row {
+        flex-wrap: wrap;
+        margin: 20px;
+    }
+
+    .about_page .row .section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .about_page .row1 .left_section > h2 {
+        text-align: center;
+        padding: unset;
+    }
+
+    .about_page .row1 .left_section > p {
+        text-align: center;
+    }
+
+    .list.judges_list {
+        gap: 33px;
+    }
+
+    .about_page .partners_sponsors {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 420px) {
+    .about_page .row1 .left_section > h2 {
+        padding-right: 0;
+        text-align: center;
+        font-size: 40px;
+    }
+
+    .about_page .row1 .left_section > p {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .about_page .row .section h3 {
+        font-size: 20px;
+    }
+
+    .about_page .row .section p {
+        font-size: 16px;
+    }
+
+    .about_page .row {
+        margin: 20px;
+    }
+
+    .about_page .row .section > div img {
+        margin-left: 0;
+    }
+
+    .about_page .partners_sponsors .partners .header > p {
+        font-size: 20px;
+    }
+
+    .about_page .partners_sponsors .partners .header > span {
+        width: 30px;
+    }
+
+    .about_page .partners_sponsors > h2 {
+        font-size: 36px;
+    }
+}

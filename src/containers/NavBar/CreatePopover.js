@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Tooltip, Typography } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -37,7 +37,8 @@ const CreatePopover = (props) => {
     };
 
     const handleShowUploadDialog = () => {
-        props.showUploadFilesDialog();
+        // props.showUploadFilesDialog();
+        props.router.navigate('/mint');
         setOpen(false);
     };
 
@@ -54,20 +55,20 @@ const CreatePopover = (props) => {
                 interactive
                 open={open}
                 title={<div className="create_popover">
-                    <Typography className="tab_section" onClick={handleNFTCollection}>
+                    <Button className="tab_section" onClick={handleNFTCollection}>
                         <CollectionsIcon/>
                         <span className="tab_details">
                             <span>{variables[props.lang]['nft_collection']}</span>
                             <span>{variables[props.lang]['nft_collection_info']}</span>
                         </span>
-                    </Typography>
-                    <Typography className="tab_section" onClick={handleShowUploadDialog}>
+                    </Button>
+                    <Button className="tab_section" onClick={handleShowUploadDialog}>
                         <FileUploadIcon/>
                         <span className="tab_details">
                             <span>{variables[props.lang]['asset_via_upload']}</span>
                             <span>{variables[props.lang]['asset_via_upload_info']}</span>
                         </span>
-                    </Typography>
+                    </Button>
                 </div>}
                 onClose={handleClose}
                 onOpen={handleOpen}>
@@ -83,6 +84,7 @@ const CreatePopover = (props) => {
 };
 
 CreatePopover.propTypes = {
+    chainValue: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
     showUploadFilesDialog: PropTypes.func.isRequired,
@@ -94,6 +96,7 @@ CreatePopover.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 

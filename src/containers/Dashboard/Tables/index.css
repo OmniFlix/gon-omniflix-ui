@@ -1,3 +1,9 @@
+.data_table .collection_data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .data_table .collection_info {
     display: flex;
     align-items: center;
@@ -35,6 +41,10 @@
     color: #FFFFFF;
     text-transform: capitalize;
     padding: 8px 20px;
+}
+
+.data_table .table_actions.ct_actions .primary_button {
+    padding: 8px 30px;
 }
 
 .data_table .nft_id {
@@ -101,4 +111,25 @@
     line-height: 18px;
     color: #EB5757;
     margin-left: 10px;
+    text-transform: capitalize;
+}
+
+.data_table .copy_button.copy_icon_button svg {
+    fill: #828282;
+}
+
+.data_table .chain_type {
+    padding: 10px 20px;
+    background: rgba(17, 255, 212, 0.1);
+    border-radius: 50px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #11FFD4;
+}
+
+.data_table .ibc_chain_type {
+    background: rgba(186, 255, 39, 0.1);
+    color: #BAFF27;
 }

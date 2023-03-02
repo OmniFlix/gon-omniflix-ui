@@ -1,0 +1,150 @@
+.my_account_popover > div:nth-child(3) {
+    background: #101010;
+    border-radius: 20px;
+    width: 400px;
+}
+
+.account_popover {
+    padding: 20px;
+}
+
+.account_popover h2 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: 0.005em;
+    font-feature-settings: 'zero' on;
+    color: #F2F2F2;
+    margin: 0 0 10px;
+    text-align: left;
+}
+
+.account_popover .section1 {
+
+}
+
+.account_popover .section1 .card {
+    background: rgba(20, 20, 20, 0.9);
+    border-radius: 10px;
+    padding: 20px 15px;
+}
+
+.account_popover .section1 .card .row1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.account_popover .section1 .card .row1 img {
+    width: 110px;
+}
+
+.account_popover .section1 .card .row1 p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    font-feature-settings: 'salt' on;
+    color: #2D9CDB;
+}
+
+.account_popover .address_section {
+    background: #191919;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+    padding: 2px 4px;
+    margin-top: 10px;
+}
+
+.account_popover .address_section .hash_text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: #828282;
+    max-width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.account_popover .address_section .hash_text p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.account_popover .section2 {
+    margin-top: 20px;
+}
+
+.account_popover .section2 .list {
+    background: #141414;
+    border: 1px solid #292929;
+    border-radius: 10px;
+    padding: 20px 10px;
+}
+
+.account_popover .section2 .list .token_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.account_popover .section2 .list .token_info:last-child {
+    margin: 0;
+}
+
+.account_popover .section2 .list .left_section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.account_popover .section2 .list .left_section .token_logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #F2F2F2;
+    text-transform: uppercase;
+}
+
+.account_popover .section2 .list .left_section .token_logo span {
+    margin: 0 10px;
+}
+
+.account_popover .section2 .list .left_section .hash_text {
+    background: #191919;
+    border-radius: 50px;
+}
+
+.account_popover .section2 .list .right_section {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 25px;
+    text-align: center;
+    font-feature-settings: 'zero' on;
+    color: #27AE60;
+}
+
+.account_popover .section2 .left_section .address_section {
+    margin-top: 0;
+}

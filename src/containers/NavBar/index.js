@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { ReactComponent as FaucetIcon } from '../../assets/navBar/faucet.svg';
-// import { ReactComponent as CreateIcon } from '../../assets/navBar/create.svg';
 import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import ConnectButton from './ConnectButton';
@@ -13,9 +12,41 @@ import { fetchBalance } from '../../actions/account/BCDetails';
 import ConnectedAccount from './ConnectedAccount';
 import Tabs from './Tabs';
 import CreatePopover from './CreatePopover';
+import { fetchFaucetTokens, hideSideBar, showClaimFaucetDialog, showSideBar } from '../../actions/navBar';
+import ClaimFaucetDialog from './ClaimFaucetDialog';
+import { setEmptyValue } from '../../actions/account';
+import { setRpcClient } from '../../actions/query';
+import withRouter from '../../components/WithRouter';
+import { setChainValue } from '../../actions/dashboard';
+import { Close, MenuOutlined } from '@mui/icons-material';
+import { fetchGqlAllCollections } from '../../actions/collections.gql';
+import { ChainsList } from '../../chains';
+import { bech32 } from 'bech32';
 
 class NavBar extends Component {
+    constructor (props) {
+        super(props);
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleHide = this.handleHide.bind(this);
+    }
+
     componentDidMount () {
+        if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
+            const route = this.props.router.location && this.props.router.location.pathname &&
+                this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
+            if (route === 'stargaze') {
+                this.props.setChainValue(route);
+                return;
+            }
+            if (route === 'iris' || route === 'uptick') {
+                this.props.setChainValue(route);
+                this.props.setRpcClient(route);
+            } else {
+                this.props.setRpcClient('omniflix');
+            }
+        }
+
         if (this.props.address === '' && localStorage.getItem('gon_of_address')) {
             setTimeout(() => {
                 this.initializeKeplr();
@@ -29,8 +60,8 @@ class NavBar extends Component {
 
         window.addEventListener('keplr_keystorechange', () => {
             this.props.setDisconnect();
+            this.props.setEmptyValue();
             this.initKeplr();
-            localStorage.removeItem('acToken_gon_of');
             localStorage.removeItem('gon_of_address');
         });
     }
@@ -57,31 +88,66 @@ class NavBar extends Component {
             if ((address && address.length && address[0] && address[0].address) &&
                 (this.props.balance.length === 0) && !this.props.balanceInProgress) {
                 this.props.fetchBalance(address[0].address);
+
+                Object.keys(ChainsList).map((item, index) => {
+                    const config = ChainsList && ChainsList[item] && ChainsList[item];
+                    const address1 = address[0].address && bech32.decode(address[0].address);
+                    const convertedAddress = address1 && address1.words && bech32.encode(config.PREFIX, address1.words);
+                    if (config && convertedAddress && (item !== 'omniflix')) {
+                        this.props.setRpcClient(item, (client) => {
+                            if (client) {
+                                this.props.fetchFaucetTokens(client, item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
+                            }
+                        });
+                    }
+                });
             }
         });
+    }
+
+    handleShow () {
+        this.props.showSideBar();
+
+        document.body.style.overflow = 'hidden';
+    }
+
+    handleHide () {
+        if (this.props.show) {
+            this.props.hideSideBar();
+            document.body.style.overflow = null;
+        }
     }
 
     render () {
         return (
             <div className="navbar">
                 <div className="left_section">
-                    <Logo/>
+                    <Logo onClick={() => this.props.router.navigate('/about')}/>
                 </div>
-                {this.props.address !== '' &&
-                    <Tabs/>}
-                <div className="right_section">
-                    {this.props.address !== '' &&
-                        <Button className="claim_button">
-                            <FaucetIcon/>
-                            {variables[this.props.lang]['claim_faucet']}
-                        </Button>}
+                <Tabs/>
+                <Button className="menu_icon" onClick={this.handleShow}>
+                    <MenuOutlined/>
+                </Button>
+                <div className={this.props.show ? 'show_nav_expansion right_section' : 'right_section'}>
+                    {this.props.balanceInProgress
+                        ? null
+                        : this.props.address !== '' &&
+                            <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
+                                <FaucetIcon/>
+                                {variables[this.props.lang].faucet}
+                            </Button>}
                     <CreatePopover/>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
                             ? <ConnectButton/>
                             : <ConnectedAccount/>}
                     </div>
+                    <Tabs/>
+                    <Button className="close_icon" onClick={this.handleHide}>
+                        <Close/>
+                    </Button>
                 </div>
+                <ClaimFaucetDialog/>
             </div>
         );
     }
@@ -91,10 +157,28 @@ NavBar.propTypes = {
     address: PropTypes.string.isRequired,
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
+    chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchFaucetTokens: PropTypes.func.isRequired,
+    fetchGqlAllCollections: PropTypes.func.isRequired,
+    hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    rpcClient: PropTypes.any.isRequired,
+    rpcClientInProgress: PropTypes.bool.isRequired,
+    setChainValue: PropTypes.func.isRequired,
     setDisconnect: PropTypes.func.isRequired,
+    setEmptyValue: PropTypes.func.isRequired,
+    setRpcClient: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    showClaimFaucetDialog: PropTypes.func.isRequired,
+    showSideBar: PropTypes.func.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -103,13 +187,26 @@ const stateToProps = (state) => {
         balance: state.account.bc.balance.value,
         balanceInProgress: state.account.bc.balance.inProgress,
         lang: state.language,
+        rpcClient: state.query.rpcClient.value,
+        rpcClientInProgress: state.query.rpcClient.inProgress,
+
+        show: state.navBar.show,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 
 const actionToProps = {
     fetchBalance,
+    fetchGqlAllCollections,
     initializeChain,
+    setChainValue,
     setDisconnect,
+    setEmptyValue,
+    setRpcClient,
+    showClaimFaucetDialog,
+    showSideBar,
+    hideSideBar,
+    fetchFaucetTokens,
 };
 
-export default connect(stateToProps, actionToProps)(NavBar);
+export default withRouter(connect(stateToProps, actionToProps)(NavBar));

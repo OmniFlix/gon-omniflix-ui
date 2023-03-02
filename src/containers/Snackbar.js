@@ -1,59 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import { hideSnackbar } from '../actions/snackbar';
 import Snackbar from '../components/Snackbar';
 import withRouter from '../components/WithRouter';
 
-class SnackbarMessage extends Component {
-    componentDidUpdate (pp, ps, ss) {
-        if (pp.message !== this.props.message) {
-            switch (this.props.message) {
-            case 'Token is expired':
-            case 'Error occurred while verifying the JWT token.':
-            case 'User Id and token combination does not exist.':
-                this.props.onClose();
-
-                /* use with Access Token API */
-                // if (this.props.tokenInProgress) {
-                //     return;
-                // }
-
-                // return this.props.fetchAccessToken((error) => {
-                //     if (error) {
-                //         this.props.router.navigate('/');
-                //     }
-                // });
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-    render () {
-        return (
-            <Snackbar
-                message={this.props.message}
-                open={this.props.open}
-                onClose={this.props.onClose}/>
-        );
-    }
-}
+const SnackbarMessage = (props) => {
+    return (
+        <Snackbar
+            explorer={props.explorer}
+            hash={props.hash}
+            // manual={props.ibcTxInProgress}
+            message={props.message}
+            open={props.open}
+            progress={props.variant === 'processing'}
+            variant={props.variant}
+            onClose={props.onClose}/>
+    );
+};
 
 SnackbarMessage.propTypes = {
     message: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    explorer: PropTypes.string,
+    hash: PropTypes.string,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),
+    variant: PropTypes.string,
 };
 
 const stateToProps = (state) => {
     return {
+        explorer: state.snackbar.explorer,
         open: state.snackbar.open,
         message: state.snackbar.message,
+        variant: state.snackbar.variant,
+        hash: state.snackbar.hash,
     };
 };
 

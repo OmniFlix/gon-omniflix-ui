@@ -2,24 +2,21 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CircularProgress from './components/CircularProgress';
 
-const WalletConnect = lazy(() => import('./containers/WalletConnect').then().catch());
 const Dashboard = lazy(() => import('./containers/Dashboard').then().catch());
 const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 const About = lazy(() => import('./containers/About').then().catch());
 const SingleCollection = lazy(() => import('./containers/SingleCollection').then().catch());
 const CreateCollection = lazy(() => import('./containers/CreateCollection').then().catch());
+const MintNFT = lazy(() => import('./containers/MintNFT').then().catch());
 
 const routes = [{
-    path: '/',
-    component: WalletConnect,
-}, {
     path: '/about',
     component: About,
 }, {
-    path: '/dashboard',
+    path: '/:chain/dashboard',
     component: Dashboard,
 }, {
-    path: '/collection/:id',
+    path: '/:chain/collection/:id',
     component: SingleCollection,
 }, {
     path: '/create-collection',
@@ -27,6 +24,9 @@ const routes = [{
 }, {
     path: '/create-collection/:collectionID',
     component: CreateCollection,
+}, {
+    path: '/mint',
+    component: MintNFT,
 }];
 
 const Router = () => {
@@ -45,7 +45,7 @@ const Router = () => {
                         )}
                         <Route
                             exact
-                            element={<WalletConnect/>}
+                            element={<Dashboard/>}
                             path="*"/>
                     </Routes>
                 </div>

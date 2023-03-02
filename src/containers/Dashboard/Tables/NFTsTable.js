@@ -8,7 +8,12 @@ import variables from '../../../utils/variables';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
-import { fetchCollectionNFTS } from '../../../actions/collection';
+import { fetchCollectionNFTS, showBurnDialog, showTransferDialog } from '../../../actions/collection';
+import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
+import { mediaReference } from '../../../utils/ipfs';
+import { config } from '../../../config';
+import { bech32 } from 'bech32';
+import withRouter from '../../../components/WithRouter';
 
 const NFTsTable = (props) => {
     const options = {
@@ -24,22 +29,8 @@ const NFTsTable = (props) => {
                 titleAria: 'Show/Hide Table Columns',
             },
         },
-        onChangePage: (currentPage) => {
-            if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
-                return;
-            }
-
-            props.fetchCollectionNFTS(props.collection.denom && props.collection.denom.id, props.limit * currentPage, props.limit);
-        },
-        onChangeRowsPerPage: (numberOfRows) => {
-            if (props.collection && props.collection.onfts && props.collection.onfts.length === 0) {
-                return;
-            }
-
-            props.fetchCollectionNFTS(props.collection.denom && props.collection.denom.id, props.skip, numberOfRows);
-        },
         responsive: 'standard',
-        serverSide: true,
+        serverSide: false,
         pagination: true,
         selectableRows: 'none',
         download: false,
@@ -55,16 +46,24 @@ const NFTsTable = (props) => {
         options: {
             sort: false,
             customBodyRender: function (value) {
+                const data = value && value.data && JSON.parse(value.data);
                 return (
                     <div className="collection_info nft_info">
                         <ImageOnLoad
                             alt="thumbnail"
-                            src={value && value.metadata && value.metadata.preview_uri
-                                ? value.metadata.preview_uri
-                                : value && value.metadata && value.metadata.media_uri}/>
+                            preview={(value && value.metadata && value.metadata.previewUri && mediaReference(value.metadata.previewUri)) ||
+                                (value && value.metadata && value.metadata.uri && mediaReference(value.metadata.uri)) ||
+                                (value && value.metadata && value.metadata.uriHash && mediaReference(value.metadata.uriHash)) ||
+                                (data && ibcPreview(data))}
+                            src={(value && value.metadata && value.metadata.mediaUri &&
+                                mediaReference(value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                         <div>
-                            <p className="nft_name">{value && value.metadata && value.metadata.name}</p>
-                            <p className="table_value collection_name">{props.collection && props.collection.name}</p>
+                            <p className="nft_name">
+                                {(value && value.metadata && value.metadata.name) || (data && ibcName(data))}
+                            </p>
+                            <p className="table_value collection_name">
+                                {props.collection && props.collection.name}
+                            </p>
                         </div>
                     </div>
                 );
@@ -88,45 +87,42 @@ const NFTsTable = (props) => {
             },
         },
     }, {
-        name: 'nft_type',
-        label: 'NFT Type',
-        options: {
-            sort: false,
-            customBodyRender: function (value) {
-                return (
-                    <div className="table_value">
-                        Native
-                    </div>
-                );
-            },
-        },
-    }, {
         name: 'actions',
         label: 'Actions',
         options: {
             sort: false,
-            customBodyRender: function (address) {
+            customBodyRender: function (value) {
+                const address = value.owner && bech32.decode(value.owner);
+                const convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+
                 return (
-                    address === props.address && <div className="table_actions center_actions">
-                        <Button className="primary_button">
+                    convertedAddress === props.address && <div className="table_actions center_actions">
+                        <Button
+                            className="primary_button"
+                            onClick={() => props.showTransferDialog(value, props.router && props.router.params && props.router.params.chain)}>
                             {variables[props.lang].transfer}
                         </Button>
-                        <Button className="burn_button">
-                            {variables[props.lang].burn}
-                        </Button>
+                        {props.router && props.router.params && props.router.params.chain &&
+                        props.router.params.chain === 'omniflix'
+                            ? <Button className="burn_button" onClick={() => props.showBurnDialog(value)}>
+                                {variables[props.lang].burn}
+                            </Button> : null}
                     </div>
                 );
             },
         },
     }];
 
-    const list = props.collection && props.collection.onfts;
+    let list = props.collection && props.collection.onfts;
+    if (props.chainValue === 'iris' || props.chainValue === 'uptick') {
+        list = props.collection && props.collection.nfts;
+    }
+
     const tableData = list && list.length
         ? list.map((item, index) => [
             item,
             item.id,
             item,
-            item.owner,
         ]) : [];
 
     return (
@@ -142,27 +138,36 @@ const NFTsTable = (props) => {
 
 NFTsTable.propTypes = {
     address: PropTypes.string.isRequired,
+    chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
-    limit: PropTypes.number.isRequired,
-    skip: PropTypes.number.isRequired,
+    router: PropTypes.shape({
+        params: PropTypes.shape({
+            chain: PropTypes.string,
+        }).isRequired,
+    }).isRequired,
+    rpcClient: PropTypes.any.isRequired,
+    showBurnDialog: PropTypes.func.isRequired,
+    showTransferDialog: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
         inProgress: state.collection.collection.inProgress,
-        skip: state.collection.collection.skip,
-        limit: state.collection.collection.limit,
         lang: state.language,
+        rpcClient: state.query.rpcClient.value,
     };
 };
 
 const actionToProps = {
     fetchCollectionNFTS,
+    showBurnDialog,
+    showTransferDialog,
 };
 
-export default connect(stateToProps, actionToProps)(NFTsTable);
+export default withRouter(connect(stateToProps, actionToProps)(NFTsTable));

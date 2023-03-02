@@ -1,7 +1,6 @@
 /* eslint-disable */
-import {configure, Reader, util, Writer} from "protobufjs/minimal";
-import Long from "long";
-import {Collection} from "../../onft/v1beta1/onft";
+import * as _m0 from "protobufjs/minimal";
+import {Collection} from "./onft";
 
 export const protobufPackage = "OmniFlix.onft.v1beta1";
 
@@ -15,15 +14,15 @@ function createBaseGenesisState(): GenesisState {
 }
 
 export const GenesisState = {
-    encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
+    encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
         for (const v of message.collections) {
             Collection.encode(v!, writer.uint32(10).fork()).ldelim();
         }
         return writer;
     },
 
-    decode(input: Reader | Uint8Array, length?: number): GenesisState {
-        const reader = input instanceof Reader ? input : new Reader(input);
+    decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
+        const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = createBaseGenesisState();
         while (reader.pos < end) {
@@ -42,62 +41,38 @@ export const GenesisState = {
 
     fromJSON(object: any): GenesisState {
         return {
-            collections: Array.isArray(object?.collections)
-                ? object.collections.map((e: any) => Collection.fromJSON(e))
-                : [],
+            collections: Array.isArray(object?.collections) ? object.collections.map((e: any) => Collection.fromJSON(e)) : [],
         };
     },
 
     toJSON(message: GenesisState): unknown {
         const obj: any = {};
         if (message.collections) {
-            obj.collections = message.collections.map((e) =>
-                e ? Collection.toJSON(e) : undefined
-            );
+            obj.collections = message.collections.map((e) => e ? Collection.toJSON(e) : undefined);
         } else {
             obj.collections = [];
         }
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(
-        object: I
-    ): GenesisState {
+    create<I extends Exact<DeepPartial<GenesisState>, I>>(base?: I): GenesisState {
+        return GenesisState.fromPartial(base ?? {});
+    },
+
+    fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
         const message = createBaseGenesisState();
-        message.collections =
-            object.collections?.map((e) => Collection.fromPartial(e)) || [];
+        message.collections = object.collections?.map((e) => Collection.fromPartial(e)) || [];
         return message;
     },
 };
 
-type Builtin =
-    | Date
-    | Function
-    | Uint8Array
-    | string
-    | number
-    | boolean
-    | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-    ? T
-    : T extends Array<infer U>
-        ? Array<DeepPartial<U>>
-        : T extends ReadonlyArray<infer U>
-            ? ReadonlyArray<DeepPartial<U>>
-            : T extends {}
-                ? { [K in keyof T]?: DeepPartial<T[K]> }
-                : Partial<T>;
+export type DeepPartial<T> = T extends Builtin ? T
+    : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+        : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+            : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-    ? P
-    : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<Exclude<keyof I, KeysOfUnion<P>>,
-    never>;
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (util.Long !== Long) {
-    util.Long = Long as any;
-    configure();
-}
+export type Exact<P, I extends P> = P extends Builtin ? P
+    : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };

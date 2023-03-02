@@ -1,0 +1,125 @@
+.claim_faucet_dialog > div:nth-child(3) > div {
+    background: #101010;
+    border-radius: 10px;
+    width: 500px;
+}
+
+.claim_faucet_dialog_content {
+    padding: 30px 30px 40px 30px;
+}
+
+.claim_faucet_dialog_content .close_button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.claim_faucet_dialog_content h2 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 0;
+}
+
+.claim_faucet_dialog_content .card {
+    background: #1B1B1B;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.claim_faucet_dialog_content .card .left_section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.claim_faucet_dialog_content .card .left_section > img {
+    margin-right: 10px;
+}
+
+.claim_faucet_dialog_content .card .left_section > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.claim_faucet_dialog_content .card .left_section > div .chain_name {
+    font-family: 'Work Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 23px;
+    display: flex;
+    align-items: center;
+    color: #F2F2F2;
+}
+
+.claim_faucet_dialog_content .card .left_section > div .chain_id {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 17px;
+    font-feature-settings: 'zero' on;
+    color: #8E96AB;
+}
+
+.claim_faucet_dialog_content .card .right_section button {
+    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: right;
+    color: #F2F2F2;
+    text-transform: capitalize;
+    padding: 10px;
+}
+
+.claim_faucet_dialog_content .card .right_section button:disabled {
+    opacity: 0.5;
+}
+
+.claim_faucet_dialog .discord_links {
+    margin-top: 40px;
+}
+
+.claim_faucet_dialog .discord_links > p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    padding: 0 40px;
+}
+
+.claim_faucet_dialog .discord_links > div button {
+    background: rgba(45, 156, 219, 0.1);
+    border: 1px solid #2D9CDB;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.claim_faucet_dialog .discord_links > div button p {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #2D9CDB;
+    text-transform: initial;
+}
