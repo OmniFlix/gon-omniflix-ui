@@ -10,6 +10,10 @@ import flixIcon from '../../../assets/tokens/flix.svg';
 import { config } from '../../../config';
 import { fetchBalance } from '../../../actions/account/BCDetails';
 import CircularProgress from '../../../components/CircularProgress';
+import IrisIcon from '../../../assets/chains/iris.svg';
+import StargazeIcon from '../../../assets/chains/stargaze.svg';
+import JunoIcon from '../../../assets/chains/juno.svg';
+import UpTickIcon from '../../../assets/chains/uptick.svg';
 
 const ClaimFaucetDialog = (props) => {
     const handleFaucet = () => {
@@ -55,6 +59,27 @@ const ClaimFaucetDialog = (props) => {
                             : <Button onClick={() => handleFaucet()}>
                                 {variables[props.lang]['claim_test_tokens']}
                             </Button>}
+                    </div>
+                </div>
+                <div className="discord_links">
+                    <p>{variables[props.lang]['discord_url_content']}</p>
+                    <div>
+                        <Button>
+                            <img alt="stargaze" src={StargazeIcon}/>
+                            <p>Stargaze</p>
+                        </Button>
+                        <Button>
+                            <img alt="irisNet" src={IrisIcon}/>
+                            <p>IrisNet</p>
+                        </Button>
+                        <Button>
+                            <img alt="juno" src={JunoIcon}/>
+                            <p>Juno</p>
+                        </Button>
+                        <Button>
+                            <img alt="uptick" src={UpTickIcon}/>
+                            <p>Uptick</p>
+                        </Button>
                     </div>
                 </div>
             </DialogContent>

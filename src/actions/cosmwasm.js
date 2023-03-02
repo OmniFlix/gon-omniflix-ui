@@ -24,7 +24,7 @@ const fetchContractsError = (message) => {
     };
 };
 
-export const fetchContracts = (config, chain) => (dispatch) => {
+export const fetchContracts = (config, chain, cb) => (dispatch) => {
     dispatch(fetchContractsInProgress());
     (async () => {
         await window.keplr && window.keplr.enable(config.CHAIN_ID);
@@ -44,8 +44,14 @@ export const fetchContracts = (config, chain) => (dispatch) => {
                 config.CODE,
             ).then((resp) => {
                 dispatch(fetchContractsSuccess(resp, chain));
+                if (cb) {
+                    cb(resp);
+                }
             }).catch((e) => {
                 dispatch(fetchContractsError(e && e.message));
+                if (cb) {
+                    cb(null);
+                }
             });
         } catch (e) {
             dispatch(fetchContractsError(e && e.message));

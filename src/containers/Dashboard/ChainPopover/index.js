@@ -10,15 +10,17 @@ import { fetchAllCollections, fetchCollections } from '../../../actions/collecti
 import { setRpcClient } from '../../../actions/query';
 import withRouter from '../../../components/WithRouter';
 import { ChainsList } from '../../../chains';
-import { initializeChainIBC } from '../../../actions/account/wallet';
 import { fetchContracts } from '../../../actions/cosmwasm';
 
 const ChainPopover = (props) => {
     const handleChange = (value) => {
         const config = ChainsList && ChainsList[value];
         if (config && config.cosmwasm) {
+            props.setChainValue(value);
             props.router.navigate(`/${value}/dashboard`);
-            props.fetchContracts(config, value);
+            if (props.contracts && !props.contracts[value]) {
+                props.fetchContracts(config, value);
+            }
             return;
         }
 
@@ -70,10 +72,10 @@ ChainPopover.propTypes = {
     chain: PropTypes.string.isRequired,
     collections: PropTypes.object.isRequired,
     collectionsInProgress: PropTypes.bool.isRequired,
+    contracts: PropTypes.object.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
     fetchContracts: PropTypes.func.isRequired,
-    initializeChainIBC: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setChainValue: PropTypes.func.isRequired,
@@ -87,11 +89,12 @@ ChainPopover.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        allCollections: state.collections.allCollectionSList.value,
+        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         chain: state.dashboard.chainValue.value,
         collections: state.collections.collectionSList.value,
         collectionsInProgress: state.collections.collectionSList.inProgress,
-        allCollections: state.collections.allCollectionSList.value,
-        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
+        contracts: state.cosmwasm.contracts.value,
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,
@@ -102,7 +105,6 @@ const actionsToProps = {
     fetchAllCollections,
     fetchCollections,
     fetchContracts,
-    initializeChainIBC,
     setChainValue,
     setRpcClient,
     setTabValue,

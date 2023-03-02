@@ -23,9 +23,10 @@ import {
     JSON_TAB_SWITCH_SET,
     SCHEMA_SET,
     UPDATE_COLLECTION_SET,
-} from '../constants/collections';
-import { TX_HASH_IN_PROGRESS_FALSE_SET } from '../constants/wallet';
-import { schemaList } from '../utils/defaultOptions';
+} from '../../constants/collections';
+import { TX_HASH_IN_PROGRESS_FALSE_SET } from '../../constants/wallet';
+import { schemaList } from '../../utils/defaultOptions';
+import wasm from './wasm';
 
 const collectionSList = (state = {
     inProgress: false,
@@ -274,6 +275,7 @@ const avatar = (state = {
 };
 
 export default combineReducers({
+    _wasm: wasm,
     collectionSList,
     allCollectionSList,
     singleCollection,

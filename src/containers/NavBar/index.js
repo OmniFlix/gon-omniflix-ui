@@ -12,20 +12,34 @@ import { fetchBalance } from '../../actions/account/BCDetails';
 import ConnectedAccount from './ConnectedAccount';
 import Tabs from './Tabs';
 import CreatePopover from './CreatePopover';
-import { showClaimFaucetDialog } from '../../actions/navBar';
+import { hideSideBar, showClaimFaucetDialog, showSideBar } from '../../actions/navBar';
 import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
 import { config } from '../../config';
 import { setRpcClient } from '../../actions/query';
 import withRouter from '../../components/WithRouter';
 import { setChainValue } from '../../actions/dashboard';
+import { Close, MenuOutlined } from '@mui/icons-material';
+import { fetchContracts } from '../../actions/cosmwasm';
+import { ChainsList } from '../../chains';
+import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 
 class NavBar extends Component {
+    constructor (props) {
+        super(props);
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleHide = this.handleHide.bind(this);
+    }
+
     componentDidMount () {
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
             const route = this.props.router.location && this.props.router.location.pathname &&
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
-            if (route === 'stargaze' || route === 'juno') {
+            if (route === 'stargaze') {
+                this.props.setChainValue(route);
+                const config = ChainsList && ChainsList[route];
+                this.props.fetchContracts(config, route);
                 return;
             }
 
@@ -82,6 +96,19 @@ class NavBar extends Component {
         });
     }
 
+    handleShow () {
+        this.props.showSideBar();
+
+        document.body.style.overflow = 'hidden';
+    }
+
+    handleHide () {
+        if (this.props.show) {
+            this.props.hideSideBar();
+            document.body.style.overflow = null;
+        }
+    }
+
     render () {
         let balance = this.props.balance && this.props.balance.length && this.props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
         balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
@@ -92,26 +119,33 @@ class NavBar extends Component {
                     <Logo onClick={() => this.props.router.navigate('/about')}/>
                 </div>
                 <Tabs/>
-                <div className="right_section">
+                <Button className="menu_icon" onClick={this.handleShow}>
+                    <MenuOutlined/>
+                </Button>
+                <div className={this.props.show ? 'show_nav_expansion right_section' : 'right_section'}>
                     {this.props.balanceInProgress
                         ? null
                         : (balance && balance > 0)
                             ? this.props.address !== '' &&
-                        <Button className="claim_button claimed">
-                            <FaucetIcon/>
-                            {variables[this.props.lang].claimed}
-                        </Button>
+                            <Button className="claim_button claimed">
+                                <FaucetIcon/>
+                                {variables[this.props.lang].claimed}
+                            </Button>
                             : this.props.address !== '' &&
-                        <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
-                            <FaucetIcon/>
-                            {variables[this.props.lang].faucet}
-                        </Button>}
+                            <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
+                                <FaucetIcon/>
+                                {variables[this.props.lang].faucet}
+                            </Button>}
                     <CreatePopover/>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
                             ? <ConnectButton/>
                             : <ConnectedAccount/>}
                     </div>
+                    <Tabs/>
+                    <Button className="close_icon" onClick={this.handleHide}>
+                        <Close/>
+                    </Button>
                 </div>
                 <ClaimFaucetDialog/>
             </div>
@@ -124,6 +158,9 @@ NavBar.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchContracts: PropTypes.func.isRequired,
+    fetchWasmAllCollections: PropTypes.func.isRequired,
+    hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
@@ -132,7 +169,9 @@ NavBar.propTypes = {
     setDisconnect: PropTypes.func.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
     showClaimFaucetDialog: PropTypes.func.isRequired,
+    showSideBar: PropTypes.func.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         location: PropTypes.shape({
@@ -149,17 +188,23 @@ const stateToProps = (state) => {
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         rpcClientInProgress: state.query.rpcClient.inProgress,
+
+        show: state.navBar.show,
     };
 };
 
 const actionToProps = {
     fetchBalance,
+    fetchContracts,
+    fetchWasmAllCollections,
     initializeChain,
     setChainValue,
     setDisconnect,
     setEmptyValue,
     setRpcClient,
     showClaimFaucetDialog,
+    showSideBar,
+    hideSideBar,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));
