@@ -19,7 +19,8 @@ import { config } from '../../config';
 import { setRpcClient } from '../../actions/query';
 import withRouter from '../../components/WithRouter';
 import { setChainValue } from '../../actions/dashboard';
-import { MenuOutlined, Close } from '@mui/icons-material';
+import { Close, MenuOutlined } from '@mui/icons-material';
+import { fetchGqlAllCollections } from '../../actions/collections.gql';
 
 class NavBar extends Component {
     constructor (props) {
@@ -33,7 +34,11 @@ class NavBar extends Component {
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
             const route = this.props.router.location && this.props.router.location.pathname &&
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
-            if (route === 'iris' || route === 'uptick' || route === 'stargaze' || route === 'juno') {
+            if (route === 'stargaze') {
+                this.props.setChainValue(route);
+                return;
+            }
+            if (route === 'iris' || route === 'uptick') {
                 this.props.setChainValue(route);
                 this.props.setRpcClient(route);
             } else {
@@ -110,22 +115,22 @@ class NavBar extends Component {
                 </div>
                 <Tabs/>
                 <Button className="menu_icon" onClick={this.handleShow}>
-                    <MenuOutlined />
+                    <MenuOutlined/>
                 </Button>
                 <div className={this.props.show ? 'show_nav_expansion right_section' : 'right_section'}>
                     {this.props.balanceInProgress
                         ? null
                         : (balance && balance > 0)
                             ? this.props.address !== '' &&
-                        <Button className="claim_button claimed">
-                            <FaucetIcon/>
-                            {variables[this.props.lang].claimed}
-                        </Button>
+                            <Button className="claim_button claimed">
+                                <FaucetIcon/>
+                                {variables[this.props.lang].claimed}
+                            </Button>
                             : this.props.address !== '' &&
-                        <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
-                            <FaucetIcon/>
-                            {variables[this.props.lang].faucet}
-                        </Button>}
+                            <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
+                                <FaucetIcon/>
+                                {variables[this.props.lang].faucet}
+                            </Button>}
                     <CreatePopover/>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
@@ -134,7 +139,7 @@ class NavBar extends Component {
                     </div>
                     <Tabs/>
                     <Button className="close_icon" onClick={this.handleHide}>
-                        <Close />
+                        <Close/>
                     </Button>
                 </div>
                 <ClaimFaucetDialog/>
@@ -148,6 +153,7 @@ NavBar.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchGqlAllCollections: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -183,6 +189,7 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchBalance,
+    fetchGqlAllCollections,
     initializeChain,
     setChainValue,
     setDisconnect,

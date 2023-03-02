@@ -14,6 +14,7 @@ import { setRpcClient } from '../../actions/query';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 import { list } from '../../utils/defaultOptions';
 import AllCollectionsTable from './Tables/AllCollectionsTable';
+import GQLAllCollectionsTable from './Tables/GQLAllCollectionsTable';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -69,8 +70,10 @@ class Dashboard extends Component {
                         <div className="data_table">
                             {list.map((item, index) => {
                                 return (
-                                    item && item.value && (item.value === this.props.chainValue) &&
-                                    <AllCollectionsTable key={index}/>
+                                    item && item.value && item.value === 'stargaze' && (item.value === this.props.chainValue)
+                                        ? <GQLAllCollectionsTable key={index}/>
+                                        : item && item.value && (item.value === this.props.chainValue) &&
+                                        <AllCollectionsTable key={index}/>
                                 );
                             })}
                         </div>}

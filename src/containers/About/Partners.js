@@ -75,48 +75,48 @@ const Partners = (props) => {
     return (
         <div className="partners">
             <div className="header">
-                <span />
+                <span/>
                 <p>{variables[props.lang]['ecosystem_partners']}</p>
-                <span />
+                <span/>
             </div>
             <div className="list">
                 {ecosystem.map((item, index) => (
-                    <img key={index} alt={index + 'index'} src={item.image} />
+                    <img key={index} alt={index + 'index'} src={item.image}/>
                 ))}
             </div>
             <div className="header">
-                <span />
+                <span/>
                 <p>{variables[props.lang]['institution_partner']}</p>
-                <span />
+                <span/>
             </div>
             <div className="list">
                 {institution.map((item, index) => (
-                    <img key={index} alt={index + 'index'} src={item.image} />
+                    <img key={index} alt={index + 'index'} src={item.image}/>
                 ))}
             </div>
             <div className="header">
-                <span />
+                <span/>
                 <p>{variables[props.lang]['tech_initiator']}</p>
-                <span />
+                <span/>
             </div>
             <div className="list">
-                <img alt="bianjie" src={bianjie} />
+                <img alt="bianjie" src={bianjie}/>
             </div>
             <div className="header">
-                <span />
+                <span/>
                 <p>{variables[props.lang]['tech_initiator']}</p>
-                <span />
+                <span/>
             </div>
             <div className="list judges_list">
                 {judges.map((item, index) => (
                     <div key={index} className="judge_info">
-                        <img alt={item.name} src={item.image} />
+                        <img alt={item.name} src={item.image}/>
                         <div>
                             <p className="name">{item.name}</p>
                             <p className="designation">{item.designation}</p>
                         </div>
                         <div className="shadow">
-                            <img alt="shadow" src={shadow} />
+                            <img alt="shadow" src={shadow}/>
                         </div>
                     </div>
                 ))}

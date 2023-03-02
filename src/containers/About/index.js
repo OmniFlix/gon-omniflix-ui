@@ -51,7 +51,7 @@ const About = (props) => {
             </div>
             <div className="partners_sponsors">
                 <h2>{variables[props.lang]['partners_sponsors']}</h2>
-                <Partners />
+                <Partners/>
             </div>
             <div className="footer">
                 <p>{variables[props.lang].powered_by}</p>
