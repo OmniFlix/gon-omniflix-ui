@@ -8,7 +8,7 @@ import {
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
     FAUCET_CLAIM_FETCH_SUCCESS,
-    FAUCET_SUCCESS_SET,
+    FAUCET_SUCCESS_SET, FAUCET_TOKENS_FETCH_ERROR, FAUCET_TOKENS_FETCH_IN_PROGRESS, FAUCET_TOKENS_FETCH_SUCCESS,
     HIDE_SIDE_BAR_SET,
     NAV_TABS_SET,
     SHOW_SIDE_BAR_SET,
@@ -123,10 +123,40 @@ const show = (state = false, action) => {
     }
 };
 
+const tokenBalance = (state = {
+    inProgress: false,
+    value: [],
+}, action) => {
+    switch (action.type) {
+    case FAUCET_TOKENS_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case FAUCET_TOKENS_FETCH_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            // value: [...state.value, ...action.value],
+            // result: action.value,
+            // data: [...state.value, ...action.value]
+            value: [...state.value, action.value],
+        };
+    case FAUCET_TOKENS_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     tabValue,
     claimFaucetDialog,
     claimFaucet,
     faucetDialog,
     show,
+    tokenBalance,
 });

@@ -191,7 +191,7 @@
 }
 
 .about_page .partners_sponsors .partners .list.judges_list .judge_info {
-    width: 240px;
+    width: 200px;
     height: 300px;
     position: relative;
 }
@@ -223,19 +223,19 @@
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 25px;
     display: flex;
     align-items: center;
     color: #FFFFFF;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .about_page .partners_sponsors .partners .list.judges_list .judge_info div .designation {
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     display: flex;
     align-items: center;
@@ -261,6 +261,7 @@
 
 .about_page .partners_sponsors .partners .list.judges_list .judge_info .shadow img {
     margin: 0;
+    width: 100%;
 }
 
 @media (min-width: 600px) {

@@ -15,6 +15,9 @@ const variables = {
         faucet: 'Faucet',
         claim_test_tokens: 'Claim Test Tokens',
         claimed: 'Claimed',
+        account: 'Account',
+        ibc_tokens: 'IBC Tokens',
+        tokens: 'Tokens',
 
         // Home
         all_collections: 'All Collections',
@@ -178,7 +181,8 @@ const variables = {
         tech_initiator: 'Technology Initiator',
         judges_mentors: 'Judges & Mentors',
 
-        discord_url_content: 'Below are the discord channel links where you can claim faucet',
+        discord_url_content: 'Use the faucet to claim tokens from all GON Testnets',
+        discord_url_button: 'ping.pub Faucet',
     },
 };
 

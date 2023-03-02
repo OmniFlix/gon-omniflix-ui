@@ -4,6 +4,8 @@ import variables from '../../utils/variables';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import ImageOnLoad from '../../components/ImageOnLoad';
+import { Button } from '@mui/material';
+import exportIcon from '../../assets/export.png';
 
 const WasmInfo = (props) => {
     const id = props.value && props.value.name && props.value.name.split('wasm.stars');
@@ -32,6 +34,10 @@ const WasmInfo = (props) => {
                         : <div className="chain_type native_chain_type">
                             {variables[props.lang].native}
                         </div>}
+                    {props.traceValue && props.traceResult && props.traceResult.baseClassId &&
+                        <Button className="export_button" onClick={() => props.handleExport(props.traceResult)}>
+                            <img alt="export" src={exportIcon}/>
+                        </Button>}
                 </div>
             </div>
         </div>
@@ -40,7 +46,10 @@ const WasmInfo = (props) => {
 
 WasmInfo.propTypes = {
     address: PropTypes.string.isRequired,
+    handleExport: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    traceResult: PropTypes.object.isRequired,
+    traceValue: PropTypes.bool.isRequired,
     value: PropTypes.object.isRequired,
 };
 
@@ -48,6 +57,8 @@ const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
         lang: state.language,
+        traceValue: state.collection.redirectTrace.trace,
+        traceResult: state.collection.redirectTrace.result,
     };
 };
 

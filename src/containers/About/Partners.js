@@ -18,7 +18,11 @@ import judge2 from '../../assets/judges/HaifengXi.71c31dac.jpg';
 import judge3 from '../../assets/judges/ShaneVitarana.f67e40cc.jpg';
 import judge4 from '../../assets/judges/JakeHartnell.3ab6c929.png';
 import judge5 from '../../assets/judges/BrianXin.53aabafa.jpg';
-import judge6 from '../../assets/judges/JeffreyHu.da363099.jpg';
+import judge7 from '../../assets/judges/DayakarReddy.37208bf8.png';
+import judge8 from '../../assets/judges/SijieHan.fc025170.png';
+import judge9 from '../../assets/judges/0xUncleLee.Lalaland.b43d0694.png';
+import judge10 from '../../assets/judges/JeffreyHu.da363099.jpg';
+import judge11 from '../../assets/judges/Johanna.95945a5c.jpg';
 import shadow from '../../assets/judges/shadow.png';
 
 const Partners = (props) => {
@@ -67,9 +71,25 @@ const Partners = (props) => {
         name: 'Brian Xin',
         designation: 'Founder, Uptick Network',
     }, {
-        image: judge6,
+        image: judge7,
+        name: 'Dayakar Reddy',
+        designation: 'Founder, OmniFlix Network',
+    }, {
+        image: judge8,
+        name: 'Sijie Han',
+        designation: 'Solution Architect, AWS',
+    }, {
+        image: judge9,
+        name: '0xUncleLee.Lalaland',
+        designation: 'Startup Ecosystem Evangelist, AWS',
+    }, {
+        image: judge10,
         name: 'Jeffrey Hu',
         designation: 'Tech Lead, HashKey Capital',
+    }, {
+        image: judge11,
+        name: 'Johanna',
+        designation: 'Associate, IDG Capital',
     }];
 
     return (
@@ -104,7 +124,7 @@ const Partners = (props) => {
             </div>
             <div className="header">
                 <span/>
-                <p>{variables[props.lang]['tech_initiator']}</p>
+                <p>{variables[props.lang]['judges_mentors']}</p>
                 <span/>
             </div>
             <div className="list judges_list">

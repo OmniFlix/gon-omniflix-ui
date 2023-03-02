@@ -10,10 +10,6 @@ import flixIcon from '../../../assets/tokens/flix.svg';
 import { config } from '../../../config';
 import { fetchBalance } from '../../../actions/account/BCDetails';
 import CircularProgress from '../../../components/CircularProgress';
-import IrisIcon from '../../../assets/chains/iris.svg';
-import StargazeIcon from '../../../assets/chains/stargaze.svg';
-import JunoIcon from '../../../assets/chains/juno.svg';
-import UpTickIcon from '../../../assets/chains/uptick.svg';
 
 const ClaimFaucetDialog = (props) => {
     const handleFaucet = () => {
@@ -27,6 +23,11 @@ const ClaimFaucetDialog = (props) => {
                 props.setFaucetSuccess();
             }
         });
+    };
+
+    const handleDiscord = (value) => {
+        window.open(value);
+        props.handleClose();
     };
 
     let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
@@ -54,7 +55,7 @@ const ClaimFaucetDialog = (props) => {
                     <div className="right_section">
                         {balance && balance > 0
                             ? <Button disabled>
-                                {variables[props.lang]['claim_test_tokens']}
+                                {variables[props.lang].claimed}
                             </Button>
                             : <Button onClick={() => handleFaucet()}>
                                 {variables[props.lang]['claim_test_tokens']}
@@ -64,21 +65,8 @@ const ClaimFaucetDialog = (props) => {
                 <div className="discord_links">
                     <p>{variables[props.lang]['discord_url_content']}</p>
                     <div>
-                        <Button>
-                            <img alt="stargaze" src={StargazeIcon}/>
-                            <p>Stargaze</p>
-                        </Button>
-                        <Button>
-                            <img alt="irisNet" src={IrisIcon}/>
-                            <p>IrisNet</p>
-                        </Button>
-                        <Button>
-                            <img alt="juno" src={JunoIcon}/>
-                            <p>Juno</p>
-                        </Button>
-                        <Button>
-                            <img alt="uptick" src={UpTickIcon}/>
-                            <p>Uptick</p>
+                        <Button onClick={() => handleDiscord('https://faucet.ping.pub/')}>
+                            <p>{variables[props.lang]['discord_url_button']}</p>
                         </Button>
                     </div>
                 </div>

@@ -27,13 +27,18 @@ const ChainSelectField = (props) => {
     const handleChange = (event) => {
         props.onChange(event.target.value);
         if (props.chain === event.target.value) {
+            props.setTransferAddress('');
             return;
         }
 
         const prefix = event.target.value && ChainsList[event.target.value] && ChainsList[event.target.value].PREFIX;
         const address = props.address && bech32.decode(props.address);
         const convertedAddress = address && address.words && bech32.encode(prefix, address.words);
-        props.setTransferAddress(convertedAddress);
+        if (convertedAddress) {
+            props.setTransferAddress(convertedAddress);
+        } else {
+            props.setTransferAddress('');
+        }
     };
 
     return (

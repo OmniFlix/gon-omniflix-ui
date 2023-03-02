@@ -12,16 +12,16 @@ import { fetchBalance } from '../../actions/account/BCDetails';
 import ConnectedAccount from './ConnectedAccount';
 import Tabs from './Tabs';
 import CreatePopover from './CreatePopover';
-import { hideSideBar, showClaimFaucetDialog, showSideBar } from '../../actions/navBar';
+import { fetchFaucetTokens, hideSideBar, showClaimFaucetDialog, showSideBar } from '../../actions/navBar';
 import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
-import { config } from '../../config';
 import { setRpcClient } from '../../actions/query';
 import withRouter from '../../components/WithRouter';
 import { setChainValue } from '../../actions/dashboard';
 import { Close, MenuOutlined } from '@mui/icons-material';
-import { fetchContracts } from '../../actions/cosmwasm';
 import { ChainsList } from '../../chains';
+import { bech32 } from 'bech32';
+import { fetchContracts } from '../../actions/cosmwasm';
 import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 
 class NavBar extends Component {
@@ -92,6 +92,21 @@ class NavBar extends Component {
             if ((address && address.length && address[0] && address[0].address) &&
                 (this.props.balance.length === 0) && !this.props.balanceInProgress) {
                 this.props.fetchBalance(address[0].address);
+
+                Object.keys(ChainsList).map((item, index) => {
+                    const config = ChainsList && ChainsList[item] && ChainsList[item];
+                    const address1 = address[0].address && bech32.decode(address[0].address);
+                    const convertedAddress = address1 && address1.words && bech32.encode(config.PREFIX, address1.words);
+                    if (config && convertedAddress && (item !== 'omniflix')) {
+                        this.props.setRpcClient(item, (client) => {
+                            if (client) {
+                                this.props.fetchFaucetTokens(client, item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
+                            }
+                        });
+                    }
+
+                    return null;
+                });
             }
         });
     }
@@ -110,9 +125,6 @@ class NavBar extends Component {
     }
 
     render () {
-        let balance = this.props.balance && this.props.balance.length && this.props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-        balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
-
         return (
             <div className="navbar">
                 <div className="left_section">
@@ -125,17 +137,11 @@ class NavBar extends Component {
                 <div className={this.props.show ? 'show_nav_expansion right_section' : 'right_section'}>
                     {this.props.balanceInProgress
                         ? null
-                        : (balance && balance > 0)
-                            ? this.props.address !== '' &&
-                            <Button className="claim_button claimed">
-                                <FaucetIcon/>
-                                {variables[this.props.lang].claimed}
-                            </Button>
-                            : this.props.address !== '' &&
-                            <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
-                                <FaucetIcon/>
-                                {variables[this.props.lang].faucet}
-                            </Button>}
+                        : this.props.address !== '' &&
+                        <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
+                            <FaucetIcon/>
+                            {variables[this.props.lang].faucet}
+                        </Button>}
                     <CreatePopover/>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
@@ -157,8 +163,10 @@ NavBar.propTypes = {
     address: PropTypes.string.isRequired,
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
+    chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchContracts: PropTypes.func.isRequired,
+    fetchFaucetTokens: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
@@ -190,6 +198,7 @@ const stateToProps = (state) => {
         rpcClientInProgress: state.query.rpcClient.inProgress,
 
         show: state.navBar.show,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 
@@ -205,6 +214,7 @@ const actionToProps = {
     showClaimFaucetDialog,
     showSideBar,
     hideSideBar,
+    fetchFaucetTokens,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));
