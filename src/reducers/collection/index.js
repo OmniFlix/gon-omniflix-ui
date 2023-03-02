@@ -20,8 +20,9 @@ import {
     TRANSFER_DIALOG_SHOW,
     TRANSFER_FAIL_SET,
     TRANSFER_SUCCESS_SET,
-} from '../constants/collection';
-import { CLEAR_COLLECTION_SET } from '../constants/collections';
+} from '../../constants/collection';
+import { CLEAR_COLLECTION_SET } from '../../constants/collections';
+import wasm from './wasm';
 
 const collection = (state = {
     inProgress: false,
@@ -249,6 +250,7 @@ const redirectTrace = (state = {
 };
 
 export default combineReducers({
+    _wasm: wasm,
     collection,
     transferDialog,
     burnDialog,

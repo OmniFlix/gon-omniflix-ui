@@ -16,6 +16,10 @@ import TransferDialog from './TransferDialog';
 import BurnDialog from './BurnDialog';
 import { ibcName, ibcSymbol } from '../../utils/ibcData';
 import { setRpcClient } from '../../actions/query';
+import { fetchWasmCollection, fetchWasmCollectionNFTS, fetchWasmNFTInfo } from '../../actions/collection/wasm';
+import { ChainsList } from '../../chains';
+import WasmInfo from './WasmInfo';
+import WasmNFTsTable from '../Dashboard/Tables/WasmNFTsTable';
 
 class SingleCollection extends Component {
     constructor (props) {
@@ -23,6 +27,7 @@ class SingleCollection extends Component {
 
         this.handleClick = this.handleClick.bind(this);
         this.handleExport = this.handleExport.bind(this);
+        this.handleFetch = this.handleFetch.bind(this);
     }
 
     componentDidMount () {
@@ -30,6 +35,15 @@ class SingleCollection extends Component {
             this.props.rpcClient && this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
             const updatedID = this.props.router.params.id.replaceAll('_', '/');
             this.props.fetchCollectionNFTS(this.props.rpcClient, this.props.chainValue, updatedID);
+        } else if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.contractsInProgress &&
+            this.props.contracts && this.props.contracts[this.props.chainValue] && !this.props.nftsInProgress) {
+            const config = ChainsList && ChainsList[this.props.router.params.chain];
+            this.props.fetchWasmCollection(config, this.props.router.params.chain, this.props.router.params.id);
+            this.props.fetchWasmCollectionNFTS(config, this.props.router.params.id, (result) => {
+                if (result && result.tokens && result.tokens.length) {
+                    this.handleFetch(0, config, result.tokens);
+                }
+            });
         }
         if (this.props.router && this.props.router.params && this.props.router.params.id &&
             this.props.rpcClient && this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
@@ -58,6 +72,18 @@ class SingleCollection extends Component {
                 }
             });
         }
+        if (this.props.chainValue && this.props.contracts && pp.contracts && !pp.contracts[this.props.chainValue] &&
+            this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
+            this.props.router && this.props.router.params && this.props.router.params.id && !this.props.contractsInProgress &&
+            !this.props.nftsInProgress) {
+            const config = ChainsList && ChainsList[this.props.router.params.chain];
+            this.props.fetchWasmCollection(config, this.props.router.params.chain, this.props.router.params.id);
+            this.props.fetchWasmCollectionNFTS(config, this.props.router.params.id, (result) => {
+                if (result && result.tokens && result.tokens.length) {
+                    this.handleFetch(0, config, result.tokens);
+                }
+            });
+        }
     }
 
     handleClick () {
@@ -72,7 +98,28 @@ class SingleCollection extends Component {
         }
     }
 
+    handleFetch (index, config, data) {
+        const array = [];
+        for (let i = 0; i < 3; i++) {
+            if (data[index + i]) {
+                const value = data[index + i];
+                if (value) {
+                    array.push(this.props.fetchWasmNFTInfo(config, this.props.router.params.id, value));
+                }
+            } else {
+                break;
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 3 < data.length - 1) {
+                this.handleFetch(index + 3, config, data);
+            }
+        });
+    }
+
     render () {
+        const config = ChainsList && ChainsList[this.props.router.params.chain];
         let data = this.props.collection && this.props.collection.denom && this.props.collection.denom.data;
         data = data && JSON.parse(data);
 
@@ -83,22 +130,33 @@ class SingleCollection extends Component {
                     <span>/</span>
                     {this.props.inProgress
                         ? <DotsLoading/>
-                        : this.props.collection && this.props.collection.denom
-                            ? <div>{this.props.collection.denom.symbol ||
-                                this.props.collection.denom.name ||
-                                (data && ibcSymbol(data)) ||
-                                (data && ibcName(data))}</div>
-                            : null}
+                        : config && config.cosmwasm && this.props.wasmCollections &&
+                        this.props.router && this.props.router.params && this.props.router.params.id
+                            ? <div>{this.props.wasmCollections.name || this.props.wasmCollections.symbol}</div>
+                            : this.props.collection && this.props.collection.denom
+                                ? <div>{this.props.collection.denom.symbol ||
+                                    this.props.collection.denom.name ||
+                                    (data && ibcSymbol(data)) ||
+                                    (data && ibcName(data))}</div>
+                                : null}
                 </div>
                 {this.props.inProgress
                     ? <CircularProgress/>
-                    : this.props.collection && this.props.collection.denom
+                    : config && config.cosmwasm && this.props.wasmCollections &&
+                    this.props.router && this.props.router.params && this.props.router.params.id
                         ? <div className="coll_page">
-                            <Info handleExport={this.handleExport}/>
+                            <WasmInfo handleExport={this.handleExport} value={this.props.wasmCollections}/>
                             <div className="data_table nfts_table">
-                                <NFTsTable/>
+                                <WasmNFTsTable/>
                             </div>
-                        </div> : <NoData/>}
+                        </div>
+                        : this.props.collection && this.props.collection.denom
+                            ? <div className="coll_page">
+                                <Info handleExport={this.handleExport}/>
+                                <div className="data_table nfts_table">
+                                    <NFTsTable/>
+                                </div>
+                            </div> : <NoData/>}
                 <TransferDialog/>
                 <BurnDialog/>
             </div>
@@ -110,11 +168,18 @@ SingleCollection.propTypes = {
     address: PropTypes.string.isRequired,
     chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
+    contracts: PropTypes.object.isRequired,
+    contractsInProgress: PropTypes.bool.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
     fetchCollectionTrace: PropTypes.func.isRequired,
+    fetchWasmCollection: PropTypes.func.isRequired,
+    fetchWasmCollectionNFTS: PropTypes.func.isRequired,
+    fetchWasmNFTInfo: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     inProgressTrace: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    nfts: PropTypes.object.isRequired,
+    nftsInProgress: PropTypes.bool.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
@@ -128,6 +193,7 @@ SingleCollection.propTypes = {
     setTabValue: PropTypes.func.isRequired,
     setTraceCollection: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
+    wasmCollections: PropTypes.object.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -135,18 +201,25 @@ const stateToProps = (state) => {
         address: state.account.wallet.connection.address,
         chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
+        contracts: state.cosmwasm.contracts.value,
+        contractsInProgress: state.cosmwasm.contracts.inProgress,
         inProgress: state.collection.collection.inProgress,
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         rpcClientInProgress: state.query.rpcClient.inProgress,
         tabValue: state.dashboard.tabValue.value,
-
         inProgressTrace: state.collection.collectionTrace.inProgress,
+        nfts: state.collection._wasm.nfts.value,
+        nftsInProgress: state.collection._wasm.nfts.inProgress,
+        wasmCollections: state.collection._wasm.collection.value,
     };
 };
 
 const actionToProps = {
     fetchCollectionNFTS,
+    fetchWasmCollection,
+    fetchWasmCollectionNFTS,
+    fetchWasmNFTInfo,
     setTabValue,
     setRpcClient,
     fetchCollectionTrace,

@@ -1,7 +1,6 @@
 import { RPC_CLIENT_ERROR, RPC_CLIENT_IN_PROGRESS, RPC_CLIENT_SUCCESS } from '../constants/query';
 import { Tendermint34Client } from '@cosmjs/tendermint-rpc';
 import { createProtobufRpcClient, QueryClient } from '@cosmjs/stargate';
-// import { config } from '../config';
 import { ChainsList } from '../chains';
 
 const rpcClientInProgress = () => {

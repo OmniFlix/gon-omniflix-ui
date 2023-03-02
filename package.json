@@ -6,9 +6,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.7.9",
-    "@apollo/react-hoc": "^4.0.0",
     "@cosmjs/amino": "^0.29.3",
+    "@cosmjs/cosmwasm-stargate": "^0.29.5",
     "@cosmjs/encoding": "^0.29.5",
     "@cosmjs/proto-signing": "^0.29.5",
     "@cosmjs/stargate": "^0.29.3",
@@ -22,7 +21,6 @@
     "bech32": "^2.0.0",
     "classnames": "^2.3.1",
     "cosmjs-types": "^0.4.1",
-    "graphql": "^16.6.0",
     "long": "^5.2.1",
     "mui-datatables": "^4.3.0",
     "prop-types": "^15.8.1",

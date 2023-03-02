@@ -8,6 +8,7 @@ import navBar from './navBar';
 import collection from './collection';
 import mintNFT from './mintNFT';
 import query from './query';
+import cosmwasm from './cosmwasm';
 
 export default combineReducers({
     account,
@@ -19,4 +20,5 @@ export default combineReducers({
     collection,
     mintNFT,
     query,
+    cosmwasm,
 });

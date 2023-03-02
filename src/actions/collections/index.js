@@ -23,10 +23,10 @@ import {
     SCHEMA_SET,
     SCHEMA_VALUES_SET,
     UPDATE_COLLECTION_SET,
-} from '../constants/collections';
+} from '../../constants/collections';
 import Axios from 'axios';
-import { AVATAR_UPLOAD_URL, urlFetchCollectionInfo } from '../constants/url';
-import { ChainsList } from '../chains';
+import { AVATAR_UPLOAD_URL, urlFetchCollectionInfo } from '../../constants/url';
+import { ChainsList } from '../../chains';
 
 export const setCollectionName = (value) => {
     return {

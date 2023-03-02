@@ -19,9 +19,10 @@ import { setRpcClient } from '../../actions/query';
 import withRouter from '../../components/WithRouter';
 import { setChainValue } from '../../actions/dashboard';
 import { Close, MenuOutlined } from '@mui/icons-material';
-import { fetchGqlAllCollections } from '../../actions/collections.gql';
 import { ChainsList } from '../../chains';
 import { bech32 } from 'bech32';
+import { fetchContracts } from '../../actions/cosmwasm';
+import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 
 class NavBar extends Component {
     constructor (props) {
@@ -37,8 +38,11 @@ class NavBar extends Component {
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
             if (route === 'stargaze') {
                 this.props.setChainValue(route);
+                const config = ChainsList && ChainsList[route];
+                this.props.fetchContracts(config, route);
                 return;
             }
+
             if (route === 'iris' || route === 'uptick') {
                 this.props.setChainValue(route);
                 this.props.setRpcClient(route);
@@ -100,6 +104,8 @@ class NavBar extends Component {
                             }
                         });
                     }
+
+                    return null;
                 });
             }
         });
@@ -132,10 +138,10 @@ class NavBar extends Component {
                     {this.props.balanceInProgress
                         ? null
                         : this.props.address !== '' &&
-                            <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
-                                <FaucetIcon/>
-                                {variables[this.props.lang].faucet}
-                            </Button>}
+                        <Button className="claim_button" onClick={this.props.showClaimFaucetDialog}>
+                            <FaucetIcon/>
+                            {variables[this.props.lang].faucet}
+                        </Button>}
                     <CreatePopover/>
                     <div className="connect_account">
                         {this.props.address === '' && !localStorage.getItem('gon_of_address')
@@ -159,8 +165,9 @@ NavBar.propTypes = {
     balanceInProgress: PropTypes.bool.isRequired,
     chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchContracts: PropTypes.func.isRequired,
     fetchFaucetTokens: PropTypes.func.isRequired,
-    fetchGqlAllCollections: PropTypes.func.isRequired,
+    fetchWasmAllCollections: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -197,7 +204,8 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchBalance,
-    fetchGqlAllCollections,
+    fetchContracts,
+    fetchWasmAllCollections,
     initializeChain,
     setChainValue,
     setDisconnect,

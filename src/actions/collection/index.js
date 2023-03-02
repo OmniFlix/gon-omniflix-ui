@@ -1,4 +1,4 @@
-import { urlFetchClassTrace } from '../chains/classTrace';
+import { urlFetchClassTrace } from '../../chains/classTrace';
 import Axios from 'axios';
 import {
     BURN_DIALOG_HIDE,
@@ -21,11 +21,11 @@ import {
     TRANSFER_DIALOG_SHOW,
     TRANSFER_FAIL_SET,
     TRANSFER_SUCCESS_SET,
-} from '../constants/collection';
-import { ChainsList } from '../chains';
+} from '../../constants/collection';
+import { ChainsList } from '../../chains';
 import {
     QueryClientImpl,
-} from '../registry/omniflix_custom_ts_types/gen/ibc/applications/nft_transfer/v1/query';
+} from '../../registry/omniflix_custom_ts_types/gen/ibc/applications/nft_transfer/v1/query';
 
 export const showTransferDialog = (value, chain) => {
     return {
