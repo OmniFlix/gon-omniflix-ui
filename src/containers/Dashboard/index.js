@@ -14,13 +14,16 @@ import { setRpcClient } from '../../actions/query';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 import { list } from '../../utils/defaultOptions';
 import AllCollectionsTable from './Tables/AllCollectionsTable';
-import GQLAllCollectionsTable from './Tables/GQLAllCollectionsTable';
+import WasmAllCollectionsTable from './Tables/WasmAllCollectionsTable';
+import { fetchWasmAllCollections } from '../../actions/collections/wasm';
+import { ChainsList } from '../../chains';
 
 class Dashboard extends Component {
     constructor (props) {
         super(props);
 
         this.handleCreateCollection = this.handleCreateCollection.bind(this);
+        this.handleFetch = this.handleFetch.bind(this);
     }
 
     componentDidMount () {
@@ -31,6 +34,12 @@ class Dashboard extends Component {
         } else if (this.props.tabValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
             this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
+        }
+
+        if (this.props.contracts && this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
+            !this.props.contractsInProgress && this.props.wasmAllCollections && !this.props.wasmAllCollections[this.props.chainValue]) {
+            const config = ChainsList && ChainsList[this.props.chainValue];
+            this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
         }
     }
 
@@ -47,10 +56,35 @@ class Dashboard extends Component {
                 this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
         }
+        if (this.props.chainValue && this.props.contracts && pp.contracts && !pp.contracts[this.props.chainValue] &&
+            this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value) {
+            const config = ChainsList && ChainsList[this.props.chainValue];
+            this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
+        }
     }
 
     handleCreateCollection () {
         this.props.router.navigate('/' + this.props.chainValue + '/create-collection');
+    }
+
+    handleFetch (index, config, data) {
+        const array = [];
+        for (let i = 0; i < 3; i++) {
+            if (data[index + i]) {
+                const value = data[index + i];
+                if (value) {
+                    array.push(this.props.fetchWasmAllCollections(config, this.props.chainValue, value));
+                }
+            } else {
+                break;
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 3 < data.length - 1) {
+                this.handleFetch(index + 3, config, data);
+            }
+        });
     }
 
     render () {
@@ -71,7 +105,7 @@ class Dashboard extends Component {
                             {list.map((item, index) => {
                                 return (
                                     item && item.value && item.value === 'stargaze' && (item.value === this.props.chainValue)
-                                        ? <GQLAllCollectionsTable key={index}/>
+                                        ? <WasmAllCollectionsTable key={index}/>
                                         : item && item.value && (item.value === this.props.chainValue) &&
                                         <AllCollectionsTable key={index}/>
                                 );
@@ -94,8 +128,11 @@ Dashboard.propTypes = {
     chainValue: PropTypes.string.isRequired,
     collections: PropTypes.object.isRequired,
     collectionsInProgress: PropTypes.bool.isRequired,
+    contracts: PropTypes.object.isRequired,
+    contractsInProgress: PropTypes.bool.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    fetchWasmAllCollections: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
@@ -103,6 +140,7 @@ Dashboard.propTypes = {
     setRpcClient: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
+    wasmAllCollections: PropTypes.object.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),
@@ -111,22 +149,26 @@ Dashboard.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        allCollections: state.collections.allCollectionSList.value,
+        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         chainValue: state.dashboard.chainValue.value,
         collections: state.collections.collectionSList.value,
         collectionsInProgress: state.collections.collectionSList.inProgress,
-        allCollections: state.collections.allCollectionSList.value,
-        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
+        contracts: state.cosmwasm.contracts.value,
+        contractsInProgress: state.cosmwasm.contracts.inProgress,
         keys: state.account.wallet.connection.keys,
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         rpcClientInProgress: state.query.rpcClient.inProgress,
         tabValue: state.dashboard.tabValue.value,
+        wasmAllCollections: state.collections._wasm.allCollectionSList.value,
     };
 };
 
 const actionsToProps = {
     fetchCollections,
     fetchAllCollections,
+    fetchWasmAllCollections,
     setTabValue,
     setRpcClient,
 };

@@ -10,23 +10,17 @@ import { fetchAllCollections, fetchCollections } from '../../../actions/collecti
 import { setRpcClient } from '../../../actions/query';
 import withRouter from '../../../components/WithRouter';
 import { ChainsList } from '../../../chains';
-import { fetchGqlAllCollections } from '../../../actions/collections.gql';
-import { useLazyQuery } from '@apollo/client';
-import { GET_GQL_COLLECTIONS } from '../../../constants/collections.gql';
+import { fetchContracts } from '../../../actions/cosmwasm';
 
 const ChainPopover = (props) => {
-    const [getCollections] = useLazyQuery(GET_GQL_COLLECTIONS);
-
     const handleChange = (value) => {
         const config = ChainsList && ChainsList[value];
-        if (config && config.GRAPHQL_URL) {
+        if (config && config.cosmwasm) {
+            props.setChainValue(value);
             props.router.navigate(`/${value}/dashboard`);
-            props.fetchGqlAllCollections(() => getCollections({
-                variables: {
-                    offset: DEFAULT_SKIP,
-                    limit: DEFAULT_LIMIT,
-                },
-            }), value);
+            if (props.contracts && !props.contracts[value]) {
+                props.fetchContracts(config, value);
+            }
             return;
         }
 
@@ -78,9 +72,10 @@ ChainPopover.propTypes = {
     chain: PropTypes.string.isRequired,
     collections: PropTypes.object.isRequired,
     collectionsInProgress: PropTypes.bool.isRequired,
+    contracts: PropTypes.object.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
-    fetchGqlAllCollections: PropTypes.func.isRequired,
+    fetchContracts: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setChainValue: PropTypes.func.isRequired,
@@ -94,11 +89,12 @@ ChainPopover.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        allCollections: state.collections.allCollectionSList.value,
+        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         chain: state.dashboard.chainValue.value,
         collections: state.collections.collectionSList.value,
         collectionsInProgress: state.collections.collectionSList.inProgress,
-        allCollections: state.collections.allCollectionSList.value,
-        allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
+        contracts: state.cosmwasm.contracts.value,
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,
@@ -108,7 +104,7 @@ const stateToProps = (state) => {
 const actionsToProps = {
     fetchAllCollections,
     fetchCollections,
-    fetchGqlAllCollections,
+    fetchContracts,
     setChainValue,
     setRpcClient,
     setTabValue,

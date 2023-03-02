@@ -26,7 +26,7 @@ import {
 } from '../../constants/collections';
 import { TX_HASH_IN_PROGRESS_FALSE_SET } from '../../constants/wallet';
 import { schemaList } from '../../utils/defaultOptions';
-import gql from './gql';
+import wasm from './wasm';
 
 const collectionSList = (state = {
     inProgress: false,
@@ -275,7 +275,7 @@ const avatar = (state = {
 };
 
 export default combineReducers({
-    _gql: gql,
+    _wasm: wasm,
     collectionSList,
     allCollectionSList,
     singleCollection,

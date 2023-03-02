@@ -20,7 +20,9 @@ import { setRpcClient } from '../../actions/query';
 import withRouter from '../../components/WithRouter';
 import { setChainValue } from '../../actions/dashboard';
 import { Close, MenuOutlined } from '@mui/icons-material';
-import { fetchGqlAllCollections } from '../../actions/collections.gql';
+import { fetchContracts } from '../../actions/cosmwasm';
+import { ChainsList } from '../../chains';
+import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 
 class NavBar extends Component {
     constructor (props) {
@@ -36,8 +38,11 @@ class NavBar extends Component {
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
             if (route === 'stargaze') {
                 this.props.setChainValue(route);
+                const config = ChainsList && ChainsList[route];
+                this.props.fetchContracts(config, route);
                 return;
             }
+
             if (route === 'iris' || route === 'uptick') {
                 this.props.setChainValue(route);
                 this.props.setRpcClient(route);
@@ -153,7 +158,8 @@ NavBar.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
-    fetchGqlAllCollections: PropTypes.func.isRequired,
+    fetchContracts: PropTypes.func.isRequired,
+    fetchWasmAllCollections: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -189,7 +195,8 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchBalance,
-    fetchGqlAllCollections,
+    fetchContracts,
+    fetchWasmAllCollections,
     initializeChain,
     setChainValue,
     setDisconnect,

@@ -1,21 +1,17 @@
 import { combineReducers } from 'redux';
-import {
-    GQL_ALL_COLLECTIONS_FETCH_ERROR,
-    GQL_ALL_COLLECTIONS_FETCH_IN_PROGRESS,
-    GQL_ALL_COLLECTIONS_FETCH_SUCCESS,
-} from '../../constants/collections.gql';
+import { CONTRACTS_FETCH_ERROR, CONTRACTS_FETCH_IN_PROGRESS, CONTRACTS_FETCH_SUCCESS } from '../constants/cosmwasm';
 
-const allCollectionSList = (state = {
+const contracts = (state = {
     inProgress: false,
     value: {},
 }, action) => {
     switch (action.type) {
-    case GQL_ALL_COLLECTIONS_FETCH_IN_PROGRESS:
+    case CONTRACTS_FETCH_IN_PROGRESS:
         return {
             ...state,
             inProgress: true,
         };
-    case GQL_ALL_COLLECTIONS_FETCH_SUCCESS: {
+    case CONTRACTS_FETCH_SUCCESS: {
         if (action.chain) {
             return {
                 ...state,
@@ -24,9 +20,6 @@ const allCollectionSList = (state = {
                     ...state.value,
                     [action.chain]: {
                         value: action.value,
-                        skip: action.skip,
-                        limit: action.limit,
-                        total: action.total,
                     },
                 },
             };
@@ -37,7 +30,7 @@ const allCollectionSList = (state = {
             inProgress: false,
         };
     }
-    case GQL_ALL_COLLECTIONS_FETCH_ERROR:
+    case CONTRACTS_FETCH_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -48,5 +41,5 @@ const allCollectionSList = (state = {
 };
 
 export default combineReducers({
-    allCollectionSList,
+    contracts,
 });
