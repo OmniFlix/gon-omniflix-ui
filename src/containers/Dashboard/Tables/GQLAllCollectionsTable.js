@@ -190,8 +190,8 @@ const GQLAllCollectionsTable = (props) => {
     const tableData = list && list.length
         ? list.map((item, index) => [
             item,
-            item.id,
-            item.id,
+            item.collectionAddr,
+            item.collectionAddr,
             item,
         ]) : [];
 

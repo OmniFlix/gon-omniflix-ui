@@ -11,9 +11,11 @@ export const GET_GQL_COLLECTIONS = gql`
     limit: $limit) {
         collections {
             name
-            id
+            collectionAddr
             image
         }
+        offset
+        limit
         total
     }
   }

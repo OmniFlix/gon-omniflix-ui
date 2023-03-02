@@ -33,8 +33,8 @@ export const fetchGqlAllCollections = (getCollections, chain) => (dispatch) => {
 
     getCollections().then((res) => {
         if (res && res.data) {
-            dispatch(fetchGqlAllCollectionsSuccess(res.data, chain, res.variables && res.variables.offset,
-                res.variables && res.variables.limit, res.data && res.data.collections && res.data.collections.total));
+            dispatch(fetchGqlAllCollectionsSuccess(res.data, chain, res.data && res.data.collections && res.data.collections.offset,
+                res.data && res.data.collections && res.data.collections.limit, res.data && res.data.collections && res.data.collections.total));
         } else {
             dispatch(fetchGqlAllCollectionsError(res && res.error));
         }
