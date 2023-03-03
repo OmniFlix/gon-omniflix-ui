@@ -51,9 +51,9 @@ const Info = (props) => {
                             {variables[props.lang].native}
                         </div>}
                     {props.traceValue && props.traceResult && props.traceResult.baseClassId &&
-                    <Button className="export_button" onClick={() => props.handleExport(props.traceResult)}>
-                        <img alt="export" src={exportIcon} />
-                    </Button>}
+                        <Button className="export_button" onClick={() => props.handleExport(props.traceResult)}>
+                            <img alt="export" src={exportIcon}/>
+                        </Button>}
                 </div>
                 <div className="row3">
                     {(props.collection && props.collection.denom && props.collection.denom.description) ||

@@ -142,7 +142,7 @@ export const fetchCollections = (rpcClient, chain, address, skip, limit, cb) => 
         let request = null;
 
         if (chain === 'iris' || chain === 'uptick') {
-            return;
+            request = null;
         } else {
             request = {
                 owner: address,

@@ -67,7 +67,7 @@ const ConnectedAccount = (props) => {
                 id={id}
                 open={open}
                 onClose={handleClose}>
-                <AccountPopover />
+                <AccountPopover/>
             </Popover>
         </>
     );

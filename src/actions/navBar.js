@@ -7,7 +7,10 @@ import {
     FAUCET_CLAIM_FETCH_ERROR,
     FAUCET_CLAIM_FETCH_IN_PROGRESS,
     FAUCET_CLAIM_FETCH_SUCCESS,
-    FAUCET_SUCCESS_SET, FAUCET_TOKENS_FETCH_ERROR, FAUCET_TOKENS_FETCH_IN_PROGRESS, FAUCET_TOKENS_FETCH_SUCCESS,
+    FAUCET_SUCCESS_SET,
+    FAUCET_TOKENS_FETCH_ERROR,
+    FAUCET_TOKENS_FETCH_IN_PROGRESS,
+    FAUCET_TOKENS_FETCH_SUCCESS,
     HIDE_SIDE_BAR_SET,
     NAV_TABS_SET,
     SHOW_SIDE_BAR_SET,
@@ -182,8 +185,16 @@ export const fetchFaucetTokens = (rpcClient, chain, address, denom, config, cb) 
     (async () => {
         const queryService = new QueryClientImpl(client);
 
-        queryService.Balance({ address, denom }).then((queryResult) => {
-            const data = { ...(queryResult && queryResult.balance), address, chain, config };
+        queryService.Balance({
+            address,
+            denom,
+        }).then((queryResult) => {
+            const data = {
+                ...(queryResult && queryResult.balance),
+                address,
+                chain,
+                config,
+            };
             dispatch(fetchFaucetTokensSuccess(data, chain));
             if (cb) {
                 cb(queryResult && queryResult.balance);

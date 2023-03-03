@@ -41,7 +41,7 @@ const IBCButton = (props) => {
                     type: '/ibc.applications.nft_transfer.v1.MsgTransfer',
                     value: {
                         source_port: 'nft-transfer',
-                        source_channel: chainConfig.CHANNELS && chainConfig.CHANNELS[props.chainID],
+                        source_channel: chainConfig.CHANNELS && chainConfig.CHANNELS[props.chainID] && chainConfig.CHANNELS[props.chainID][0],
                         class_id: updatedID,
                         token_ids: [
                             props.value && props.value.id,
@@ -125,7 +125,7 @@ const IBCButton = (props) => {
 
                                             props.setTransferSuccess(res1.txhash);
                                             props.fetchBalance(props.address);
-                                            props.fetchCollectionNFTS(props.rpcClient, props.chainValue, props.router.params.id);
+                                            props.fetchCollectionNFTS(props.rpcClient, props.chainValue, updatedID);
                                             props.setTxHashInProgressFalse();
                                             clearInterval(time);
                                         }
