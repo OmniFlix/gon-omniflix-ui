@@ -11,11 +11,18 @@ import { setRpcClient } from '../../../actions/query';
 import withRouter from '../../../components/WithRouter';
 import { ChainsList } from '../../../chains';
 import { fetchContracts } from '../../../actions/cosmwasm';
+import { fetchMyNFTs } from '../../../actions/nfts';
+import { bech32 } from 'bech32';
 
 const ChainPopover = (props) => {
     const handleChange = (value) => {
         const config = ChainsList && ChainsList[value];
         if (config && config.cosmwasm) {
+            if (props.tabValue === 'my_nfts') {
+                props.setChainValue(value);
+                props.setTabValue('all_collections');
+            }
+
             props.setChainValue(value);
             props.router.navigate(`/${value}/dashboard`);
             if (props.contracts && !props.contracts[value]) {
@@ -37,6 +44,20 @@ const ChainPopover = (props) => {
     };
 
     const handleFetch = (value, rpcClient) => {
+        if (props.tabValue === 'my_nfts' && !props.myNFTsInProgress && value && !props.myNFTs[value]) {
+            props.setChainValue(value);
+            const prefix = value && ChainsList[value] && ChainsList[value].PREFIX;
+            let convertedAddress = props.address;
+            if (prefix && prefix !== 'omniflix') {
+                const address = props.address && bech32.decode(props.address);
+                convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+            }
+
+            props.fetchMyNFTs(rpcClient, value, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
+
+            return;
+        }
+
         if (props.tabValue === 'my_collections' && value !== 'omniflix') {
             props.setChainValue(value);
             props.setTabValue('all_collections');
@@ -70,6 +91,7 @@ const ChainPopover = (props) => {
 };
 
 ChainPopover.propTypes = {
+    address: PropTypes.string.isRequired,
     allCollections: PropTypes.object.isRequired,
     allCollectionsInProgress: PropTypes.bool.isRequired,
     chain: PropTypes.string.isRequired,
@@ -79,7 +101,10 @@ ChainPopover.propTypes = {
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
     fetchContracts: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    myNFTs: PropTypes.object.isRequired,
+    myNFTsInProgress: PropTypes.bool.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setChainValue: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
@@ -92,6 +117,7 @@ ChainPopover.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        address: state.account.wallet.connection.address,
         allCollections: state.collections.allCollectionSList.value,
         allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         chain: state.dashboard.chainValue.value,
@@ -101,6 +127,8 @@ const stateToProps = (state) => {
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,
+        myNFTs: state.nfts.myNFTs.value,
+        myNFTsInProgress: state.nfts.myNFTs.inProgress,
     };
 };
 
@@ -108,6 +136,7 @@ const actionsToProps = {
     fetchAllCollections,
     fetchCollections,
     fetchContracts,
+    fetchMyNFTs,
     setChainValue,
     setRpcClient,
     setTabValue,

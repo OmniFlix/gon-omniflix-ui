@@ -114,7 +114,7 @@ class SingleCollection extends Component {
         }
 
         Promise.all(array).then(() => {
-            if (index + 3 < data.length - 1) {
+            if (index + 3 < data.length) {
                 this.handleFetch(index + 3, config, data);
             }
         });

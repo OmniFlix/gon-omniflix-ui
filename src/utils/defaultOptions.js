@@ -10,10 +10,6 @@ export const list = [{
     name: 'OmniFlix',
     value: 'omniflix',
 }, {
-    icon: StargazeIcon,
-    name: 'Stargaze',
-    value: 'stargaze',
-}, {
     icon: IrisIcon,
     name: 'IrisNet',
     value: 'iris',
@@ -21,6 +17,10 @@ export const list = [{
     icon: UpTickIcon,
     name: 'Uptick',
     value: 'uptick',
+}, {
+    icon: StargazeIcon,
+    name: 'Stargaze',
+    value: 'stargaze',
 }, {
     icon: JunoIcon,
     name: 'Juno',

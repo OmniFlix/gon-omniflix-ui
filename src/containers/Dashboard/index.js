@@ -17,6 +17,11 @@ import AllCollectionsTable from './Tables/AllCollectionsTable';
 import WasmAllCollectionsTable from './Tables/WasmAllCollectionsTable';
 import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 import { ChainsList } from '../../chains';
+import { fetchMyNFTs, fetchMyNFTsInfo } from '../../actions/nfts';
+import { bech32 } from 'bech32';
+import MyNFTsTable from './Tables/MyNFTsTable';
+import TransferDialog from '../SingleCollection/TransferDialog';
+import BurnDialog from '../SingleCollection/BurnDialog';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -24,6 +29,7 @@ class Dashboard extends Component {
 
         this.handleCreateCollection = this.handleCreateCollection.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
+        this.handleNFTFetch = this.handleNFTFetch.bind(this);
     }
 
     componentDidMount () {
@@ -34,6 +40,16 @@ class Dashboard extends Component {
         } else if (this.props.tabValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
             this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
+        } else if (this.props.tabValue === 'my_nfts' && !this.props.myNFTsInProgress && this.props.chainValue &&
+            !this.props.myNFTs[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
+            const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
+            let convertedAddress = this.props.address;
+            if (prefix && prefix !== 'omniflix') {
+                const address = this.props.address && bech32.decode(this.props.address);
+                convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+            }
+
+            this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
         if (this.props.contracts && this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
@@ -54,6 +70,15 @@ class Dashboard extends Component {
                 this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
             } else if (this.props.tabValue === 'my_collections' && this.props.address !== '' && this.props.chainValue === 'omniflix') {
                 this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+            } else if (this.props.tabValue === 'my_nfts' && this.props.chainValue) {
+                const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
+                let convertedAddress = this.props.address;
+                if (prefix && prefix !== 'omniflix') {
+                    const address = this.props.address && bech32.decode(this.props.address);
+                    convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+                }
+
+                this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
         }
         if (this.props.chainValue && this.props.contracts && pp.contracts && !pp.contracts[this.props.chainValue] &&
@@ -61,10 +86,46 @@ class Dashboard extends Component {
             const config = ChainsList && ChainsList[this.props.chainValue];
             this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
         }
+        if ((this.props.chainValue && this.props.myNFTs && pp.myNFTs &&
+                !pp.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue]) ||
+            (this.props.chainValue && this.props.myNFTs && pp.myNFTs &&
+                pp.myNFTs[this.props.chainValue] && !this.props.myNFTsInfo[this.props.chainValue])) {
+            if (this.props.myNFTs[this.props.chainValue].value && this.props.myNFTs[this.props.chainValue].value.length) {
+                this.props.myNFTs[this.props.chainValue].value.map((value) => {
+                    if (this.props.chainValue === 'omniflix') {
+                        this.handleNFTFetch(0, value.onftIds, value.denomId);
+                    } else {
+                        this.handleNFTFetch(0, value.tokenIds, value.denomId);
+                    }
+
+                    return null;
+                });
+            }
+        }
     }
 
     handleCreateCollection () {
         this.props.router.navigate('/' + this.props.chainValue + '/create-collection');
+    }
+
+    handleNFTFetch (index, data, denom) {
+        const array = [];
+        for (let i = 0; i < 3; i++) {
+            if (data[index + i]) {
+                const value = data[index + i];
+                if (value) {
+                    array.push(this.props.fetchMyNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, value));
+                }
+            } else {
+                break;
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 3 < data.length) {
+                this.handleNFTFetch(index + 3, data, denom);
+            }
+        });
     }
 
     handleFetch (index, config, data) {
@@ -81,7 +142,7 @@ class Dashboard extends Component {
         }
 
         Promise.all(array).then(() => {
-            if (index + 3 < data.length - 1) {
+            if (index + 3 < data.length) {
                 this.handleFetch(index + 3, config, data);
             }
         });
@@ -111,10 +172,21 @@ class Dashboard extends Component {
                                 );
                             })}
                         </div>}
+                    {this.props.tabValue === 'my_nfts' &&
+                        <div className="data_table">
+                            {list.map((item, index) => {
+                                return (
+                                    item && item.value && (item.value === this.props.chainValue) &&
+                                    <MyNFTsTable key={index}/>
+                                );
+                            })}
+                        </div>}
                     {this.props.tabValue === 'nfts' &&
                         <div className="data_table nfts_table"><NFTsTable/></div>}
                     {this.props.tabValue === 'ibc_nfts' &&
                         <div className="data_table nfts_table"><IBCNFTsTable/></div>}
+                    <TransferDialog/>
+                    <BurnDialog/>
                 </div>
             </div>
         );
@@ -132,9 +204,14 @@ Dashboard.propTypes = {
     contractsInProgress: PropTypes.bool.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
+    fetchMyNFTsInfo: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
+    myNFTs: PropTypes.object.isRequired,
+    myNFTsInProgress: PropTypes.bool.isRequired,
+    myNFTsInfo: PropTypes.object.isRequired,
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
     setRpcClient: PropTypes.func.isRequired,
@@ -162,6 +239,9 @@ const stateToProps = (state) => {
         rpcClientInProgress: state.query.rpcClient.inProgress,
         tabValue: state.dashboard.tabValue.value,
         wasmAllCollections: state.collections._wasm.allCollectionSList.value,
+        myNFTs: state.nfts.myNFTs.value,
+        myNFTsInProgress: state.nfts.myNFTs.inProgress,
+        myNFTsInfo: state.nfts.myNFTsInfo.value,
     };
 };
 
@@ -169,6 +249,8 @@ const actionsToProps = {
     fetchCollections,
     fetchAllCollections,
     fetchWasmAllCollections,
+    fetchMyNFTs,
+    fetchMyNFTsInfo,
     setTabValue,
     setRpcClient,
 };

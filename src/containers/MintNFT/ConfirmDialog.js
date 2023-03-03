@@ -6,9 +6,9 @@ import { Button, Dialog, DialogContent } from '@mui/material';
 import { hideMintNFTConfirmDialog, setBulkMint } from '../../actions/mintNFT';
 import variables from '../../utils/variables';
 import { customTypes } from '../../registry';
-import { config, gas, GAS_PRICE_STEP_LOW } from '../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP, gas, GAS_PRICE_STEP_LOW } from '../../config';
 import ImageOnLoad from '../../components/ImageOnLoad';
-import { setSchemaValues } from '../../actions/collections';
+import { fetchCollections, setSchemaValues } from '../../actions/collections';
 import withRouter from '../../components/WithRouter';
 import {
     aminoSignTx,
@@ -23,6 +23,7 @@ import { showMessage } from '../../actions/snackbar';
 import { mediaReference } from '../../utils/ipfs';
 import { setEmptyValue } from '../../actions/account';
 import { generateID } from '../../utils/generateID';
+import { fetchMyNFTs } from '../../actions/nfts';
 
 const ConfirmMintNFTDialog = (props) => {
     const [inProgressLocal, setInProgress] = useState(false);
@@ -174,6 +175,10 @@ const ConfirmMintNFTDialog = (props) => {
 
                                         props.handleClose();
                                         props.fetchBalance(props.address);
+                                        if (props.rpcClient) {
+                                            props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                            props.fetchCollections(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                        }
                                         props.setTxHashInProgressFalse();
                                         props.router.navigate('/' + props.chainValue + '/dashboard');
                                         props.setEmptyValue();
@@ -397,6 +402,10 @@ const ConfirmMintNFTDialog = (props) => {
 
                     props.handleClose();
                     props.fetchBalance(props.address);
+                    if (props.rpcClient) {
+                        props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                        props.fetchCollections(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                    }
                     props.setTxHashInProgressFalse();
                     handleRedirect();
                     clearInterval(time);
@@ -548,6 +557,8 @@ ConfirmMintNFTDialog.propTypes = {
     description: PropTypes.string.isRequired,
     extensibleStatus: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchCollections: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
@@ -558,6 +569,7 @@ ConfirmMintNFTDialog.propTypes = {
     previewURL: PropTypes.string.isRequired,
     royaltyShare: PropTypes.string.isRequired,
     royaltyShareStatus: PropTypes.bool.isRequired,
+    rpcClient: PropTypes.any.isRequired,
     schemaValues: PropTypes.object.isRequired,
     setBulkMint: PropTypes.func.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
@@ -607,6 +619,7 @@ const stateToProps = (state) => {
         suffixCount: state.mintNFT.suffix.count,
         mediaURL: state.mintNFT.mediaURL.value,
         previewURL: state.mintNFT.previewURL.value,
+        rpcClient: state.query.rpcClient.value,
     };
 };
 
@@ -614,6 +627,8 @@ const actionToProps = {
     aminoSignTx,
     fetchBalance,
     fetchTxHash,
+    fetchCollections,
+    fetchMyNFTs,
     handleClose: hideMintNFTConfirmDialog,
     setBulkMint,
     setEmptyValue,

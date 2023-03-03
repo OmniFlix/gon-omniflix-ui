@@ -22,6 +22,7 @@ const variables = {
         // Home
         all_collections: 'All Collections',
         my_collections: 'My Collections',
+        my_nfts: 'My NFTs',
         collections: 'Collections',
         nfts: 'NFTs',
         native_nfts: 'Native  NFTs',
