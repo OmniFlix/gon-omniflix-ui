@@ -26,10 +26,12 @@ const ChainPopover = (props) => {
 
         props.router.navigate(`/${value}/dashboard`);
         if (props.rpcClient && props.rpcClient[value]) {
-            handleFetch(value, props.rpcClient[value]);
+            handleFetch(value, props.rpcClient);
         } else {
             props.setRpcClient(value, (rpcClient) => {
-                handleFetch(value, rpcClient);
+                const obj = {};
+                obj[value] = rpcClient;
+                handleFetch(value, obj);
             });
         }
     };

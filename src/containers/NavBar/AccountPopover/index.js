@@ -23,7 +23,7 @@ const AccountPopover = (props) => {
                 <h2>{variables[props.lang].account}</h2>
                 <div className="card">
                     <div className="row1">
-                        <img alt="omniflix" src={omniflixLogo} />
+                        <img alt="omniflix" src={omniflixLogo}/>
                         {props.balanceInProgress
                             ? <DotsLoading/>
                             : balance
@@ -43,7 +43,7 @@ const AccountPopover = (props) => {
                                     {props.address && props.address.slice(props.address.length - 6, props.address.length)}
                                 </span>
                             </div>
-                            <CopyButton data={props.address} />
+                            <CopyButton data={props.address}/>
                         </div>}
                 </div>
             </div>
@@ -56,15 +56,15 @@ const AccountPopover = (props) => {
                                 <div className="left_section">
                                     <div className="token_logo">
                                         {item.chain === 'iris'
-                                            ? <img alt="logo" src={irisIcon} />
+                                            ? <img alt="logo" src={irisIcon}/>
                                             : item.chain === 'stargaze'
-                                                ? <img alt="logo" src={stargazeIcon} />
+                                                ? <img alt="logo" src={stargazeIcon}/>
                                                 : item.chain === 'uptick'
-                                                    ? <img alt="logo" src={uptickIcon} />
+                                                    ? <img alt="logo" src={uptickIcon}/>
                                                     : item.chain === 'osmosis'
-                                                        ? <img alt="logo" src={osmoIcon} />
+                                                        ? <img alt="logo" src={osmoIcon}/>
                                                         : item.chain === 'juno'
-                                                            ? <img alt="logo" src={junoIcon} />
+                                                            ? <img alt="logo" src={junoIcon}/>
                                                             : null}
                                         <span>{item.chain}</span>
                                     </div>
@@ -75,7 +75,7 @@ const AccountPopover = (props) => {
                                                 {item.address && item.address.slice(item.address.length - 6, item.address.length)}
                                             </span>
                                         </div>
-                                        <CopyButton data={item.address} />
+                                        <CopyButton data={item.address}/>
                                     </div>
                                 </div>
                                 <div className="right_section">

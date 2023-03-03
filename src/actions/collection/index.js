@@ -15,7 +15,8 @@ import {
     COLLECTION_TRACE_FETCH_ERROR,
     COLLECTION_TRACE_FETCH_IN_PROGRESS,
     COLLECTION_TRACE_FETCH_SUCCESS,
-    NFT_ID_SET, TRACE_COLLECTION_SET,
+    NFT_ID_SET,
+    TRACE_COLLECTION_SET,
     TRANSFER_ADDRESS_SET,
     TRANSFER_DIALOG_HIDE,
     TRANSFER_DIALOG_SHOW,
@@ -23,9 +24,7 @@ import {
     TRANSFER_SUCCESS_SET,
 } from '../../constants/collection';
 import { ChainsList } from '../../chains';
-import {
-    QueryClientImpl,
-} from '../../registry/omniflix_custom_ts_types/gen/ibc/applications/nft_transfer/v1/query';
+import { QueryClientImpl } from '../../registry/omniflix_custom_ts_types/gen/ibc/applications/nft_transfer/v1/query';
 
 export const showTransferDialog = (value, chain) => {
     return {

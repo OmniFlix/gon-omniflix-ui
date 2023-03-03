@@ -58,12 +58,14 @@ class SingleCollection extends Component {
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
+        if (this.props.chainValue && this.props.rpcClient && pp.rpcClient &&
+            !pp.rpcClient[this.props.chainValue] && this.props.rpcClient[this.props.chainValue]) {
             const updatedID = this.props.router.params.id.replaceAll('_', '/');
             this.props.fetchCollectionNFTS(this.props.rpcClient, this.props.chainValue, updatedID);
         }
         if ((this.props.router && this.props.router.params && this.props.router.params.id) &&
-            (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient && this.props.rpcClient[this.props.chainValue])) {
+            (this.props.chainValue && this.props.rpcClient && pp.rpcClient &&
+                !pp.rpcClient[this.props.chainValue] && this.props.rpcClient[this.props.chainValue])) {
             const hash = this.props.router.params.id.replace('ibc_', '');
             this.props.fetchCollectionTrace(this.props.rpcClient, this.props.chainValue, hash, (result) => {
                 const text = (result && result.baseClassId).includes('onftdenom');

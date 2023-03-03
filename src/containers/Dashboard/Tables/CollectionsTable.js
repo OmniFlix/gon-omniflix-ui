@@ -91,7 +91,7 @@ const CollectionsTable = (props) => {
         },
     }, {
         name: 'chain_type',
-        label: 'Chain Type',
+        label: 'Collection Type',
         options: {
             sort: false,
             customBodyRender: function (id) {

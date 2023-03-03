@@ -29,7 +29,7 @@ class Dashboard extends Component {
     componentDidMount () {
         if (this.props.tabValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '' && this.props.rpcClient &&
-            this.props.rpcClient[this.props.chainValue]) {
+            this.props.rpcClient[this.props.chainValue] && this.props.chainValue === 'omniflix') {
             this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         } else if (this.props.tabValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
@@ -45,14 +45,14 @@ class Dashboard extends Component {
 
     componentDidUpdate (pp, ps, ss) {
         if (this.props.address !== '' && pp.address !== this.props.address && this.props.rpcClient &&
-            this.props.rpcClient[this.props.chainValue]) {
+            this.props.rpcClient[this.props.chainValue] && this.props.chainValue === 'omniflix') {
             this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
         if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient &&
             this.props.rpcClient[this.props.chainValue]) {
             if (this.props.tabValue === 'all_collections') {
                 this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
-            } else if (this.props.tabValue === 'my_collections' && this.props.address !== '') {
+            } else if (this.props.tabValue === 'my_collections' && this.props.address !== '' && this.props.chainValue === 'omniflix') {
                 this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
         }
