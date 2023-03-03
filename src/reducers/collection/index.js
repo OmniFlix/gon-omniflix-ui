@@ -8,12 +8,16 @@ import {
     CLASS_TRACE_FETCH_ERROR,
     CLASS_TRACE_FETCH_IN_PROGRESS,
     CLASS_TRACE_FETCH_SUCCESS,
+    COLLECTION_HASH_FETCH_ERROR,
+    COLLECTION_HASH_FETCH_IN_PROGRESS,
+    COLLECTION_HASH_FETCH_SUCCESS,
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     COLLECTION_NFT_S_FETCH_SUCCESS,
     COLLECTION_TRACE_FETCH_ERROR,
     COLLECTION_TRACE_FETCH_IN_PROGRESS,
     COLLECTION_TRACE_FETCH_SUCCESS,
+    HASH_COLLECTION_SET,
     NFT_ID_SET,
     TRACE_COLLECTION_SET,
     TRANSFER_ADDRESS_SET,
@@ -250,6 +254,61 @@ const redirectTrace = (state = {
     }
 };
 
+const collectionHash = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case COLLECTION_HASH_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case COLLECTION_HASH_FETCH_SUCCESS: {
+        return {
+            ...state,
+            inProgress: false,
+            value: action.value,
+        };
+    }
+    case COLLECTION_HASH_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case CLEAR_COLLECTION_SET:
+        return {
+            ...state,
+            value: {},
+        };
+
+    default:
+        return state;
+    }
+};
+
+const redirectHash = (state = {
+    hash: false,
+    result: {},
+}, action) => {
+    switch (action.type) {
+    case HASH_COLLECTION_SET:
+        return {
+            ...state,
+            hash: action.value,
+            result: action.result,
+        };
+    case CLEAR_COLLECTION_SET:
+        return {
+            ...state,
+            hash: false,
+            result: {},
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     _wasm: wasm,
     collection,
@@ -261,4 +320,6 @@ export default combineReducers({
     classTrace,
     collectionTrace,
     redirectTrace,
+    collectionHash,
+    redirectHash,
 });

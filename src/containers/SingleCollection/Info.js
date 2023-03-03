@@ -15,6 +15,8 @@ const Info = (props) => {
     const id = props.collection && props.collection.denom && props.collection.denom.id &&
         props.collection.denom.id.split('ibc/');
 
+    console.log('asdkhjgksjadas', props.hashResult, props.hashValue);
+
     return (
         <div className="collection_section">
             <div className="section1">
@@ -54,6 +56,10 @@ const Info = (props) => {
                         <Button className="export_button" onClick={() => props.handleExport(props.traceResult)}>
                             <img alt="export" src={exportIcon}/>
                         </Button>}
+                    {props.hashValue && props.hashResult && props.hashResult.baseClassId &&
+                        <Button className="export_button" onClick={() => props.handleExport(props.hashResult)}>
+                            <img alt="export" src={exportIcon}/>
+                        </Button>}
                 </div>
                 <div className="row3">
                     {(props.collection && props.collection.denom && props.collection.denom.description) ||
@@ -69,6 +75,8 @@ Info.propTypes = {
     chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     handleExport: PropTypes.func.isRequired,
+    hashResult: PropTypes.object.isRequired,
+    hashValue: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     traceResult: PropTypes.object.isRequired,
     traceValue: PropTypes.bool.isRequired,
@@ -80,8 +88,11 @@ const stateToProps = (state) => {
         collection: state.collection.collection.value,
         lang: state.language,
         chainValue: state.dashboard.chainValue.value,
+
         traceValue: state.collection.redirectTrace.trace,
         traceResult: state.collection.redirectTrace.result,
+        hashValue: state.collection.redirectHash.hash,
+        hashResult: state.collection.redirectHash.result,
     };
 };
 

@@ -6,12 +6,17 @@ import Info from './Info';
 import NFTsTable from '../Dashboard/Tables/NFTsTable';
 import variables from '../../utils/variables';
 import '../Dashboard/index.css';
-import { fetchCollectionNFTS, fetchCollectionTrace, setTraceCollection } from '../../actions/collection';
+import {
+    fetchCollectionHash,
+    fetchCollectionNFTS,
+    fetchCollectionTrace, setHashCollection,
+    setTraceCollection,
+} from '../../actions/collection';
 import withRouter from '../../components/WithRouter';
 import CircularProgress from '../../components/CircularProgress';
 import NoData from '../../components/NoData';
 import DotsLoading from '../../components/DotsLoading';
-import { setTabValue } from '../../actions/dashboard';
+import { setChainValue, setTabValue } from '../../actions/dashboard';
 import TransferDialog from './TransferDialog';
 import BurnDialog from './BurnDialog';
 import { ibcName, ibcSymbol } from '../../utils/ibcData';
@@ -20,6 +25,7 @@ import { fetchWasmCollection, fetchWasmCollectionNFTS, fetchWasmNFTInfo } from '
 import { ChainsList } from '../../chains';
 import WasmInfo from './WasmInfo';
 import WasmNFTsTable from '../Dashboard/Tables/WasmNFTsTable';
+import { bech32 } from 'bech32';
 
 class SingleCollection extends Component {
     constructor (props) {
@@ -31,6 +37,8 @@ class SingleCollection extends Component {
     }
 
     componentDidMount () {
+        this.props.setTraceCollection('', '');
+        this.props.setHashCollection('', '');
         if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.inProgress &&
             this.props.rpcClient && this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
             const updatedID = this.props.router.params.id.replaceAll('_', '/');
@@ -47,13 +55,35 @@ class SingleCollection extends Component {
         }
         if (this.props.router && this.props.router.params && this.props.router.params.id &&
             this.props.rpcClient && this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
-            const hash = this.props.router.params.id.replace('ibc_', '');
-            this.props.fetchCollectionTrace(this.props.rpcClient, this.props.chainValue, hash, (result) => {
-                const text = (result && result.baseClassId).includes('onftdenom');
-                if (text) {
-                    this.props.setTraceCollection(text, result);
-                }
-            });
+            const includesIBC = this.props.router.params.id.includes('ibc_');
+            if (includesIBC) {
+                const hash = this.props.router.params.id.replace('ibc_', '');
+                this.props.fetchCollectionTrace(this.props.rpcClient, this.props.chainValue, hash, (result) => {
+                    const text = (result && result.baseClassId).includes('onftdenom');
+                    if (text) {
+                        this.props.setTraceCollection(text, result);
+                    }
+                });
+            } else {
+                Object.keys(ChainsList).map((item, index) => {
+                    const config = ChainsList && ChainsList[item] && ChainsList[item];
+                    if (config && config.CHANNELS && (item !== (this.props.router && this.props.router.params && this.props.router.params.chain)) &&
+                        this.props.rpcClient && this.props.rpcClient[item]) {
+                        const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
+                        config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
+                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash, (result) => {
+                            const text = (result && result.baseClassId).includes('ibc_');
+                            console.log('result', result, text);
+
+                            if (text) {
+                                this.props.setHashCollection(text, result);
+                            }
+                        });
+                    }
+
+                    return null;
+                });
+            }
         }
     }
 
@@ -66,13 +96,35 @@ class SingleCollection extends Component {
         if ((this.props.router && this.props.router.params && this.props.router.params.id) &&
             (this.props.chainValue && this.props.rpcClient && pp.rpcClient &&
                 !pp.rpcClient[this.props.chainValue] && this.props.rpcClient[this.props.chainValue])) {
-            const hash = this.props.router.params.id.replace('ibc_', '');
-            this.props.fetchCollectionTrace(this.props.rpcClient, this.props.chainValue, hash, (result) => {
-                const text = (result && result.baseClassId).includes('onftdenom');
-                if (text) {
-                    this.props.setTraceCollection(text, result);
-                }
-            });
+            const includesIBC = this.props.router.params.id.includes('ibc_');
+            if (includesIBC) {
+                const hash = this.props.router.params.id.replace('ibc_', '');
+                this.props.fetchCollectionTrace(this.props.rpcClient, this.props.chainValue, hash, (result) => {
+                    const text = (result && result.baseClassId).includes('onftdenom');
+                    if (text) {
+                        this.props.setTraceCollection(text, result);
+                    }
+                });
+            } else {
+                Object.keys(ChainsList).map((item, index) => {
+                    const config = ChainsList && ChainsList[item] && ChainsList[item];
+                    if (config && config.CHANNELS && (item !== (this.props.router && this.props.router.params && this.props.router.params.chain)) &&
+                    this.props.rpcClient && this.props.rpcClient[item]) {
+                        const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
+                        config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
+                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash, (result) => {
+                            const text = (result && result.baseClassId).includes('ibc_');
+                            console.log('result', result, text);
+
+                            if (text) {
+                                this.props.setHashCollection(text, result);
+                            }
+                        });
+                    }
+
+                    return null;
+                });
+            }
         }
         if (this.props.chainValue && this.props.contracts && pp.contracts && !pp.contracts[this.props.chainValue] &&
             this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
@@ -95,8 +147,22 @@ class SingleCollection extends Component {
 
     handleExport (data) {
         if (data && data.baseClassId) {
+            this.props.setChainValue('omniflix');
             this.props.router.navigate(`/omniflix/collection/${data.baseClassId}`);
-            this.props.fetchCollectionNFTS(this.props.rpcClient, this.props.chainValue, data.baseClassId);
+            if (this.props.rpcClient && this.props.rpcClient.omniflix) {
+                this.props.fetchCollectionNFTS(this.props.rpcClient, 'omniflix', data.baseClassId);
+            } else {
+                this.props.setRpcClient('omniflix', (client) => {
+                    if (client) {
+                        const obj = {};
+                        obj.omniflix = client;
+                        this.props.fetchCollectionNFTS(obj, 'omniflix', data.baseClassId);
+                    }
+                });
+            }
+            this.props.setTraceCollection('', '');
+        } else {
+            this.props.setHashCollection('', '');
         }
     }
 
@@ -172,6 +238,7 @@ SingleCollection.propTypes = {
     collection: PropTypes.object.isRequired,
     contracts: PropTypes.object.isRequired,
     contractsInProgress: PropTypes.bool.isRequired,
+    fetchCollectionHash: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
     fetchCollectionTrace: PropTypes.func.isRequired,
     fetchWasmCollection: PropTypes.func.isRequired,
@@ -191,6 +258,8 @@ SingleCollection.propTypes = {
     }).isRequired,
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
+    setChainValue: PropTypes.func.isRequired,
+    setHashCollection: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
     setTraceCollection: PropTypes.func.isRequired,
@@ -226,6 +295,9 @@ const actionToProps = {
     setRpcClient,
     fetchCollectionTrace,
     setTraceCollection,
+    setChainValue,
+    fetchCollectionHash,
+    setHashCollection,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(SingleCollection));
