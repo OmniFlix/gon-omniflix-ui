@@ -41,6 +41,8 @@ const ChainSelectField = (props) => {
         }
     };
 
+    const updatedList = list && list.filter((val) => val && !val.disabled);
+
     return (
         <FormControl>
             <Select
@@ -50,7 +52,7 @@ const ChainSelectField = (props) => {
                 input={<OutlinedInput/>}
                 value={props.value}
                 onChange={handleChange}>
-                {list.map((item) => (
+                {updatedList.map((item) => (
                     <MenuItem
                         key={item.value}
                         className="chains_menu_item"

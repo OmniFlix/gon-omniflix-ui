@@ -25,10 +25,12 @@ export const list = [{
     icon: JunoIcon,
     name: 'Juno',
     value: 'juno',
+    disabled: true,
 }, {
     icon: OsmoIcon,
     name: 'Osmosis',
     value: 'osmosis',
+    disabled: true,
 }];
 
 export const schemaList = [{

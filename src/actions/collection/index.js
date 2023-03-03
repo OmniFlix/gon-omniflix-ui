@@ -12,12 +12,14 @@ import {
     COLLECTION_HASH_FETCH_ERROR,
     COLLECTION_HASH_FETCH_IN_PROGRESS,
     COLLECTION_HASH_FETCH_SUCCESS,
+    COLLECTION_INFO_CLEAR,
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     COLLECTION_NFT_S_FETCH_SUCCESS,
     COLLECTION_TRACE_FETCH_ERROR,
     COLLECTION_TRACE_FETCH_IN_PROGRESS,
-    COLLECTION_TRACE_FETCH_SUCCESS, HASH_COLLECTION_SET,
+    COLLECTION_TRACE_FETCH_SUCCESS,
+    HASH_COLLECTION_SET,
     NFT_ID_SET,
     TRACE_COLLECTION_SET,
     TRANSFER_ADDRESS_SET,
@@ -190,6 +192,12 @@ export const fetchCollectionNFTS = (rpcClient, chain, id, cb) => (dispatch) => {
     })();
 };
 
+export const setCollectionClear = () => {
+    return {
+        type: COLLECTION_INFO_CLEAR,
+    };
+};
+
 const fetchClassTraceInProgress = () => {
     return {
         type: CLASS_TRACE_FETCH_IN_PROGRESS,
@@ -296,10 +304,11 @@ const fetchCollectionHashInProgress = () => {
     };
 };
 
-const fetchCollectionHashSuccess = (value) => {
+const fetchCollectionHashSuccess = (value, chain) => {
     return {
         type: COLLECTION_HASH_FETCH_SUCCESS,
         value,
+        chain,
     };
 };
 
@@ -313,7 +322,6 @@ const fetchCollectionHashError = (message) => {
 
 export const fetchCollectionHash = (rpcClient, chain, trace, cb) => (dispatch) => {
     dispatch(fetchCollectionHashInProgress());
-    console.log('asdbaksdads', rpcClient, chain);
 
     const client = rpcClient && rpcClient[chain];
 
@@ -321,10 +329,10 @@ export const fetchCollectionHash = (rpcClient, chain, trace, cb) => (dispatch) =
         const queryService = new QueryClientImpl(client);
 
         queryService.ClassHash({ trace }).then((queryResult) => {
-            console.log('asdjhgajshdasd', queryResult);
-            dispatch(fetchCollectionHashSuccess(queryResult && queryResult.classHash, chain));
+            console.log('555555555', queryResult, chain);
+            dispatch(fetchCollectionHashSuccess(queryResult && queryResult.hash, chain));
             if (cb) {
-                cb(queryResult && queryResult.classHash);
+                cb(queryResult && queryResult.hash);
             }
         }).catch((error) => {
             dispatch(fetchCollectionHashError(

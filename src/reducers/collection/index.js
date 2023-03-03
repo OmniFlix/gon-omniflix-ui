@@ -11,6 +11,7 @@ import {
     COLLECTION_HASH_FETCH_ERROR,
     COLLECTION_HASH_FETCH_IN_PROGRESS,
     COLLECTION_HASH_FETCH_SUCCESS,
+    COLLECTION_INFO_CLEAR,
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     COLLECTION_NFT_S_FETCH_SUCCESS,
@@ -52,6 +53,7 @@ const collection = (state = {
             inProgress: false,
         };
     case CLEAR_COLLECTION_SET:
+    case COLLECTION_INFO_CLEAR:
         return {
             ...state,
             value: {},
@@ -265,10 +267,20 @@ const collectionHash = (state = {
             inProgress: true,
         };
     case COLLECTION_HASH_FETCH_SUCCESS: {
+        if (action.chain) {
+            return {
+                ...state,
+                inProgress: false,
+                value: {
+                    ...state.value,
+                    [action.chain]: action.value,
+                },
+            };
+        }
+
         return {
             ...state,
             inProgress: false,
-            value: action.value,
         };
     }
     case COLLECTION_HASH_FETCH_ERROR:
@@ -277,6 +289,7 @@ const collectionHash = (state = {
             inProgress: false,
         };
     case CLEAR_COLLECTION_SET:
+    case COLLECTION_INFO_CLEAR:
         return {
             ...state,
             value: {},

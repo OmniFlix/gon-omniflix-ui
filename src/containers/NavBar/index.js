@@ -23,6 +23,7 @@ import { ChainsList } from '../../chains';
 import { bech32 } from 'bech32';
 import { fetchContracts } from '../../actions/cosmwasm';
 import { fetchWasmAllCollections } from '../../actions/collections/wasm';
+import { fetchCollectionHash } from '../../actions/collection';
 
 class NavBar extends Component {
     constructor (props) {
@@ -101,6 +102,20 @@ class NavBar extends Component {
                         this.props.setRpcClient(item, (client) => {
                             if (client) {
                                 this.props.fetchFaucetTokens(client, item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
+                                const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
+                                    this.props.router.location.pathname.split('/');
+                                if (route[3] && route[3].includes('ibc_')) {
+                                    return null;
+                                }
+
+                                if (route && route.length && route[1] && route[3]) {
+                                    const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[route[1]] &&
+                                    config.CHANNELS[route[1]][0]}/${route[3]}`;
+                                    const obj = {};
+                                    obj[item] = client;
+
+                                    this.props.fetchCollectionHash(obj, item, hash);
+                                }
                             }
                         });
                     }
@@ -165,6 +180,7 @@ NavBar.propTypes = {
     balanceInProgress: PropTypes.bool.isRequired,
     chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchCollectionHash: PropTypes.func.isRequired,
     fetchContracts: PropTypes.func.isRequired,
     fetchFaucetTokens: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
@@ -215,6 +231,7 @@ const actionToProps = {
     showSideBar,
     hideSideBar,
     fetchFaucetTokens,
+    fetchCollectionHash,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

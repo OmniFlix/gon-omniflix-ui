@@ -9,7 +9,9 @@ import '../Dashboard/index.css';
 import {
     fetchCollectionHash,
     fetchCollectionNFTS,
-    fetchCollectionTrace, setHashCollection,
+    fetchCollectionTrace,
+    setCollectionClear,
+    setHashCollection,
     setTraceCollection,
 } from '../../actions/collection';
 import withRouter from '../../components/WithRouter';
@@ -25,7 +27,6 @@ import { fetchWasmCollection, fetchWasmCollectionNFTS, fetchWasmNFTInfo } from '
 import { ChainsList } from '../../chains';
 import WasmInfo from './WasmInfo';
 import WasmNFTsTable from '../Dashboard/Tables/WasmNFTsTable';
-import { bech32 } from 'bech32';
 
 class SingleCollection extends Component {
     constructor (props) {
@@ -71,14 +72,7 @@ class SingleCollection extends Component {
                         this.props.rpcClient && this.props.rpcClient[item]) {
                         const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                         config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
-                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash, (result) => {
-                            const text = (result && result.baseClassId).includes('ibc_');
-                            console.log('result', result, text);
-
-                            if (text) {
-                                this.props.setHashCollection(text, result);
-                            }
-                        });
+                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash);
                     }
 
                     return null;
@@ -105,21 +99,27 @@ class SingleCollection extends Component {
                         this.props.setTraceCollection(text, result);
                     }
                 });
+            }
+        }
+        if (pp.router && pp.router.params && pp.router.params.id && this.props.router && this.props.router.params &&
+            this.props.router.params.id && (pp.router.params.id !== this.props.router.params.id)) {
+            const includesIBC = this.props.router.params.id.includes('ibc_');
+            if (includesIBC) {
+                const hash = this.props.router.params.id.replace('ibc_', '');
+                this.props.fetchCollectionTrace(this.props.rpcClient, this.props.chainValue, hash, (result) => {
+                    const text = (result && result.baseClassId).includes('onftdenom');
+                    if (text) {
+                        this.props.setTraceCollection(text, result);
+                    }
+                });
             } else {
                 Object.keys(ChainsList).map((item, index) => {
                     const config = ChainsList && ChainsList[item] && ChainsList[item];
                     if (config && config.CHANNELS && (item !== (this.props.router && this.props.router.params && this.props.router.params.chain)) &&
-                    this.props.rpcClient && this.props.rpcClient[item]) {
+                        this.props.rpcClient && this.props.rpcClient[item]) {
                         const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                         config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
-                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash, (result) => {
-                            const text = (result && result.baseClassId).includes('ibc_');
-                            console.log('result', result, text);
-
-                            if (text) {
-                                this.props.setHashCollection(text, result);
-                            }
-                        });
+                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash);
                     }
 
                     return null;
@@ -149,6 +149,7 @@ class SingleCollection extends Component {
         if (data && data.baseClassId) {
             this.props.setChainValue('omniflix');
             this.props.router.navigate(`/omniflix/collection/${data.baseClassId}`);
+            this.props.setCollectionClear();
             if (this.props.rpcClient && this.props.rpcClient.omniflix) {
                 this.props.fetchCollectionNFTS(this.props.rpcClient, 'omniflix', data.baseClassId);
             } else {
@@ -259,6 +260,7 @@ SingleCollection.propTypes = {
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
     setChainValue: PropTypes.func.isRequired,
+    setCollectionClear: PropTypes.func.isRequired,
     setHashCollection: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
@@ -298,6 +300,7 @@ const actionToProps = {
     setChainValue,
     fetchCollectionHash,
     setHashCollection,
+    setCollectionClear,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(SingleCollection));
