@@ -30,7 +30,7 @@ const About = (props) => {
                 <div className="section">
                     <div>
                         <img alt="number" src={image1}/>
-                        <h3>{variables[props.lang].connect}</h3>
+                        <h3>{variables[props.lang]['connect_view_nfts']}</h3>
                     </div>
                     <p>{variables[props.lang]['connect_view_content']}</p>
                 </div>
