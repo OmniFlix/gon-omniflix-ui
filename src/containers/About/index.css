@@ -245,7 +245,7 @@
 .list.judges_list {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    grid-gap: 85px;
+    grid-gap: 45px;
     padding: 20px 0;
 }
 
