@@ -180,6 +180,42 @@
     width: 24px;
 }
 
+.single_collection .collection_section .redirect_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.single_collection .collection_section .redirect_content .section {
+    background: #22222C;
+    border-radius: 50px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+}
+
+.single_collection .collection_section .redirect_content .section:last-child {
+    margin-right: 0;
+}
+
+.single_collection .collection_section .redirect_content .section img {
+    width: 20px;
+    margin-right: 4px;
+}
+
+.single_collection .collection_section .redirect_content .section button {
+    max-width: unset;
+    padding: 0;
+    min-width: unset;
+}
+
+.single_collection .collection_section .redirect_content .section button svg {
+    width: 18px;
+}
+
 @media (max-width: 960px) {
     .single_collection .coll_page {
         flex-direction: column;

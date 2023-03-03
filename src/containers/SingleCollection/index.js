@@ -25,7 +25,6 @@ import { fetchWasmCollection, fetchWasmCollectionNFTS, fetchWasmNFTInfo } from '
 import { ChainsList } from '../../chains';
 import WasmInfo from './WasmInfo';
 import WasmNFTsTable from '../Dashboard/Tables/WasmNFTsTable';
-import { bech32 } from 'bech32';
 
 class SingleCollection extends Component {
     constructor (props) {

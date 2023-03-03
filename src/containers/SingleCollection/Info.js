@@ -8,6 +8,12 @@ import { ibcDescription, ibcName, ibcPreview, ibcSymbol } from '../../utils/ibcD
 import { mediaReference } from '../../utils/ipfs';
 import exportIcon from '../../assets/export.png';
 import { Button } from '@mui/material';
+import irisIcon from '../../assets/chains/iris.svg';
+import uptickIcon from '../../assets/chains/uptick.svg';
+import stargazeIcon from '../../assets/chains/stargaze.svg';
+import junoIcon from '../../assets/chains/juno.svg';
+import osmoIcon from '../../assets/chains/osmo.svg';
+import flixIcon from '../../assets/chains/omniflix.svg';
 
 const Info = (props) => {
     let data = props.collection && props.collection.denom && props.collection.denom.data;
@@ -60,6 +66,44 @@ const Info = (props) => {
                         <Button className="export_button" onClick={() => props.handleExport(props.hashResult)}>
                             <img alt="export" src={exportIcon}/>
                         </Button>}
+                </div>
+                <div className="redirect_content">
+                    <div className="section">
+                        {props.chainValue === 'iris'
+                            ? <img alt="logo" src={irisIcon}/>
+                            : props.chainValue === 'stargaze'
+                                ? <img alt="logo" src={stargazeIcon}/>
+                                : props.chainValue === 'uptick'
+                                    ? <img alt="logo" src={uptickIcon}/>
+                                    : props.chainValue === 'osmosis'
+                                        ? <img alt="logo" src={osmoIcon}/>
+                                        : props.chainValue === 'juno'
+                                            ? <img alt="logo" src={junoIcon}/>
+                                            : props.chainValue === 'omniflix'
+                                                ? <img alt="logo" src={flixIcon}/>
+                                                : null}
+                        <Button className="export_button" onClick={() => props.handleExport(props.hashResult)}>
+                            <img alt="export" src={exportIcon}/>
+                        </Button>
+                    </div>
+                    <div className="section">
+                        {props.chainValue === 'iris'
+                            ? <img alt="logo" src={irisIcon}/>
+                            : props.chainValue === 'stargaze'
+                                ? <img alt="logo" src={stargazeIcon}/>
+                                : props.chainValue === 'uptick'
+                                    ? <img alt="logo" src={uptickIcon}/>
+                                    : props.chainValue === 'osmosis'
+                                        ? <img alt="logo" src={osmoIcon}/>
+                                        : props.chainValue === 'juno'
+                                            ? <img alt="logo" src={junoIcon}/>
+                                            : props.chainValue === 'omniflix'
+                                                ? <img alt="logo" src={flixIcon}/>
+                                                : null}
+                        <Button className="export_button" onClick={() => props.handleExport(props.hashResult)}>
+                            <img alt="export" src={exportIcon}/>
+                        </Button>
+                    </div>
                 </div>
                 <div className="row3">
                     {(props.collection && props.collection.denom && props.collection.denom.description) ||
