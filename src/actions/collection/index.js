@@ -9,12 +9,17 @@ import {
     CLASS_TRACE_FETCH_ERROR,
     CLASS_TRACE_FETCH_IN_PROGRESS,
     CLASS_TRACE_FETCH_SUCCESS,
+    COLLECTION_HASH_FETCH_ERROR,
+    COLLECTION_HASH_FETCH_IN_PROGRESS,
+    COLLECTION_HASH_FETCH_SUCCESS,
+    COLLECTION_INFO_CLEAR,
     COLLECTION_NFT_S_FETCH_ERROR,
     COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     COLLECTION_NFT_S_FETCH_SUCCESS,
     COLLECTION_TRACE_FETCH_ERROR,
     COLLECTION_TRACE_FETCH_IN_PROGRESS,
     COLLECTION_TRACE_FETCH_SUCCESS,
+    HASH_COLLECTION_SET,
     NFT_ID_SET,
     TRACE_COLLECTION_SET,
     TRANSFER_ADDRESS_SET,
@@ -108,6 +113,14 @@ export const setTraceCollection = (value, result) => {
     };
 };
 
+export const setHashCollection = (value, result) => {
+    return {
+        type: HASH_COLLECTION_SET,
+        value,
+        result,
+    };
+};
+
 const fetchCollectionNFTSInProgress = () => {
     return {
         type: COLLECTION_NFT_S_FETCH_IN_PROGRESS,
@@ -177,6 +190,12 @@ export const fetchCollectionNFTS = (rpcClient, chain, id, cb) => (dispatch) => {
             }
         });
     })();
+};
+
+export const setCollectionClear = () => {
+    return {
+        type: COLLECTION_INFO_CLEAR,
+    };
 };
 
 const fetchClassTraceInProgress = () => {
@@ -266,6 +285,57 @@ export const fetchCollectionTrace = (rpcClient, chain, hash, cb) => (dispatch) =
             }
         }).catch((error) => {
             dispatch(fetchCollectionTraceError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            if (cb) {
+                cb(null);
+            }
+        });
+    })();
+};
+
+const fetchCollectionHashInProgress = () => {
+    return {
+        type: COLLECTION_HASH_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchCollectionHashSuccess = (value, chain) => {
+    return {
+        type: COLLECTION_HASH_FETCH_SUCCESS,
+        value,
+        chain,
+    };
+};
+
+const fetchCollectionHashError = (message) => {
+    return {
+        type: COLLECTION_HASH_FETCH_ERROR,
+        message,
+        variant: 'error',
+    };
+};
+
+export const fetchCollectionHash = (rpcClient, chain, trace, cb) => (dispatch) => {
+    dispatch(fetchCollectionHashInProgress());
+
+    const client = rpcClient && rpcClient[chain];
+
+    (async () => {
+        const queryService = new QueryClientImpl(client);
+
+        queryService.ClassHash({ trace }).then((queryResult) => {
+            console.log('555555555', queryResult, chain);
+            dispatch(fetchCollectionHashSuccess(queryResult && queryResult.hash, chain));
+            if (cb) {
+                cb(queryResult && queryResult.hash);
+            }
+        }).catch((error) => {
+            dispatch(fetchCollectionHashError(
                 error.response &&
                 error.response.data &&
                 error.response.data.message
