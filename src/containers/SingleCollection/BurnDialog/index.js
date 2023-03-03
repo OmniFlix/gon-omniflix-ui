@@ -19,16 +19,21 @@ import {
     txSignAndBroadCast,
     txSignAndBroadCastAminoSign,
 } from '../../../actions/account/wallet';
-import { config } from '../../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { customTypes } from '../../../registry';
 import ImageOnLoad from '../../../components/ImageOnLoad';
 import { fetchBalance } from '../../../actions/account/BCDetails';
+import { mediaReference } from '../../../utils/ipfs';
+import { ibcMedia, ibcPreview } from '../../../utils/ibcData';
+import withRouter from '../../../components/WithRouter';
+import { fetchMyNFTs } from '../../../actions/nfts';
 
 const BurnDialog = (props) => {
     const handleBurn = () => {
-        const denomID = props.collection && props.collection.denom && (props.collection.denom.id || props.collection.denom);
+        const denomID = (props.collection && props.collection.denom && (props.collection.denom.id || props.collection.denom)) ||
+            (props.burnNFT && props.burnNFT.denom);
 
-        if (denomID && props.collection.denom.id) {
+        if (denomID) {
             let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
             balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
             const messages = [{
@@ -109,7 +114,11 @@ const BurnDialog = (props) => {
 
                                         props.handleClose();
                                         props.fetchBalance(props.address);
-                                        props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
+                                        if (props.router && props.router.params && props.router.params.id) {
+                                            props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
+                                        } else {
+                                            props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                        }
                                         props.setBurnSuccess(res1.txhash);
                                         props.setTxHashInProgressFalse();
                                         clearInterval(time);
@@ -145,6 +154,7 @@ const BurnDialog = (props) => {
         }
     };
 
+    const data = props.burnNFT && props.burnNFT.data && JSON.parse(props.burnNFT.data);
     const id = props.burnNFT && props.burnNFT.id && props.burnNFT.id.substring(props.burnNFT.id.length - 4);
     const inProgress = props.signInProgress || props.broadCastInProgress || props.txHashInProgress;
     const disable = (props.nftID !== id) || inProgress;
@@ -172,8 +182,12 @@ const BurnDialog = (props) => {
                     </div>
                     <div className="card">
                         <ImageOnLoad
-                            preview={props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.preview_uri}
-                            src={props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.preview_uri}
+                            preview={(props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.previewUri && mediaReference(props.burnNFT.metadata.previewUri)) ||
+                                (props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.uri && mediaReference(props.burnNFT.metadata.uri)) ||
+                                (props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.uriHash && mediaReference(props.burnNFT.metadata.uriHash)) ||
+                                (data && ibcPreview(data))}
+                            src={(props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.mediaUri &&
+                                mediaReference(props.burnNFT.metadata.mediaUri)) || (data && ibcMedia(data))}
                             text={variables[props.lang]['asset_preview_not_ready']}/>
                         <div>
                             <p className="collection">
@@ -196,8 +210,12 @@ const BurnDialog = (props) => {
                         <h2>{variables[props.lang]['burn_failed']}</h2>
                         <div className="card">
                             <ImageOnLoad
-                                preview={props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.preview_uri}
-                                src={props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.preview_uri}
+                                preview={(props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.previewUri && mediaReference(props.burnNFT.metadata.previewUri)) ||
+                                    (props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.uri && mediaReference(props.burnNFT.metadata.uri)) ||
+                                    (props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.uriHash && mediaReference(props.burnNFT.metadata.uriHash)) ||
+                                    (data && ibcPreview(data))}
+                                src={(props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.mediaUri &&
+                                    mediaReference(props.burnNFT.metadata.mediaUri)) || (data && ibcMedia(data))}
                                 text={variables[props.lang]['asset_preview_not_ready']}/>
                             <div>
                                 <p className="collection">
@@ -219,8 +237,12 @@ const BurnDialog = (props) => {
                         <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose}/>
                         <div className="card">
                             <ImageOnLoad
-                                preview={props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.preview_uri}
-                                src={props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.preview_uri}
+                                preview={(props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.previewUri && mediaReference(props.burnNFT.metadata.previewUri)) ||
+                                    (props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.uri && mediaReference(props.burnNFT.metadata.uri)) ||
+                                    (props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.uriHash && mediaReference(props.burnNFT.metadata.uriHash)) ||
+                                    (data && ibcPreview(data))}
+                                src={(props.burnNFT && props.burnNFT.metadata && props.burnNFT.metadata.mediaUri &&
+                                    mediaReference(props.burnNFT.metadata.mediaUri)) || (data && ibcMedia(data))}
                                 text={variables[props.lang]['asset_preview_not_ready']}/>
                             <div>
                                 <p className="collection">
@@ -270,6 +292,7 @@ BurnDialog.propTypes = {
     fail: PropTypes.bool.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     hash: PropTypes.string.isRequired,
@@ -277,6 +300,11 @@ BurnDialog.propTypes = {
     lang: PropTypes.string.isRequired,
     nftID: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    router: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.string,
+        }).isRequired,
+    }).isRequired,
     rpcClient: PropTypes.any.isRequired,
     setBurnFail: PropTypes.func.isRequired,
     setBurnSuccess: PropTypes.func.isRequired,
@@ -324,8 +352,9 @@ const actionToProps = {
     sign: protoBufSigning,
     fetchBalance,
     fetchCollectionNFTS,
+    fetchMyNFTs,
     setBurnSuccess,
     setBurnFail,
 };
 
-export default connect(stateToProps, actionToProps)(BurnDialog);
+export default withRouter(connect(stateToProps, actionToProps)(BurnDialog));

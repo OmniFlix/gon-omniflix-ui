@@ -9,7 +9,7 @@ import {
     setTransferSuccess,
 } from '../../../actions/collection';
 import { connect } from 'react-redux';
-import { config } from '../../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { customTypes } from '../../../registry';
 import {
     fetchTxHash,
@@ -21,13 +21,15 @@ import { showMessage } from '../../../actions/snackbar';
 import { fetchBalance } from '../../../actions/account/BCDetails';
 import withRouter from '../../../components/WithRouter';
 import { decodeFromBech32 } from '../../../utils/address';
+import { fetchMyNFTs } from '../../../actions/nfts';
 
 const NativeButton = (props) => {
     const handleClick = () => {
+        const denomID = (props.router && props.router.params && props.router.params.id) || (props.value && props.value.denom);
         const object = [{
             type: 'OmniFlix/onft/MsgTransferONFT',
             value: {
-                denom_id: props.router.params.id,
+                denom_id: denomID,
                 id: props.value && props.value.id,
                 recipient: props.toAddress,
                 sender: props.address,
@@ -106,7 +108,11 @@ const NativeButton = (props) => {
 
                                     props.setTransferSuccess(res1.txhash);
                                     props.fetchBalance(props.address);
-                                    props.fetchCollectionNFTS(props.rpcClient, props.chainValue, props.router.params.id);
+                                    if (props.router && props.router.params && props.router.params.id) {
+                                        props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
+                                    } else {
+                                        props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                    }
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
                                 }
@@ -166,6 +172,7 @@ NativeButton.propTypes = {
     collection: PropTypes.object.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -209,6 +216,7 @@ const actionToProps = {
     fetchBalance,
     fetchCollectionNFTS,
     fetchTxHash,
+    fetchMyNFTs,
     handleClose: hideTransferDialog,
     setTransferFail,
     setTransferSuccess,

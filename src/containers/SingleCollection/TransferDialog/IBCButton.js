@@ -9,7 +9,7 @@ import {
     setTransferSuccess,
 } from '../../../actions/collection';
 import { connect } from 'react-redux';
-import { config } from '../../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { customTypes } from '../../../registry';
 import {
     fetchTxHashIBC,
@@ -25,9 +25,11 @@ import { fetchTimeoutHeight } from '../../../actions/account/IBCTokens';
 import { ChainsList } from '../../../chains';
 import { decodeFromBech32 } from '../../../utils/address';
 import { getTimestampInNanoSeconds } from '../../../utils/date';
+import { fetchMyNFTs } from '../../../actions/nfts';
 
 const IBCButton = (props) => {
     const handleClick = () => {
+        const denomID = (props.router && props.router.params && props.router.params.id) || (props.value && props.value.denom);
         let chainConfig = ChainsList && ChainsList[props.chain];
         if (!chainConfig.REST_URL) {
             chainConfig = ChainsList && ChainsList.omniflix;
@@ -36,7 +38,7 @@ const IBCButton = (props) => {
         props.initializeChainIBC(chainConfig, props.chain, (address) => {
             if (address.length && address[0] && address[0].address) {
                 const ibcAddress = address[0].address;
-                const updatedID = props.router.params.id.replaceAll('_', '/');
+                const updatedID = denomID.replaceAll('_', '/');
                 const object = [{
                     type: '/ibc.applications.nft_transfer.v1.MsgTransfer',
                     value: {
@@ -125,7 +127,17 @@ const IBCButton = (props) => {
 
                                             props.setTransferSuccess(res1.txhash);
                                             props.fetchBalance(props.address);
-                                            props.fetchCollectionNFTS(props.rpcClient, props.chainValue, updatedID);
+                                            if (props.router && props.router.params && props.router.params.id) {
+                                                props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
+                                            } else {
+                                                props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address,
+                                                    DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                                                        if (result && props.chainID && (props.chainID === 'omniflix' ||
+                                                            props.chainID === 'iris' || props.chainID === 'uptick')) {
+                                                            props.fetchMyNFTs(props.rpcClient, props.chainID, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                                        }
+                                                    });
+                                            }
                                             props.setTxHashInProgressFalse();
                                             clearInterval(time);
                                         }
@@ -190,6 +202,7 @@ IBCButton.propTypes = {
     collection: PropTypes.object.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTimeoutHeight: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
@@ -237,6 +250,7 @@ const actionToProps = {
     fetchBalance,
     fetchCollectionNFTS,
     fetchTimeoutHeight,
+    fetchMyNFTs,
     fetchTxHash: fetchTxHashIBC,
     handleClose: hideTransferDialog,
     setTransferFail,

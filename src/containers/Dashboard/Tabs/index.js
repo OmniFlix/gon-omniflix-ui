@@ -7,6 +7,9 @@ import { setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
+import { fetchMyNFTs } from '../../../actions/nfts';
+import { ChainsList } from '../../../chains';
+import { bech32 } from 'bech32';
 
 class HeaderTabs extends Component {
     constructor (props) {
@@ -30,6 +33,18 @@ class HeaderTabs extends Component {
         if (newValue === 'all_collections' && !this.props.allCollectionsInProgress && this.props.chainValue &&
             !this.props.allCollections[this.props.chainValue]) {
             this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
+        }
+
+        if (newValue === 'my_nfts' && !this.props.myNFTsInProgress && this.props.chainValue &&
+            this.props.myNFTs && !this.props.myNFTs[this.props.chainValue] && this.props.address) {
+            const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
+            let convertedAddress = this.props.address;
+            if (prefix && prefix !== 'omniflix') {
+                const address = this.props.address && bech32.decode(this.props.address);
+                convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+            }
+
+            this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
@@ -72,6 +87,19 @@ class HeaderTabs extends Component {
                             value="my_collections"
                             onClick={() => this.handleChange('my_collections')}
                             {...a11yProps(1)} />}
+                    {this.props.address && this.props.chainValue !== 'stargaze' &&
+                        <Tab
+                            className={'tab ' + (this.props.tabValue === 'my_nfts' ? 'active_tab' : '')}
+                            label={<p className="text">
+                                {variables[this.props.lang]['my_nfts']}
+                                {this.props.chainValue === 'omniflix' && this.props.myNFTs &&
+                                this.props.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue].total
+                                    ? ` (${this.props.myNFTs[this.props.chainValue].total})`
+                                    : null}
+                            </p>}
+                            value="my_collections"
+                            onClick={() => this.handleChange('my_nfts')}
+                            {...a11yProps(2)} />}
                 </div>
             </AppBar>
         );
@@ -88,7 +116,10 @@ HeaderTabs.propTypes = {
     contracts: PropTypes.object.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    myNFTs: PropTypes.object.isRequired,
+    myNFTsInProgress: PropTypes.bool.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
@@ -106,12 +137,15 @@ const stateToProps = (state) => {
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
         tabValue: state.dashboard.tabValue.value,
+        myNFTs: state.nfts.myNFTs.value,
+        myNFTsInProgress: state.nfts.myNFTs.inProgress,
     };
 };
 
 const actionsToProps = {
-    fetchCollections,
     fetchAllCollections,
+    fetchCollections,
+    fetchMyNFTs,
     setTabValue,
 };
 
