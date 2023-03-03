@@ -26,7 +26,7 @@ const MenuProps = {
 const ChainSelectField = (props) => {
     const handleChange = (event) => {
         props.onChange(event.target.value);
-        if (props.chain === event.target.value) {
+        if ((props.chain === event.target.value) || (event.target.value === 'uptick')) {
             props.setTransferAddress('');
             return;
         }
