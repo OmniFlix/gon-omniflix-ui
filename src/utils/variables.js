@@ -166,13 +166,14 @@ const variables = {
         native: 'Native',
 
         welcome_to_gon: 'Welcome to Game of NFTs',
-        welcome_gon_content: 'Game of NFTs (GoN) is an event with public incentivized testnets and a hackathon where you can test the Interchain NFTs and build your NFT applications.',
-        connect_view_nfts: 'Connect to view NFTs',
-        connect_view_content: 'First, connect your web3 account via Keplr to view NFTs & collections',
-        create_nfts: 'Create Collection & NFTs',
-        create_nfts_content: 'You can create collections and mint NFTs in few minutes via user interface',
-        transfer_nfts: 'Transfer NFTs to other chains',
-        transfer_nfts_content: 'Feel the power of Interchain NFTs by transferring NFTs to other chains via IBC ',
+        welcome_gon_content: 'Join the Interchain NFT revolution with Game of NFTs (GoN). \n' +
+            'Test the power of Interchain NFTs and build your NFT applications in this incentivized testnet and hackathon event.',
+        connect_view_nfts: 'Connect Your Account',
+        connect_view_content: 'Connect your web3 account through Keplr to view NFTs and collections.',
+        create_nfts: 'Create and Mint',
+        create_nfts_content: 'Create collections and mint NFTs quickly and easily with the user interface.',
+        transfer_nfts: 'Transfer Across Chains',
+        transfer_nfts_content: 'Experience the power of Interchain NFTs by transferring them across chains via IBC.',
         powered_by: 'powered by',
 
         partners_sponsors: 'Partners and Sponsors',

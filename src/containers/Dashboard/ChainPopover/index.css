@@ -136,4 +136,5 @@
 
 .chain_popover .list_item:disabled {
     opacity: 0.6;
+    color: #BDBDBD;
 }
