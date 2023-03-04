@@ -329,7 +329,6 @@ export const fetchCollectionHash = (rpcClient, chain, trace, cb) => (dispatch) =
         const queryService = new QueryClientImpl(client);
 
         queryService.ClassHash({ trace }).then((queryResult) => {
-            console.log('555555555', queryResult, chain);
             dispatch(fetchCollectionHashSuccess(queryResult && queryResult.hash, chain));
             if (cb) {
                 cb(queryResult && queryResult.hash);

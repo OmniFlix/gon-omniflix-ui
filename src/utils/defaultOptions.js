@@ -21,16 +21,19 @@ export const list = [{
     icon: StargazeIcon,
     name: 'Stargaze',
     value: 'stargaze',
+    cosmwasm: true,
 }, {
     icon: JunoIcon,
     name: 'Juno',
     value: 'juno',
     disabled: true,
+    cosmwasm: true,
 }, {
     icon: OsmoIcon,
     name: 'Osmosis',
     value: 'osmosis',
     disabled: true,
+    cosmwasm: true,
 }];
 
 export const schemaList = [{

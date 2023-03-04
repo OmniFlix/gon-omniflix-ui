@@ -13,16 +13,40 @@ import { setChainValue } from '../../actions/dashboard';
 import withRouter from '../../components/WithRouter';
 import { setRpcClient } from '../../actions/query';
 import { fetchCollectionNFTS, setCollectionClear } from '../../actions/collection';
+import { ChainsList } from '../../chains';
+import { fetchWasmCollection, fetchWasmCollectionNFTS, fetchWasmNFTInfo } from '../../actions/collection/wasm';
+import { fetchContracts } from '../../actions/cosmwasm';
 
 const Info = (props) => {
-    const handleExport = (chain, hash, denom) => {
-        if (chain === 'stargaze') {
-            return;
-        }
-
+    const handleExport = (chain, hash, denom, list) => {
         props.setChainValue(chain);
         props.router.navigate(hash);
         props.setCollectionClear();
+        if (list && list.cosmwasm) {
+            const config = ChainsList && ChainsList[chain];
+            if (props.contracts && props.contracts[chain]) {
+                props.fetchWasmCollection(config, chain, denom);
+                props.fetchWasmCollectionNFTS(config, denom, (result) => {
+                    if (result && result.tokens && result.tokens.length) {
+                        handleFetch(0, config, result.tokens, denom);
+                    }
+                });
+            } else {
+                props.fetchContracts(config, chain, (res) => {
+                    if (res) {
+                        props.fetchWasmCollection(config, chain, denom);
+                        props.fetchWasmCollectionNFTS(config, denom, (result) => {
+                            if (result && result.tokens && result.tokens.length) {
+                                handleFetch(0, config, result.tokens, denom);
+                            }
+                        });
+                    }
+                });
+            }
+
+            return null;
+        }
+
         if (props.rpcClient && props.rpcClient[chain]) {
             props.fetchCollectionNFTS(props.rpcClient, chain, `ibc/${denom}`);
         } else {
@@ -34,6 +58,26 @@ const Info = (props) => {
                 }
             });
         }
+    };
+
+    const handleFetch = (index, config, data, denom) => {
+        const array = [];
+        for (let i = 0; i < 3; i++) {
+            if (data[index + i]) {
+                const value = data[index + i];
+                if (value) {
+                    array.push(props.fetchWasmNFTInfo(config, denom, value));
+                }
+            } else {
+                break;
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 3 < data.length) {
+                handleFetch(index + 3, config, data, denom);
+            }
+        });
     };
 
     let data = props.collection && props.collection.denom && props.collection.denom.data;
@@ -91,6 +135,22 @@ const Info = (props) => {
                 </div>
                 <div className="redirect_content">
                     {list.map((value) => {
+                        if (value && value.cosmwasm && props.wasmCollectionHash &&
+                            props.wasmCollectionHash[value.value]) {
+                            const hash = `/${value.value}/collection/${props.wasmCollectionHash[value.value]}`;
+                            return (
+                                <div key={value.value} className="section">
+                                    <img alt="logo" src={value.icon}/>
+                                    {value.name}
+                                    <Button
+                                        className="export_button"
+                                        onClick={() => handleExport(value.value, hash, props.wasmCollectionHash[value.value], value)}>
+                                        <img alt="export" src={exportIcon}/>
+                                    </Button>
+                                </div>
+                            );
+                        }
+
                         if (value && value.value && props.collectionHash &&
                             props.collectionHash[value.value]) {
                             const hash = `/${value.value}/collection/ibc_${props.collectionHash[value.value]}`;
@@ -139,7 +199,12 @@ Info.propTypes = {
     collection: PropTypes.object.isRequired,
     collectionHash: PropTypes.object.isRequired,
     collectionHashInProgress: PropTypes.bool.isRequired,
+    contracts: PropTypes.object.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
+    fetchContracts: PropTypes.func.isRequired,
+    fetchWasmCollection: PropTypes.func.isRequired,
+    fetchWasmCollectionNFTS: PropTypes.func.isRequired,
+    fetchWasmNFTInfo: PropTypes.func.isRequired,
     handleExport: PropTypes.func.isRequired,
     hashResult: PropTypes.object.isRequired,
     hashValue: PropTypes.bool.isRequired,
@@ -154,6 +219,7 @@ Info.propTypes = {
     setRpcClient: PropTypes.func.isRequired,
     traceResult: PropTypes.object.isRequired,
     traceValue: PropTypes.bool.isRequired,
+    wasmCollectionHash: PropTypes.object.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -161,6 +227,8 @@ const stateToProps = (state) => {
         address: state.account.wallet.connection.address,
         collection: state.collection.collection.value,
         collectionHash: state.collection.collectionHash.value,
+        contracts: state.cosmwasm.contracts.value,
+        wasmCollectionHash: state.collection._wasm.collectionHash.value,
         collectionHashInProgress: state.collection.collectionHash.inProgress,
         lang: state.language,
         chainValue: state.dashboard.chainValue.value,
@@ -174,6 +242,10 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchCollectionNFTS,
+    fetchContracts,
+    fetchWasmCollection,
+    fetchWasmCollectionNFTS,
+    fetchWasmNFTInfo,
     setCollectionClear,
     setChainValue,
     setRpcClient,

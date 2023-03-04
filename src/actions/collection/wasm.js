@@ -4,6 +4,9 @@ import {
     WASM_COLLECTION_FETCH_ERROR,
     WASM_COLLECTION_FETCH_IN_PROGRESS,
     WASM_COLLECTION_FETCH_SUCCESS,
+    WASM_COLLECTION_HASH_FETCH_ERROR,
+    WASM_COLLECTION_HASH_FETCH_IN_PROGRESS,
+    WASM_COLLECTION_HASH_FETCH_SUCCESS,
     WASM_COLLECTION_NFT_S_FETCH_ERROR,
     WASM_COLLECTION_NFT_S_FETCH_IN_PROGRESS,
     WASM_COLLECTION_NFT_S_FETCH_SUCCESS,
@@ -180,6 +183,63 @@ export const fetchWasmNFTInfo = (config, contract, nftID) => (dispatch) => {
             });
         } catch (e) {
             dispatch(fetchWasmNFTInfoError(e && e.message));
+        }
+    })();
+};
+
+const fetchWasmCollectionHashInProgress = () => {
+    return {
+        type: WASM_COLLECTION_HASH_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchWasmCollectionHashSuccess = (value, chain) => {
+    return {
+        type: WASM_COLLECTION_HASH_FETCH_SUCCESS,
+        value,
+        chain,
+    };
+};
+
+const fetchWasmCollectionHashError = (message) => {
+    return {
+        type: WASM_COLLECTION_HASH_FETCH_ERROR,
+        message,
+        variant: 'error',
+    };
+};
+
+export const fetchWasmCollectionHash = (config, chain, classID) => (dispatch) => {
+    dispatch(fetchWasmCollectionHashInProgress());
+
+    return (async () => {
+        await window.keplr && window.keplr.enable(config.CHAIN_ID);
+        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(config.CHAIN_ID);
+
+        try {
+            const client = await SigningCosmWasmClient.connectWithSigner(
+                config.RPC_URL,
+                offlineSigner,
+                {
+                    prefix: config.PREFIX,
+                    gasPrice: GasPrice.fromString('0.025' + config.COIN_MINIMAL_DENOM),
+                },
+            );
+
+            await client?.queryContractSmart(
+                config.CONTRACT_ADDRESS,
+                {
+                    nft_contract: {
+                        class_id: classID,
+                    },
+                },
+            ).then((resp) => {
+                dispatch(fetchWasmCollectionHashSuccess(resp, chain));
+            }).catch((e) => {
+                dispatch(fetchWasmCollectionHashError(e && e.message));
+            });
+        } catch (e) {
+            dispatch(fetchWasmCollectionHashError(e && e.message));
         }
     })();
 };

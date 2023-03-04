@@ -9,6 +9,7 @@ import exportIcon from '../../assets/export.png';
 
 const WasmInfo = (props) => {
     const id = props.value && props.value.name && props.value.name.split('wasm.stars');
+    const name = props.value && props.value.name && props.value.name.split('/');
     return (
         <div className="collection_section">
             <div className="section1">
@@ -16,7 +17,7 @@ const WasmInfo = (props) => {
             </div>
             <div className="section2">
                 <div className="row1">
-                    <p>{(props.value && props.value.name) || (props.value && props.value.symbol)}</p>
+                    {name && <p>{name && name.length && name[name.length - 1]}</p>}
                     {/* <div className="row2"> */}
                     {/*     <span>{variables[props.lang]['created_by']}</span> */}
                     {/*     <div className="hash_text"> */}

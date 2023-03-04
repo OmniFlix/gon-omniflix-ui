@@ -98,6 +98,7 @@ const WasmNFTsTable = (props) => {
                 return (
                     convertedAddress === props.address && <div className="table_actions center_actions">
                         <Button
+                            disabled
                             className="primary_button"
                             onClick={() => props.showTransferDialog(value, props.router && props.router.params && props.router.params.chain)}>
                             {variables[props.lang].transfer}

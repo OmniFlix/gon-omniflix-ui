@@ -72,7 +72,9 @@ export const ChainsList = {
             uptick: ['channel-203', 'channel-206'],
             juno: ['channel-211', 'channel-213'],
         },
-        CODE: 803,
+        CODE: 1660,
+        ICS721_CODE: 1662,
+        CONTRACT_ADDRESS: 'stars1ve46fjrhcrum94c7d8yc2wsdz8cpuw73503e8qn9r44spr6dw0lsvmvtqh',
         cosmwasm: true,
     },
     juno: {
