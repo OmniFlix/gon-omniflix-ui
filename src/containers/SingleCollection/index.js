@@ -191,6 +191,11 @@ class SingleCollection extends Component {
         const config = ChainsList && ChainsList[this.props.router.params.chain];
         let data = this.props.collection && this.props.collection.denom && this.props.collection.denom.data;
         data = data && JSON.parse(data);
+        let name = null;
+        if (config && config.cosmwasm && this.props.wasmCollections &&
+            this.props.router && this.props.router.params && this.props.router.params.id) {
+            name = this.props.wasmCollections && this.props.wasmCollections.name && this.props.wasmCollections.name.split('/');
+        }
 
         return (
             <div className="home single_collection scroll_bar">
@@ -201,7 +206,7 @@ class SingleCollection extends Component {
                         ? <DotsLoading/>
                         : config && config.cosmwasm && this.props.wasmCollections &&
                         this.props.router && this.props.router.params && this.props.router.params.id
-                            ? <div>{this.props.wasmCollections.name || this.props.wasmCollections.symbol}</div>
+                            ? <div>{name && name.length && name[name.length - 1]}</div>
                             : this.props.collection && this.props.collection.denom
                                 ? <div>{this.props.collection.denom.symbol ||
                                     this.props.collection.denom.name ||

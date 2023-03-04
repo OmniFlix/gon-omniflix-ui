@@ -2,6 +2,9 @@ import {
     CONNECT_KEPLR_ACCOUNT_ERROR,
     CONNECT_KEPLR_ACCOUNT_IN_PROGRESS,
     CONNECT_KEPLR_ACCOUNT_SUCCESS,
+    CONTRACT_SIGN_ERROR,
+    CONTRACT_SIGN_IN_PROGRESS,
+    CONTRACT_SIGN_SUCCESS,
     DISCONNECT_SET,
     KEPLR_ACCOUNT_KEYS_SET,
     PROTO_BUF_SIGN_ERROR,
@@ -30,6 +33,7 @@ import { convertToCamelCase } from '../../utils/strings';
 import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx';
 import { fromBase64, toBase64 } from '@cosmjs/encoding';
 import { chainConfigIBC } from '../../chains';
+import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 
 const connectKeplrAccountInProgress = () => {
     return {
@@ -476,6 +480,64 @@ export const protoBufSigningIBC = (config, tx, address, cb) => (dispatch) => {
             });
         } catch (e) {
             dispatch(protoBufSigningError(e && e.message));
+        }
+    })();
+};
+
+const signContractInProgress = () => {
+    return {
+        type: CONTRACT_SIGN_IN_PROGRESS,
+    };
+};
+
+const signContractSuccess = (value) => {
+    return {
+        type: CONTRACT_SIGN_SUCCESS,
+        value,
+        message: 'Success',
+        variant: 'success',
+    };
+};
+
+const signContractError = (message) => {
+    return {
+        type: CONTRACT_SIGN_ERROR,
+        message,
+        variant: 'error',
+    };
+};
+
+export const signContract = (config, tx, address, cb) => (dispatch) => {
+    dispatch(signContractInProgress());
+    (async () => {
+        await window.keplr && window.keplr.enable(chainId);
+        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(chainId);
+
+        try {
+            const client = await SigningCosmWasmClient.connectWithSigner(
+                config.RPC_URL,
+                offlineSigner,
+            );
+
+            client.execute(
+                address,
+                config.CONTRACT_ADDRESS,
+                tx.msg,
+                tx.fee,
+                tx.memo,
+                tx.funds,
+            ).then((result) => {
+                if (result && result.code !== undefined && result.code !== 0) {
+                    dispatch(signContractError(result.log || result.rawLog));
+                } else {
+                    dispatch(signContractSuccess(result));
+                    cb(result);
+                }
+            }).catch((error) => {
+                dispatch(signContractError(error && error.message));
+            });
+        } catch (e) {
+            dispatch(signContractError(e && e.message));
         }
     })();
 };

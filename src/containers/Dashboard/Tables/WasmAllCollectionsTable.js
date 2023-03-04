@@ -53,10 +53,11 @@ const WasmAllCollectionsTable = (props) => {
         options: {
             sort: false,
             customBodyRender: function (value) {
+                const name = value && value.name && value.name.split('/');
                 return (
-                    <div className="collection_info">
+                    name && <div className="collection_info">
                         <div className="table_value collection_name">
-                            {(value.name) || (value.symbol)}
+                            {name && name.length && name[name.length - 1]}
                         </div>
                     </div>
                 );

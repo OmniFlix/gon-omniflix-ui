@@ -24,6 +24,7 @@ import { bech32 } from 'bech32';
 import { fetchContracts } from '../../actions/cosmwasm';
 import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 import { fetchCollectionHash } from '../../actions/collection';
+import { fetchWasmCollectionHash } from '../../actions/collection/wasm';
 
 class NavBar extends Component {
     constructor (props) {
@@ -109,6 +110,14 @@ class NavBar extends Component {
                                 }
 
                                 if (route && route.length && route[1] && route[3]) {
+                                    if (item === 'stargaze') {
+                                        const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[route[1]] &&
+                                        config.CHANNELS[route[1]][0]}/${route[3]}`;
+                                        this.props.fetchWasmCollectionHash(config, item, hash);
+
+                                        return null;
+                                    }
+
                                     const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[route[1]] &&
                                     config.CHANNELS[route[1]][0]}/${route[3]}`;
                                     const obj = {};
@@ -184,6 +193,7 @@ NavBar.propTypes = {
     fetchContracts: PropTypes.func.isRequired,
     fetchFaucetTokens: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
+    fetchWasmCollectionHash: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -222,6 +232,7 @@ const actionToProps = {
     fetchBalance,
     fetchContracts,
     fetchWasmAllCollections,
+    fetchWasmCollectionHash,
     initializeChain,
     setChainValue,
     setDisconnect,
