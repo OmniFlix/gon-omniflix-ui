@@ -42,10 +42,7 @@ class NavBar extends Component {
                 this.props.setChainValue(route);
                 const config = ChainsList && ChainsList[route];
                 this.props.fetchContracts(config, route);
-                return;
-            }
-
-            if (route === 'iris' || route === 'uptick') {
+            } else if (route === 'iris' || route === 'uptick') {
                 this.props.setChainValue(route);
                 this.props.setRpcClient(route);
             } else {

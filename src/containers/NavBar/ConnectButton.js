@@ -15,7 +15,9 @@ const ConnectButton = (props) => {
                 localStorage.setItem('gon_of_address', address[0].address);
                 props.fetchBalance(address[0].address);
                 props.router.navigate('/' + props.chainValue + '/dashboard');
-                props.setTabValue('my_collections');
+                if (props.chainValue === 'omniflix') {
+                    props.setTabValue('my_collections');
+                }
             }
         });
     };
