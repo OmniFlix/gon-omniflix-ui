@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 import {
+    CONNECT_IBC_KEPLR_ACCOUNT_ERROR,
+    CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS,
+    CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS,
     CONNECT_KEPLR_ACCOUNT_ERROR,
     CONNECT_KEPLR_ACCOUNT_IN_PROGRESS,
     CONNECT_KEPLR_ACCOUNT_SUCCESS,
@@ -40,6 +43,41 @@ const connection = (state = {
         return {
             ...state,
             keys: action.value,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            address: '',
+        };
+    default:
+        return state;
+    }
+};
+
+const connectionIBC = (state = {
+    inProgress: false,
+    address: {},
+}, action) => {
+    switch (action.type) {
+    case CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            address: {
+                ...state.address,
+                [action.chain]: action.value && action.value.length &&
+                action.value[0] && action.value[0].address,
+            },
+        };
+    case CONNECT_IBC_KEPLR_ACCOUNT_ERROR:
+        return {
+            ...state,
+            inProgress: false,
         };
     case DISCONNECT_SET:
         return {
@@ -104,5 +142,6 @@ const signTx = (state = {
 export default combineReducers({
     broadCast,
     connection,
+    connectionIBC,
     signTx,
 });

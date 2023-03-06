@@ -1,4 +1,7 @@
 import {
+    CONNECT_IBC_KEPLR_ACCOUNT_ERROR,
+    CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS,
+    CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS,
     CONNECT_KEPLR_ACCOUNT_ERROR,
     CONNECT_KEPLR_ACCOUNT_IN_PROGRESS,
     CONNECT_KEPLR_ACCOUNT_SUCCESS,
@@ -104,18 +107,46 @@ export const initializeChain = (cb) => (dispatch) => {
     })();
 };
 
-export const initializeChainIBC = (config, chain, cb) => () => {
+const connectIBCKeplrAccountInProgress = () => {
+    return {
+        type: CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS,
+    };
+};
+
+const connectIBCKeplrAccountSuccess = (value, chain) => {
+    return {
+        type: CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS,
+        value,
+        chain,
+    };
+};
+
+const connectIBCKeplrAccountError = (message) => {
+    return {
+        type: CONNECT_IBC_KEPLR_ACCOUNT_ERROR,
+        message,
+    };
+};
+
+export const initializeChainIBC = (config, chain, cb) => (dispatch) => {
+    dispatch(connectIBCKeplrAccountInProgress());
     (async () => {
         if (!window.getOfflineSigner || !window.keplr) {
+            const error = 'Please install keplr extension';
+            dispatch(connectIBCKeplrAccountError(error));
             cb(null);
         } else {
             if (window.keplr.experimentalSuggestChain) {
                 try {
                     await window.keplr.experimentalSuggestChain(chainConfigIBC(chain));
                 } catch (error) {
+                    const chainError = 'Failed to suggest the chain';
+                    dispatch(connectIBCKeplrAccountError(chainError));
                     cb(null);
                 }
             } else {
+                const versionError = 'Please use the recent version of keplr extension';
+                dispatch(connectIBCKeplrAccountError(versionError));
                 cb(null);
             }
         }
@@ -125,9 +156,11 @@ export const initializeChainIBC = (config, chain, cb) => () => {
                 .then(async () => {
                     const offlineSigner = window.getOfflineSigner(config.CHAIN_ID);
                     const accounts = await offlineSigner.getAccounts();
+                    dispatch(connectIBCKeplrAccountSuccess(accounts, chain));
                     cb(accounts);
                     // eslint-disable-next-line handle-callback-err
                 }).catch((error) => {
+                    dispatch(connectIBCKeplrAccountError(error.toString()));
                     cb(null);
                 });
         } else {
