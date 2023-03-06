@@ -64,8 +64,8 @@ class Dashboard extends Component {
             this.props.rpcClient[this.props.chainValue] && this.props.chainValue === 'omniflix') {
             this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
-        if (this.props.rpcClient && pp.rpcClient !== this.props.rpcClient &&
-            this.props.rpcClient[this.props.chainValue]) {
+        if (this.props.rpcClient && pp.rpcClient && !pp.rpcClient[this.props.chainValue] &&
+            this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
             if (this.props.tabValue === 'all_collections') {
                 this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
             } else if (this.props.tabValue === 'my_collections' && this.props.address !== '' && this.props.chainValue === 'omniflix') {
@@ -165,7 +165,7 @@ class Dashboard extends Component {
                         <div className="data_table">
                             {list.map((item, index) => {
                                 return (
-                                    item && item.value && item.value === 'stargaze' && (item.value === this.props.chainValue)
+                                    item && item.value && item.cosmwasm && (item.value === this.props.chainValue)
                                         ? <WasmAllCollectionsTable key={index}/>
                                         : item && item.value && (item.value === this.props.chainValue) &&
                                         <AllCollectionsTable key={index}/>

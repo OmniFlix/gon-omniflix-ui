@@ -41,7 +41,8 @@ class SingleCollection extends Component {
         this.props.setTraceCollection('', '');
         this.props.setHashCollection('', '');
         if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.inProgress &&
-            this.props.rpcClient && this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
+            this.props.rpcClient && this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress &&
+            this.props.chainValue !== 'stargaze' && this.props.chainValue !== 'juno') {
             const updatedID = this.props.router.params.id.replaceAll('_', '/');
             this.props.fetchCollectionNFTS(this.props.rpcClient, this.props.chainValue, updatedID);
         } else if (this.props.router && this.props.router.params && this.props.router.params.id && !this.props.contractsInProgress &&

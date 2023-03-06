@@ -91,16 +91,20 @@ const WasmNFTsTable = (props) => {
         label: 'Actions',
         options: {
             sort: false,
-            customBodyRender: function (value) {
+            customBodyRender: function (key) {
+                const value = list && list[key];
                 const address = value.access && value.access.owner && bech32.decode(value.access.owner);
                 const convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                const obj = {
+                    ...value,
+                    id: key,
+                };
 
                 return (
                     convertedAddress === props.address && <div className="table_actions center_actions">
                         <Button
-                            disabled
                             className="primary_button"
-                            onClick={() => props.showTransferDialog(value, props.router && props.router.params && props.router.params.chain)}>
+                            onClick={() => props.showTransferDialog(obj, props.router && props.router.params && props.router.params.chain)}>
                             {variables[props.lang].transfer}
                         </Button>
                         {props.router && props.router.params && props.router.params.chain &&
@@ -119,7 +123,7 @@ const WasmNFTsTable = (props) => {
         ? Object.keys(list).map((key, index) => [
             list[key],
             key,
-            list[key],
+            key,
         ]) : [];
 
     return (

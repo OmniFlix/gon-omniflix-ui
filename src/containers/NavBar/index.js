@@ -7,7 +7,7 @@ import { ReactComponent as FaucetIcon } from '../../assets/navBar/faucet.svg';
 import { Button } from '@mui/material';
 import variables from '../../utils/variables';
 import ConnectButton from './ConnectButton';
-import { initializeChain, setDisconnect } from '../../actions/account/wallet';
+import { initializeChain, initializeChainIBC, setDisconnect } from '../../actions/account/wallet';
 import { fetchBalance } from '../../actions/account/BCDetails';
 import ConnectedAccount from './ConnectedAccount';
 import Tabs from './Tabs';
@@ -20,7 +20,6 @@ import withRouter from '../../components/WithRouter';
 import { setChainValue } from '../../actions/dashboard';
 import { Close, MenuOutlined } from '@mui/icons-material';
 import { ChainsList } from '../../chains';
-import { bech32 } from 'bech32';
 import { fetchContracts } from '../../actions/cosmwasm';
 import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 import { fetchCollectionHash } from '../../actions/collection';
@@ -38,7 +37,7 @@ class NavBar extends Component {
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
             const route = this.props.router.location && this.props.router.location.pathname &&
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
-            if (route === 'stargaze') {
+            if (route === 'stargaze' || route === 'juno') {
                 this.props.setChainValue(route);
                 const config = ChainsList && ChainsList[route];
                 this.props.fetchContracts(config, route);
@@ -94,37 +93,47 @@ class NavBar extends Component {
 
                 Object.keys(ChainsList).map((item, index) => {
                     const config = ChainsList && ChainsList[item] && ChainsList[item];
-                    const address1 = address[0].address && bech32.decode(address[0].address);
-                    const convertedAddress = address1 && address1.words && bech32.encode(config.PREFIX, address1.words);
-                    if (config && convertedAddress && (item !== 'omniflix')) {
-                        this.props.setRpcClient(item, (client) => {
-                            if (client) {
-                                this.props.fetchFaucetTokens(client, item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
-                                const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
-                                    this.props.router.location.pathname.split('/');
-                                if (route[3] && route[3].includes('ibc_')) {
-                                    return null;
-                                }
+                    if (item === 'omniflix') {
+                        return null;
+                    }
 
-                                if (route && route.length && route[1] && route[3]) {
-                                    if (item === 'stargaze') {
-                                        const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[route[1]] &&
-                                        config.CHANNELS[route[1]][0]}/${route[3]}`;
-                                        this.props.fetchWasmCollectionHash(config, item, hash);
+                    this.props.initializeChainIBC(config, item, (result) => {
+                        const convertedAddress = result && result.length && result[0] && result[0].address;
+                        if (config && convertedAddress && (item !== 'omniflix')) {
+                            if (this.props.rpcClient && this.props.rpcClient[item]) {
+                                this.props.fetchFaucetTokens(this.props.rpcClient[item], item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
+                                return;
+                            }
 
+                            this.props.setRpcClient(item, (client) => {
+                                if (client) {
+                                    this.props.fetchFaucetTokens(client, item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
+                                    const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
+                                        this.props.router.location.pathname.split('/');
+                                    if (route[3] && route[3].includes('ibc_')) {
                                         return null;
                                     }
 
-                                    const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[route[1]] &&
-                                    config.CHANNELS[route[1]][0]}/${route[3]}`;
-                                    const obj = {};
-                                    obj[item] = client;
+                                    if (route && route.length && route[1] && route[3]) {
+                                        if (item === 'stargaze' || item === 'juno') {
+                                            const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[route[1]] &&
+                                            config.CHANNELS[route[1]][0]}/${route[3]}`;
+                                            this.props.fetchWasmCollectionHash(config, item, hash);
 
-                                    this.props.fetchCollectionHash(obj, item, hash);
+                                            return null;
+                                        }
+
+                                        const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[route[1]] &&
+                                        config.CHANNELS[route[1]][0]}/${route[3]}`;
+                                        const obj = {};
+                                        obj[item] = client;
+
+                                        this.props.fetchCollectionHash(obj, item, hash);
+                                    }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        }
+                    });
 
                     return null;
                 });
@@ -193,6 +202,7 @@ NavBar.propTypes = {
     fetchWasmCollectionHash: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
     initializeChain: PropTypes.func.isRequired,
+    initializeChainIBC: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
@@ -231,6 +241,7 @@ const actionToProps = {
     fetchWasmAllCollections,
     fetchWasmCollectionHash,
     initializeChain,
+    initializeChainIBC,
     setChainValue,
     setDisconnect,
     setEmptyValue,

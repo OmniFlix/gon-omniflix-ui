@@ -191,6 +191,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+    flex-wrap: wrap;
 }
 
 .single_collection .collection_section .redirect_content .section {
@@ -200,7 +201,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 4px;
+    margin: 4px;
 }
 
 .single_collection .collection_section .redirect_content .section button {

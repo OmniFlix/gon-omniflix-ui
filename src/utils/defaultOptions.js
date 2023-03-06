@@ -26,7 +26,6 @@ export const list = [{
     icon: JunoIcon,
     name: 'Juno',
     value: 'juno',
-    disabled: true,
     cosmwasm: true,
 }, {
     icon: OsmoIcon,

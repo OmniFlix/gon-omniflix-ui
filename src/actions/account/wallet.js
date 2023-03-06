@@ -1,4 +1,7 @@
 import {
+    CONNECT_IBC_KEPLR_ACCOUNT_ERROR,
+    CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS,
+    CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS,
     CONNECT_KEPLR_ACCOUNT_ERROR,
     CONNECT_KEPLR_ACCOUNT_IN_PROGRESS,
     CONNECT_KEPLR_ACCOUNT_SUCCESS,
@@ -104,18 +107,46 @@ export const initializeChain = (cb) => (dispatch) => {
     })();
 };
 
-export const initializeChainIBC = (config, chain, cb) => () => {
+const connectIBCKeplrAccountInProgress = () => {
+    return {
+        type: CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS,
+    };
+};
+
+const connectIBCKeplrAccountSuccess = (value, chain) => {
+    return {
+        type: CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS,
+        value,
+        chain,
+    };
+};
+
+const connectIBCKeplrAccountError = (message) => {
+    return {
+        type: CONNECT_IBC_KEPLR_ACCOUNT_ERROR,
+        message,
+    };
+};
+
+export const initializeChainIBC = (config, chain, cb) => (dispatch) => {
+    dispatch(connectIBCKeplrAccountInProgress());
     (async () => {
         if (!window.getOfflineSigner || !window.keplr) {
+            const error = 'Please install keplr extension';
+            dispatch(connectIBCKeplrAccountError(error));
             cb(null);
         } else {
             if (window.keplr.experimentalSuggestChain) {
                 try {
                     await window.keplr.experimentalSuggestChain(chainConfigIBC(chain));
                 } catch (error) {
+                    const chainError = 'Failed to suggest the chain';
+                    dispatch(connectIBCKeplrAccountError(chainError));
                     cb(null);
                 }
             } else {
+                const versionError = 'Please use the recent version of keplr extension';
+                dispatch(connectIBCKeplrAccountError(versionError));
                 cb(null);
             }
         }
@@ -125,9 +156,11 @@ export const initializeChainIBC = (config, chain, cb) => () => {
                 .then(async () => {
                     const offlineSigner = window.getOfflineSigner(config.CHAIN_ID);
                     const accounts = await offlineSigner.getAccounts();
+                    dispatch(connectIBCKeplrAccountSuccess(accounts, chain));
                     cb(accounts);
                     // eslint-disable-next-line handle-callback-err
                 }).catch((error) => {
+                    dispatch(connectIBCKeplrAccountError(error.toString()));
                     cb(null);
                 });
         } else {
@@ -507,11 +540,11 @@ const signContractError = (message) => {
     };
 };
 
-export const signContract = (config, tx, address, cb) => (dispatch) => {
+export const signContract = (config, tx, address, CONTRACT, cb) => (dispatch) => {
     dispatch(signContractInProgress());
     (async () => {
-        await window.keplr && window.keplr.enable(chainId);
-        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(chainId);
+        await window.keplr && window.keplr.enable(config.CHAIN_ID);
+        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(config.CHAIN_ID);
 
         try {
             const client = await SigningCosmWasmClient.connectWithSigner(
@@ -521,7 +554,7 @@ export const signContract = (config, tx, address, cb) => (dispatch) => {
 
             client.execute(
                 address,
-                config.CONTRACT_ADDRESS,
+                CONTRACT,
                 tx.msg,
                 tx.fee,
                 tx.memo,
@@ -529,12 +562,14 @@ export const signContract = (config, tx, address, cb) => (dispatch) => {
             ).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0) {
                     dispatch(signContractError(result.log || result.rawLog));
+                    cb(result);
                 } else {
                     dispatch(signContractSuccess(result));
                     cb(result);
                 }
             }).catch((error) => {
                 dispatch(signContractError(error && error.message));
+                cb(null);
             });
         } catch (e) {
             dispatch(signContractError(e && e.message));

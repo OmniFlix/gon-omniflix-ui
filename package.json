@@ -21,6 +21,7 @@
     "bech32": "^2.0.0",
     "classnames": "^2.3.1",
     "cosmjs-types": "^0.4.1",
+    "js-base64": "^3.7.5",
     "long": "^5.2.1",
     "mui-datatables": "^4.3.0",
     "prop-types": "^15.8.1",

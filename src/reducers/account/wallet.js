@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import {
+    CONNECT_IBC_KEPLR_ACCOUNT_ERROR,
+    CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS,
+    CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS,
     CONNECT_KEPLR_ACCOUNT_ERROR,
     CONNECT_KEPLR_ACCOUNT_IN_PROGRESS,
     CONNECT_KEPLR_ACCOUNT_SUCCESS,
-    CONTRACT_SIGN_ERROR,
-    CONTRACT_SIGN_IN_PROGRESS,
-    CONTRACT_SIGN_SUCCESS,
     DISCONNECT_SET,
     KEPLR_ACCOUNT_KEYS_SET,
     TX_SIGN_AND_BROAD_CAST_ERROR,
@@ -54,6 +54,41 @@ const connection = (state = {
     }
 };
 
+const connectionIBC = (state = {
+    inProgress: false,
+    address: {},
+}, action) => {
+    switch (action.type) {
+    case CONNECT_IBC_KEPLR_ACCOUNT_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case CONNECT_IBC_KEPLR_ACCOUNT_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            address: {
+                ...state.address,
+                [action.chain]: action.value && action.value.length &&
+                action.value[0] && action.value[0].address,
+            },
+        };
+    case CONNECT_IBC_KEPLR_ACCOUNT_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            address: '',
+        };
+    default:
+        return state;
+    }
+};
+
 const broadCast = (state = {
     inProgress: false,
     value: {},
@@ -85,19 +120,16 @@ const signTx = (state = {
 }, action) => {
     switch (action.type) {
     case TX_SIGN_IN_PROGRESS:
-    case CONTRACT_SIGN_IN_PROGRESS:
         return {
             ...state,
             inProgress: true,
         };
     case TX_SIGN_SUCCESS:
-    case CONTRACT_SIGN_SUCCESS:
         return {
             inProgress: false,
             value: action.value,
         };
     case TX_SIGN_ERROR:
-    case CONTRACT_SIGN_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -110,5 +142,6 @@ const signTx = (state = {
 export default combineReducers({
     broadCast,
     connection,
+    connectionIBC,
     signTx,
 });
