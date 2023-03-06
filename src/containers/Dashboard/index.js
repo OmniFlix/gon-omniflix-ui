@@ -165,7 +165,7 @@ class Dashboard extends Component {
                         <div className="data_table">
                             {list.map((item, index) => {
                                 return (
-                                    item && item.value && item.value === 'stargaze' && (item.value === this.props.chainValue)
+                                    item && item.value && item.cosmwasm && (item.value === this.props.chainValue)
                                         ? <WasmAllCollectionsTable key={index}/>
                                         : item && item.value && (item.value === this.props.chainValue) &&
                                         <AllCollectionsTable key={index}/>

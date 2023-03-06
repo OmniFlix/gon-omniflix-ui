@@ -78,7 +78,25 @@ export const ChainsList = {
         cosmwasm: true,
     },
     juno: {
+        RPC_URL: 'https://rpc.uni.junonetwork.io',
+        REST_URL: 'https://api.uni.junonetwork.io',
+        CHAIN_ID: 'uni-6',
+        CHAIN_NAME: 'Juno Uni GON',
+        COIN_DENOM: 'JUNOX',
+        COIN_MINIMAL_DENOM: 'ujunox',
+        COIN_DECIMALS: 6,
         PREFIX: 'juno',
+        EXPLORER: 'https://testnet.explorer.chaintools.tech/juno',
+        CHANNELS: {
+            omniflix: ['channel-91', 'channel-92'],
+            iris: ['channel-89', 'channel-90'],
+            uptick: ['channel-86', 'channel-88'],
+            stargaze: ['channel-93', 'channel-94'],
+        },
+        CODE: 386,
+        ICS721_CODE: 387,
+        CONTRACT_ADDRESS: 'juno1stv6sk0mvku34fj2mqrlyru6683866n306mfv52tlugtl322zmks26kg7a',
+        cosmwasm: true,
     },
 };
 

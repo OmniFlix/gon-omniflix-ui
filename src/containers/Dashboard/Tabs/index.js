@@ -63,9 +63,10 @@ class HeaderTabs extends Component {
                         className={'tab ' + (this.props.tabValue === 'all_collections' ? 'active_tab' : '')}
                         label={<p className="text">
                             {variables[this.props.lang]['all_collections']}
-                            {this.props.chainValue === 'stargaze' && this.props.contracts &&
-                            this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].length
-                                ? ` (${this.props.contracts[this.props.chainValue].length})`
+                            {(this.props.chainValue === 'stargaze' || this.props.chainValue === 'juno') && this.props.contracts &&
+                            this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
+                            this.props.contracts[this.props.chainValue].value.length
+                                ? ` (${this.props.contracts[this.props.chainValue].value.length})`
                                 : this.props.chainValue === 'omniflix' && this.props.allCollections &&
                                 this.props.allCollections[this.props.chainValue] && this.props.allCollections[this.props.chainValue].total
                                     ? ` (${this.props.allCollections[this.props.chainValue].total})`
@@ -88,6 +89,7 @@ class HeaderTabs extends Component {
                             onClick={() => this.handleChange('my_collections')}
                             {...a11yProps(1)} />}
                     {this.props.address && this.props.chainValue !== 'stargaze' &&
+                        this.props.chainValue !== 'juno' &&
                         <Tab
                             className={'tab ' + (this.props.tabValue === 'my_nfts' ? 'active_tab' : '')}
                             label={<p className="text">

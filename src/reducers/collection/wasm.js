@@ -38,6 +38,12 @@ const collection = (state = {
             ...state,
             inProgress: false,
         };
+    case CLEAR_COLLECTION_SET:
+    case COLLECTION_INFO_CLEAR:
+        return {
+            ...state,
+            value: {},
+        };
     default:
         return state;
     }
@@ -66,6 +72,7 @@ const nfts = (state = {
             inProgress: false,
         };
     case CLEAR_COLLECTION_SET:
+    case COLLECTION_INFO_CLEAR:
         return {
             ...state,
             value: {},
@@ -108,6 +115,7 @@ const nftsInfo = (state = {
             inProgress: false,
         };
     case CLEAR_COLLECTION_SET:
+    case COLLECTION_INFO_CLEAR:
         return {
             ...state,
             value: {},

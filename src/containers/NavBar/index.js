@@ -38,7 +38,7 @@ class NavBar extends Component {
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
             const route = this.props.router.location && this.props.router.location.pathname &&
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
-            if (route === 'stargaze') {
+            if (route === 'stargaze' || route === 'juno') {
                 this.props.setChainValue(route);
                 const config = ChainsList && ChainsList[route];
                 this.props.fetchContracts(config, route);
@@ -107,7 +107,7 @@ class NavBar extends Component {
                                 }
 
                                 if (route && route.length && route[1] && route[3]) {
-                                    if (item === 'stargaze') {
+                                    if (item === 'stargaze' || item === 'juno') {
                                         const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[route[1]] &&
                                         config.CHANNELS[route[1]][0]}/${route[3]}`;
                                         this.props.fetchWasmCollectionHash(config, item, hash);
