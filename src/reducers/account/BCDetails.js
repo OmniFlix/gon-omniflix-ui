@@ -3,6 +3,9 @@ import {
     BALANCE_FETCH_ERROR,
     BALANCE_FETCH_IN_PROGRESS,
     BALANCE_FETCH_SUCCESS,
+    CONTRACT_SIGN_ERROR,
+    CONTRACT_SIGN_IN_PROGRESS,
+    CONTRACT_SIGN_SUCCESS,
     DISCONNECT_SET,
     PROTO_BUF_SIGN_ERROR,
     PROTO_BUF_SIGN_IN_PROGRESS,
@@ -108,16 +111,19 @@ const protoBufSign = (state = {
 }, action) => {
     switch (action.type) {
     case PROTO_BUF_SIGN_IN_PROGRESS:
+    case CONTRACT_SIGN_IN_PROGRESS:
         return {
             ...state,
             inProgress: true,
         };
     case PROTO_BUF_SIGN_SUCCESS:
+    case CONTRACT_SIGN_SUCCESS:
         return {
             inProgress: false,
             value: action.value,
         };
     case PROTO_BUF_SIGN_ERROR:
+    case CONTRACT_SIGN_ERROR:
         return {
             ...state,
             inProgress: false,

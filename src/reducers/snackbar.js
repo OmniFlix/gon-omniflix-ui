@@ -1,6 +1,6 @@
 import { MESSAGE_SHOW, SNACKBAR_HIDE } from '../constants/snackbar';
 import {
-    CONNECT_KEPLR_ACCOUNT_ERROR,
+    CONNECT_KEPLR_ACCOUNT_ERROR, CONTRACT_SIGN_ERROR,
     TX_HASH_FETCH_SUCCESS,
     TX_SIGN_AND_BROAD_CAST_ERROR,
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
@@ -24,6 +24,7 @@ const snackbar = (state = {
     case TX_HASH_FETCH_SUCCESS:
     case CONNECT_KEPLR_ACCOUNT_ERROR:
     case TIMEOUT_HEIGHT_FETCH_ERROR:
+    case CONTRACT_SIGN_ERROR:
     case MESSAGE_SHOW:
         return {
             open: true,

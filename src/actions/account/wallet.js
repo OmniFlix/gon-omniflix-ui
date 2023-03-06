@@ -507,11 +507,11 @@ const signContractError = (message) => {
     };
 };
 
-export const signContract = (config, tx, address, cb) => (dispatch) => {
+export const signContract = (config, tx, address, CONTRACT, cb) => (dispatch) => {
     dispatch(signContractInProgress());
     (async () => {
-        await window.keplr && window.keplr.enable(chainId);
-        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(chainId);
+        await window.keplr && window.keplr.enable(config.CHAIN_ID);
+        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(config.CHAIN_ID);
 
         try {
             const client = await SigningCosmWasmClient.connectWithSigner(
@@ -521,7 +521,7 @@ export const signContract = (config, tx, address, cb) => (dispatch) => {
 
             client.execute(
                 address,
-                config.CONTRACT_ADDRESS,
+                CONTRACT,
                 tx.msg,
                 tx.fee,
                 tx.memo,
@@ -529,12 +529,14 @@ export const signContract = (config, tx, address, cb) => (dispatch) => {
             ).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0) {
                     dispatch(signContractError(result.log || result.rawLog));
+                    cb(result);
                 } else {
                     dispatch(signContractSuccess(result));
                     cb(result);
                 }
             }).catch((error) => {
                 dispatch(signContractError(error && error.message));
+                cb(null);
             });
         } catch (e) {
             dispatch(signContractError(e && e.message));
