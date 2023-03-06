@@ -200,11 +200,16 @@ const IBCButton = (props) => {
                                             if (props.router && props.router.params && props.router.params.id) {
                                                 props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
                                             } else {
-                                                props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address,
+                                                const address = props.address && bech32.decode(props.address);
+                                                let convertedAddress = address && address.words && bech32.encode(chainConfig.PREFIX, address.words);
+                                                if (props.chainValue === 'uptick') {
+                                                    convertedAddress = props.addressIBC && props.addressIBC.uptick;
+                                                }
+                                                props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress,
                                                     DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
                                                         if (result && props.chainID && (props.chainID === 'omniflix' ||
                                                             props.chainID === 'iris' || props.chainID === 'uptick')) {
-                                                            props.fetchMyNFTs(props.rpcClient, props.chainID, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                                            props.fetchMyNFTs(props.rpcClient, props.chainID, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
                                                         }
                                                     });
                                             }
@@ -283,6 +288,7 @@ const IBCButton = (props) => {
 
 IBCButton.propTypes = {
     address: PropTypes.string.isRequired,
+    addressIBC: PropTypes.object.isRequired,
     allowances: PropTypes.array.isRequired,
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
@@ -323,6 +329,7 @@ IBCButton.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        addressIBC: state.account.wallet.connectionIBC.address,
         allowances: state.account.bc.allowances.value,
         balance: state.account.bc.balance.value,
         broadCastInProgress: state.account.wallet.broadCast.inProgress,

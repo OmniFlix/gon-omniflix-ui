@@ -93,10 +93,15 @@ const NFTsTable = (props) => {
             sort: false,
             customBodyRender: function (value) {
                 const address = value.owner && bech32.decode(value.owner);
-                const convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                let owner = props.address;
+                if (props.chainValue === 'uptick') {
+                    convertedAddress = value.owner;
+                    owner = props.addressIBC && props.addressIBC.uptick;
+                }
 
                 return (
-                    convertedAddress === props.address && <div className="table_actions center_actions">
+                    convertedAddress === owner && <div className="table_actions center_actions">
                         <Button
                             className="primary_button"
                             onClick={() => props.showTransferDialog(value, props.router && props.router.params && props.router.params.chain)}>
@@ -138,6 +143,7 @@ const NFTsTable = (props) => {
 
 NFTsTable.propTypes = {
     address: PropTypes.string.isRequired,
+    addressIBC: PropTypes.object.isRequired,
     chainValue: PropTypes.string.isRequired,
     collection: PropTypes.object.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
@@ -156,6 +162,7 @@ NFTsTable.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        addressIBC: state.account.wallet.connectionIBC.address,
         chainValue: state.dashboard.chainValue.value,
         collection: state.collection.collection.value,
         inProgress: state.collection.collection.inProgress,

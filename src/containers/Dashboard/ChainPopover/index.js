@@ -51,6 +51,9 @@ const ChainPopover = (props) => {
             if (prefix && prefix !== 'omniflix') {
                 const address = props.address && bech32.decode(props.address);
                 convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+                if (value === 'uptick') {
+                    convertedAddress = props.addressIBC && props.addressIBC.uptick;
+                }
             }
 
             props.fetchMyNFTs(rpcClient, value, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
@@ -92,6 +95,7 @@ const ChainPopover = (props) => {
 
 ChainPopover.propTypes = {
     address: PropTypes.string.isRequired,
+    addressIBC: PropTypes.object.isRequired,
     allCollections: PropTypes.object.isRequired,
     allCollectionsInProgress: PropTypes.bool.isRequired,
     chain: PropTypes.string.isRequired,
@@ -118,6 +122,7 @@ ChainPopover.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        addressIBC: state.account.wallet.connectionIBC.address,
         allCollections: state.collections.allCollectionSList.value,
         allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         chain: state.dashboard.chainValue.value,

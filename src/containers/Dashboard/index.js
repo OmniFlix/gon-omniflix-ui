@@ -48,6 +48,9 @@ class Dashboard extends Component {
                 const address = this.props.address && bech32.decode(this.props.address);
                 convertedAddress = address && address.words && bech32.encode(prefix, address.words);
             }
+            if (prefix === 'uptick') {
+                convertedAddress = this.props.addressIBC && this.props.addressIBC.uptick;
+            }
 
             this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
@@ -76,6 +79,9 @@ class Dashboard extends Component {
                 if (prefix && prefix !== 'omniflix') {
                     const address = this.props.address && bech32.decode(this.props.address);
                     convertedAddress = address && address.words && bech32.encode(prefix, address.words);
+                }
+                if (prefix === 'uptick') {
+                    convertedAddress = this.props.addressIBC && this.props.addressIBC.uptick;
                 }
 
                 this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
@@ -195,6 +201,7 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
     address: PropTypes.string.isRequired,
+    addressIBC: PropTypes.object.isRequired,
     allCollections: PropTypes.object.isRequired,
     allCollectionsInProgress: PropTypes.bool.isRequired,
     chainValue: PropTypes.string.isRequired,
@@ -226,6 +233,7 @@ Dashboard.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        addressIBC: state.account.wallet.connectionIBC.address,
         allCollections: state.collections.allCollectionSList.value,
         allCollectionsInProgress: state.collections.allCollectionSList.inProgress,
         chainValue: state.dashboard.chainValue.value,

@@ -40,7 +40,13 @@ const MyNFTsTable = (props) => {
             }
 
             if (props.list[props.chainValue] && props.list[props.chainValue].limit) {
-                props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit);
+                const address = props.address && bech32.decode(props.address);
+                let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                if (props.chainValue === 'uptick') {
+                    convertedAddress = props.addressIBC && props.addressIBC.uptick;
+                }
+
+                props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress, props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit);
             }
         },
         onChangeRowsPerPage: (numberOfRows) => {
@@ -53,7 +59,13 @@ const MyNFTsTable = (props) => {
             }
 
             if (props.list[props.chainValue] && props.list[props.chainValue].skip) {
-                props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, props.list[props.chainValue].skip, numberOfRows);
+                const address = props.address && bech32.decode(props.address);
+                let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                if (props.chainValue === 'uptick') {
+                    convertedAddress = props.addressIBC && props.addressIBC.uptick;
+                }
+
+                props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress, props.list[props.chainValue].skip, numberOfRows);
             }
         },
         responsive: 'standard',
@@ -139,10 +151,15 @@ const MyNFTsTable = (props) => {
             sort: false,
             customBodyRender: function (value) {
                 const address = value.owner && bech32.decode(value.owner);
-                const convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
+                let owner = props.address;
+                if (props.chainValue === 'uptick') {
+                    convertedAddress = value.owner;
+                    owner = props.addressIBC && props.addressIBC.uptick;
+                }
 
                 return (
-                    convertedAddress === props.address && <div className="table_actions center_actions">
+                    convertedAddress === owner && <div className="table_actions center_actions">
                         <Button
                             className="primary_button"
                             onClick={() => handleTransfer(value, convertedAddress)}>
@@ -189,6 +206,7 @@ const MyNFTsTable = (props) => {
 
 MyNFTsTable.propTypes = {
     address: PropTypes.string.isRequired,
+    addressIBC: PropTypes.object.isRequired,
     chainValue: PropTypes.string.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
@@ -209,6 +227,7 @@ MyNFTsTable.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.account.wallet.connection.address,
+        addressIBC: state.account.wallet.connectionIBC.address,
         chainValue: state.dashboard.chainValue.value,
         list: state.nfts.myNFTsInfo.value,
         inProgress: state.nfts.myNFTsInfo.inProgress,
