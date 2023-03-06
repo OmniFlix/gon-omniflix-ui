@@ -83,6 +83,57 @@ export const ChainsList = {
 };
 
 export const chainConfigIBC = (chain) => {
+    if (chain === 'uptick') {
+        return {
+            chainId: ChainsList[chain].CHAIN_ID,
+            chainName: ChainsList[chain].CHAIN_NAME,
+            rpc: ChainsList[chain].RPC_URL,
+            rest: ChainsList[chain].REST_URL,
+            stakeCurrency: {
+                coinDenom: ChainsList[chain].COIN_DENOM,
+                coinMinimalDenom: ChainsList[chain].COIN_MINIMAL_DENOM,
+                coinDecimals: ChainsList[chain].COIN_DECIMALS,
+                coinGeckoId: 'unknown',
+            },
+            bip44: {
+                coinType: 60,
+            },
+            bech32Config: {
+                bech32PrefixAccAddr: `${ChainsList[chain].PREFIX}`,
+                bech32PrefixAccPub: `${ChainsList[chain].PREFIX}pub`,
+                bech32PrefixValAddr: `${ChainsList[chain].PREFIX}valoper`,
+                bech32PrefixValPub: `${ChainsList[chain].PREFIX}valoperpub`,
+                bech32PrefixConsAddr: `${ChainsList[chain].PREFIX}valcons`,
+                bech32PrefixConsPub: `${ChainsList[chain].PREFIX}valconspub`,
+            },
+            currencies: [{
+                coinDenom: ChainsList[chain].COIN_DENOM,
+                coinMinimalDenom: ChainsList[chain].COIN_MINIMAL_DENOM,
+                coinDecimals: ChainsList[chain].COIN_DECIMALS,
+                coinGeckoId: 'unknown',
+            }],
+            feeCurrencies: [{
+                coinDenom: ChainsList[chain].COIN_DENOM,
+                coinMinimalDenom: ChainsList[chain].COIN_MINIMAL_DENOM,
+                coinDecimals: ChainsList[chain].COIN_DECIMALS,
+                coinGeckoId: 'unknown',
+                gasPriceStep: {
+                    low: 0.01,
+                    average: 0.025,
+                    high: 0.03,
+                },
+            }],
+            coinType: 60,
+            features: [
+                'ibc-transfer',
+                'ibc-go',
+                'eth-address-gen',
+                'eth-key-sign',
+            ],
+            beta: true,
+        };
+    }
+
     return {
         chainId: ChainsList[chain].CHAIN_ID,
         chainName: ChainsList[chain].CHAIN_NAME,

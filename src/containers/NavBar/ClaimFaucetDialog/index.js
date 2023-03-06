@@ -65,7 +65,7 @@ const ClaimFaucetDialog = (props) => {
                 <div className="discord_links">
                     <p>{variables[props.lang]['discord_url_content']}</p>
                     <div>
-                        <Button onClick={() => handleDiscord('https://faucet.ping.pub/')}>
+                        <Button onClick={() => handleDiscord('https://gon.tcnetwork.io')}>
                             <p>{variables[props.lang]['discord_url_button']}</p>
                         </Button>
                     </div>
