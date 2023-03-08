@@ -84,9 +84,12 @@
 .about_page .row .section h3 {
     font-family: 'Inter', sans-serif;
     font-style: normal;
-    font-weight: 500;
-    font-size: 22px;
+    font-weight: 600;
+    font-size: 20px;
     line-height: 29px;
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     color: #FFFFFF;
     text-align: left;
     margin: 0;
@@ -134,10 +137,14 @@
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 40px;
-    line-height: 50px;
+    font-size: 48px;
+    line-height: 60px;
     display: flex;
     align-items: center;
+    text-align: center;
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     color: #9058C7;
 }
 
@@ -155,12 +162,6 @@
     margin-bottom: 20px;
 }
 
-.about_page .partners_sponsors .partners .header > span {
-    width: 50px;
-    height: 1px;
-    background-color: #8F8F9F;
-}
-
 .about_page .partners_sponsors .partners .header > p {
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
@@ -169,7 +170,7 @@
     line-height: 33px;
     display: flex;
     align-items: center;
-    color: #8F8F9F;
+    color: #FFFFFF;
     margin: 0 10px;
 }
 
@@ -187,7 +188,7 @@
 }
 
 .about_page .partners_sponsors .partners .list.judges_list {
-
+    margin-top: 0;
 }
 
 .about_page .partners_sponsors .partners .list.judges_list .judge_info {

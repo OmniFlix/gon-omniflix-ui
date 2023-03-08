@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './index.css';
 import variables from '../../utils/variables';
-import { setNavTabs } from '../../actions/navBar';
+import { hideSideBar, setNavTabs } from '../../actions/navBar';
 import withRouter from '../../components/WithRouter';
 import { setTabValue } from '../../actions/dashboard';
 
@@ -33,6 +33,10 @@ class NavTabs extends Component {
 
     handleChange (newValue) {
         this.props.setNavTabs(newValue);
+        if (this.props.show) {
+            this.props.hideSideBar();
+            document.body.style.overflow = null;
+        }
         if (newValue === 'about') {
             this.props.router.navigate('/' + newValue);
         } else {
@@ -57,16 +61,16 @@ class NavTabs extends Component {
             <AppBar className="horizontal_tabs" position="static">
                 <div className="tabs_content">
                     <Tab
-                        className={'tab ' + ((routeAbout === 'about') ? 'active_tab' : '')}
-                        label={variables[this.props.lang].about}
-                        value="about"
-                        onClick={() => this.handleChange('about')}
-                        {...a11yProps(0)} />
-                    <Tab
                         className={'tab ' + ((route === 'dashboard' || route === '') ? 'active_tab' : '')}
                         label={variables[this.props.lang].dashboard}
                         value="dashboard"
                         onClick={() => this.handleChange('dashboard')}
+                        {...a11yProps(0)} />
+                    <Tab
+                        className={'tab ' + ((routeAbout === 'about') ? 'active_tab' : '')}
+                        label={variables[this.props.lang].about}
+                        value="about"
+                        onClick={() => this.handleChange('about')}
                         {...a11yProps(1)} />
                 </div>
             </AppBar>
@@ -76,9 +80,11 @@ class NavTabs extends Component {
 
 NavTabs.propTypes = {
     chainValue: PropTypes.string.isRequired,
+    hideSideBar: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setNavTabs: PropTypes.func.isRequired,
     setTabValue: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
     tabValue: PropTypes.string.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
@@ -93,12 +99,14 @@ const stateToProps = (state) => {
         lang: state.language,
         tabValue: state.navBar.tabValue.value,
         chainValue: state.dashboard.chainValue.value,
+        show: state.navBar.show,
     };
 };
 
 const actionsToProps = {
     setNavTabs,
     setTabValue,
+    hideSideBar,
 };
 
 export default withRouter(connect(stateToProps, actionsToProps)(NavTabs));

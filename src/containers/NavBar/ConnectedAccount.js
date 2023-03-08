@@ -3,9 +3,7 @@ import { config } from '../../config';
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from '@mui/material';
 import { setDisconnect } from '../../actions/account/wallet';
-import DisconnectIcon from '../../assets/disconnect.svg';
 import Popover from '@mui/material/Popover';
 import AccountPopover from './AccountPopover';
 
@@ -18,11 +16,6 @@ const ConnectedAccount = (props) => {
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const setDisconnect = () => {
-        props.setDisconnect();
-        localStorage.removeItem('gon_of_address');
     };
 
     const open = Boolean(anchorEl);
@@ -53,9 +46,6 @@ const ConnectedAccount = (props) => {
                             </span>
                         </div>}
                 </div>
-                <Button className="disconnect_button" title="Disconnect" onClick={setDisconnect}>
-                    <img alt="disconnect" src={DisconnectIcon}/>
-                </Button>
             </div>
             <Popover
                 anchorEl={anchorEl}

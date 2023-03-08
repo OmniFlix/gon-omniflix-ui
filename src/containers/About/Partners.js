@@ -95,9 +95,7 @@ const Partners = (props) => {
     return (
         <div className="partners">
             <div className="header">
-                <span/>
                 <p>{variables[props.lang]['ecosystem_partners']}</p>
-                <span/>
             </div>
             <div className="list">
                 {ecosystem.map((item, index) => (
@@ -105,9 +103,7 @@ const Partners = (props) => {
                 ))}
             </div>
             <div className="header">
-                <span/>
                 <p>{variables[props.lang]['institution_partner']}</p>
-                <span/>
             </div>
             <div className="list">
                 {institution.map((item, index) => (
@@ -115,17 +111,13 @@ const Partners = (props) => {
                 ))}
             </div>
             <div className="header">
-                <span/>
                 <p>{variables[props.lang]['tech_initiator']}</p>
-                <span/>
             </div>
             <div className="list">
                 <img alt="bianjie" src={bianjie}/>
             </div>
             <div className="header">
-                <span/>
                 <p>{variables[props.lang]['judges_mentors']}</p>
-                <span/>
             </div>
             <div className="list judges_list">
                 {judges.map((item, index) => (

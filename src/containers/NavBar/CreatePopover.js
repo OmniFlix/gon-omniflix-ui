@@ -75,8 +75,8 @@ const CreatePopover = (props) => {
                 <Button
                     aria-describedby={id}
                     className="create_button">
-                    {variables[props.lang].create}
                     <CreateIcon/>
+                    <span>{variables[props.lang].create}</span>
                 </Button>
             </CustomTooltip>
         </>

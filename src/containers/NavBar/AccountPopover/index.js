@@ -12,8 +12,16 @@ import uptickIcon from '../../../assets/chains/uptick.svg';
 import stargazeIcon from '../../../assets/chains/stargaze.svg';
 import junoIcon from '../../../assets/chains/juno.svg';
 import osmoIcon from '../../../assets/chains/osmo.svg';
+import { Button } from '@mui/material';
+import { ReactComponent as DisconnectIcon } from '../../../assets/disconnect.svg';
+import { setDisconnect } from '../../../actions/account/wallet';
 
 const AccountPopover = (props) => {
+    const setDisconnect = () => {
+        props.setDisconnect();
+        localStorage.removeItem('gon_of_address');
+    };
+
     let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
     balance = balance && balance.amount && balance.amount / (10 ** config.COIN_DECIMALS);
 
@@ -79,12 +87,16 @@ const AccountPopover = (props) => {
                                     </div>
                                 </div>
                                 <div className="right_section">
-                                    <span>{(item.amount) / (10 ** (item.config && item.config.COIN_DECIMALS))}</span>
+                                    <span>{((item.amount) / (10 ** (item.config && item.config.COIN_DECIMALS))).toFixed(2)}</span>
                                 </div>
                             </div>))}
                     </div>
                 </div>
                 : null}
+            <Button className="disconnect_button" onClick={setDisconnect}>
+                <DisconnectIcon />
+                {variables[props.lang].disconnect}
+            </Button>
         </div>
     );
 };
@@ -95,6 +107,7 @@ AccountPopover.propTypes = {
     balanceInProgress: PropTypes.bool.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    setDisconnect: PropTypes.func.isRequired,
     tokenBalance: PropTypes.array.isRequired,
 };
 
@@ -110,4 +123,8 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(AccountPopover);
+const actionsToProps = {
+    setDisconnect,
+};
+
+export default connect(stateToProps, actionsToProps)(AccountPopover);

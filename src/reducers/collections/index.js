@@ -220,7 +220,7 @@ const collectionConfirmDialog = (state = {
     }
 };
 
-const tabSwitch = (state = 'code', action) => {
+const tabSwitch = (state = 'visual', action) => {
     if (action.type === JSON_TAB_SWITCH_SET) {
         return action.value;
     }

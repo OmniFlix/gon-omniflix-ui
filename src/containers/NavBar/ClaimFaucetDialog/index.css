@@ -73,7 +73,7 @@
 }
 
 .claim_faucet_dialog_content .card .right_section button {
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     border-radius: 10px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
@@ -81,7 +81,7 @@
     font-size: 16px;
     line-height: 19px;
     text-align: right;
-    color: #F2F2F2;
+    color: #000000;
     text-transform: capitalize;
     padding: 10px;
 }
