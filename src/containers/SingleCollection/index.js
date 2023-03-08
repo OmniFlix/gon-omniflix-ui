@@ -79,14 +79,14 @@ class SingleCollection extends Component {
                         if (item === 'stargaze' || item === 'juno') {
                             const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                             config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
-                            this.props.fetchWasmCollectionHash(config, item, hash);
+                            this.props.fetchWasmCollectionHash(config, item, hash, this.props.router.params.id);
 
                             return null;
                         }
 
                         const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                         config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
-                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash);
+                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash, this.props.router.params.id);
                     }
 
                     return null;
@@ -134,14 +134,14 @@ class SingleCollection extends Component {
                         if (item === 'stargaze' || item === 'juno') {
                             const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                             config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
-                            this.props.fetchWasmCollectionHash(config, item, hash);
+                            this.props.fetchWasmCollectionHash(config, item, hash, this.props.router.params.id);
 
                             return null;
                         }
 
                         const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                         config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
-                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash);
+                        this.props.fetchCollectionHash(this.props.rpcClient, item, hash, this.props.router.params.id);
                     }
 
                     return null;
@@ -164,7 +164,7 @@ class SingleCollection extends Component {
 
     handleClick () {
         this.props.setTabValue(this.props.tabValue);
-        this.props.router.navigate('/' + this.props.chainValue + '/dashboard');
+        this.props.router.navigate('/' + this.props.chainValue + '/dashboard/all_collections');
     }
 
     handleExport (data) {

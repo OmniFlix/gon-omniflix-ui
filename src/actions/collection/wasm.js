@@ -193,11 +193,12 @@ const fetchWasmCollectionHashInProgress = () => {
     };
 };
 
-const fetchWasmCollectionHashSuccess = (value, chain) => {
+const fetchWasmCollectionHashSuccess = (value, chain, id) => {
     return {
         type: WASM_COLLECTION_HASH_FETCH_SUCCESS,
         value,
         chain,
+        id,
     };
 };
 
@@ -209,7 +210,7 @@ const fetchWasmCollectionHashError = (message) => {
     };
 };
 
-export const fetchWasmCollectionHash = (config, chain, classID) => (dispatch) => {
+export const fetchWasmCollectionHash = (config, chain, classID, id) => (dispatch) => {
     dispatch(fetchWasmCollectionHashInProgress());
 
     return (async () => {
@@ -234,7 +235,7 @@ export const fetchWasmCollectionHash = (config, chain, classID) => (dispatch) =>
                     },
                 },
             ).then((resp) => {
-                dispatch(fetchWasmCollectionHashSuccess(resp, chain));
+                dispatch(fetchWasmCollectionHashSuccess(resp, chain, id));
             }).catch((e) => {
                 dispatch(fetchWasmCollectionHashError(e && e.message));
             });

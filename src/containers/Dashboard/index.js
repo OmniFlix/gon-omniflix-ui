@@ -22,6 +22,8 @@ import { bech32 } from 'bech32';
 import MyNFTsTable from './Tables/MyNFTsTable';
 import TransferDialog from '../SingleCollection/TransferDialog';
 import BurnDialog from '../SingleCollection/BurnDialog';
+import { fetchCollectionHash } from '../../actions/collection';
+import { fetchWasmCollectionHash } from '../../actions/collection/wasm';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -30,6 +32,7 @@ class Dashboard extends Component {
         this.handleCreateCollection = this.handleCreateCollection.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
         this.handleNFTFetch = this.handleNFTFetch.bind(this);
+        this.handleFetchHash = this.handleFetchHash.bind(this);
     }
 
     componentDidMount () {
@@ -108,6 +111,13 @@ class Dashboard extends Component {
                 });
             }
         }
+        if (this.props.collections && this.props.chainValue && this.props.collections[this.props.chainValue] &&
+            pp.collections && pp.collections[this.props.chainValue] && pp.collections[this.props.chainValue].value &&
+            this.props.collections[this.props.chainValue].value && this.props.collections[this.props.chainValue].value.length &&
+            this.props.rpcClient && Object.keys(this.props.rpcClient).length === 5 &&
+            (Object.keys(pp.rpcClient).length === 4 || !pp.collections[this.props.chainValue].value)) {
+            this.handleFetchHash(0, this.props.collections[this.props.chainValue].value);
+        }
     }
 
     handleCreateCollection () {
@@ -150,6 +160,41 @@ class Dashboard extends Component {
         Promise.all(array).then(() => {
             if (index + 3 < data.length) {
                 this.handleFetch(index + 3, config, data);
+            }
+        });
+    }
+
+    handleFetchHash (index, data) {
+        const array = [];
+        if (data[index]) {
+            const value = data[index];
+            if (value) {
+                Object.keys(ChainsList).map((item, index) => {
+                    if (item === 'omniflix') {
+                        return null;
+                    }
+
+                    const config = ChainsList && ChainsList[item];
+                    if (item === 'stargaze' || item === 'juno') {
+                        const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[this.props.chainValue] &&
+                        config.CHANNELS[this.props.chainValue][0]}/${value && value.id}`;
+                        this.props.fetchWasmCollectionHash(config, item, hash, value.id);
+
+                        return null;
+                    }
+
+                    const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.chainValue] &&
+                    config.CHANNELS[this.props.chainValue][0]}/${value && value.id}`;
+                    array.push(this.props.fetchCollectionHash(this.props.rpcClient, item, hash, value.id));
+
+                    return null;
+                });
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 1 < data.length) {
+                this.handleFetchHash(index + 1, data);
             }
         });
     }
@@ -210,10 +255,12 @@ Dashboard.propTypes = {
     contracts: PropTypes.object.isRequired,
     contractsInProgress: PropTypes.bool.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
+    fetchCollectionHash: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     fetchMyNFTsInfo: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
+    fetchWasmCollectionHash: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     myNFTs: PropTypes.object.isRequired,
@@ -254,9 +301,11 @@ const stateToProps = (state) => {
 };
 
 const actionsToProps = {
+    fetchCollectionHash,
     fetchCollections,
     fetchAllCollections,
     fetchWasmAllCollections,
+    fetchWasmCollectionHash,
     fetchMyNFTs,
     fetchMyNFTsInfo,
     setTabValue,

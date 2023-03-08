@@ -3,9 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import CircularProgress from './components/CircularProgress';
 
 const Dashboard = lazy(() => import('./containers/Dashboard').then().catch());
-const AllCollections = lazy(() => import('./containers/Dashboard/AllCollections').then().catch());
-const MyCollections = lazy(() => import('./containers/Dashboard/MyCollections').then().catch());
-const MyNFTs = lazy(() => import('./containers/Dashboard/MyNFTs').then().catch());
 const Marketplace = lazy(() => import('./containers/Dashboard/MarketPlace').then().catch());
 const NavBar = lazy(() => import('./containers/NavBar').then().catch());
 const About = lazy(() => import('./containers/About').then().catch());
@@ -21,13 +18,13 @@ const routes = [{
     component: Dashboard,
 }, {
     path: '/:chain/dashboard/all_collections',
-    component: AllCollections,
+    component: Dashboard,
 }, {
     path: '/:chain/dashboard/my_collections',
-    component: MyCollections,
+    component: Dashboard,
 }, {
     path: '/:chain/dashboard/my_nfts',
-    component: MyNFTs,
+    component: Dashboard,
 }, {
     path: '/:chain/dashboard/marketplace',
     component: Marketplace,
@@ -61,7 +58,7 @@ const Router = () => {
                         )}
                         <Route
                             exact
-                            element={<AllCollections/>}
+                            element={<Dashboard/>}
                             path="*"/>
                     </Routes>
                 </div>

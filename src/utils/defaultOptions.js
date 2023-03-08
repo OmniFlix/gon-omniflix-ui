@@ -28,6 +28,36 @@ export const list = [{
     cosmwasm: true,
 }];
 
+export const ListObject = {
+    omniflix: {
+        icon: OmniIcon,
+        name: 'OmniFlix',
+        value: 'omniflix',
+    },
+    iris: {
+        icon: IrisIcon,
+        name: 'IrisNet',
+        value: 'iris',
+    },
+    uptick: {
+        icon: UpTickIcon,
+        name: 'Uptick',
+        value: 'uptick',
+    },
+    stargaze: {
+        icon: StargazeIcon,
+        name: 'Stargaze',
+        value: 'stargaze',
+        cosmwasm: true,
+    },
+    juno: {
+        icon: JunoIcon,
+        name: 'Juno',
+        value: 'juno',
+        cosmwasm: true,
+    },
+};
+
 export const schemaList = [{
     name: 'Video Schema',
     schema: {
