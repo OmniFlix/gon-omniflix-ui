@@ -186,6 +186,17 @@ const variables = {
 
         discord_url_content: 'Use the faucet to claim tokens from all GON Testnets',
         discord_url_button: 'ping.pub Faucet',
+
+        create_listing: 'Create Listing',
+        list_nft_header: 'List ',
+        enter_price: 'Enter Price',
+        select_token: 'Select Token',
+        list_success: 'Listed Successfully',
+        list_fail: 'Listing Cancelled',
+
+        delist_nft_header: 'De-List ',
+        delist_success: 'De-Listed Successfully',
+        delist_fail: 'De-Listing Cancelled',
     },
 };
 

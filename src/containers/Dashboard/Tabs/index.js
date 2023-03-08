@@ -115,19 +115,19 @@ class HeaderTabs extends Component {
                             value="my_collections"
                             onClick={() => this.handleChange('my_nfts')}
                             {...a11yProps(2)} />}
-                    {/* {this.props.address && this.props.chainValue === 'omniflix' && */}
-                    {/*    <Tab */}
-                    {/*        className={'tab ' + (this.props.tabValue === 'marketplace' ? 'active_tab' : '')} */}
-                    {/*        label={<p className="text"> */}
-                    {/*            {variables[this.props.lang].marketplace} */}
-                    {/*            {this.props.chainValue === 'omniflix' && this.props.myNFTs && */}
-                    {/*            this.props.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue].total */}
-                    {/*                ? ` (${this.props.myNFTs[this.props.chainValue].total})` */}
-                    {/*                : null} */}
-                    {/*        </p>} */}
-                    {/*        value="marketplace" */}
-                    {/*        onClick={() => this.handleChange('marketplace')} */}
-                    {/*        {...a11yProps(3)} />} */}
+                    {this.props.address && this.props.chainValue === 'omniflix' &&
+                        <Tab
+                            className={'tab ' + (this.props.tabValue === 'marketplace' ? 'active_tab' : '')}
+                            label={<p className="text">
+                                {variables[this.props.lang].marketplace}
+                                {this.props.chainValue === 'omniflix' && this.props.myNFTs &&
+                                this.props.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue].total
+                                    ? ` (${this.props.myNFTs[this.props.chainValue].total})`
+                                    : null}
+                            </p>}
+                            value="marketplace"
+                            onClick={() => this.handleChange('marketplace')}
+                            {...a11yProps(3)} />}
                 </div>
             </AppBar>
         );

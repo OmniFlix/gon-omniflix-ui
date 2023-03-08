@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
+import '../index.css';
 import './index.css';
-import ChainPopover from './ChainPopover';
-import Tabs from './Tabs';
+import ChainPopover from '../ChainPopover';
+import Tabs from '../Tabs';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCollections } from '../../actions/collections';
-import withRouter from '../../components/WithRouter';
-import { setTabValue } from '../../actions/dashboard';
-import { setRpcClient } from '../../actions/query';
-import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
-import { list } from '../../utils/defaultOptions';
-import { fetchWasmAllCollections } from '../../actions/collections/wasm';
-import { ChainsList } from '../../chains';
-import { fetchMyNFTs, fetchMyNFTsInfo } from '../../actions/nfts';
+import { fetchCollections } from '../../../actions/collections';
+import withRouter from '../../../components/WithRouter';
+import { setTabValue } from '../../../actions/dashboard';
+import { setRpcClient } from '../../../actions/query';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
+import { list } from '../../../utils/defaultOptions';
+import { fetchWasmAllCollections } from '../../../actions/collections/wasm';
+import { ChainsList } from '../../../chains';
+import { fetchMyNFTs, fetchMyNFTsInfo } from '../../../actions/nfts';
 import { bech32 } from 'bech32';
-import TransferDialog from '../SingleCollection/TransferDialog';
-import BurnDialog from '../SingleCollection/BurnDialog';
-import MarketplaceTable from './Tables/MarketplaceTable';
+import MarketplaceTable from '../Tables/MarketplaceTable';
+import ListNFTDialog from './ListNFTDialog';
+import DeListDialog from './DeListDialog';
 
 class MarketPlace extends Component {
     constructor (props) {
@@ -158,8 +159,8 @@ class MarketPlace extends Component {
                                 );
                             })}
                         </div>}
-                    <TransferDialog/>
-                    <BurnDialog/>
+                    <ListNFTDialog />
+                    <DeListDialog />
                 </div>
             </div>
         );
