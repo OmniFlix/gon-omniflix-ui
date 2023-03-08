@@ -11,7 +11,6 @@ import irisIcon from '../../../assets/chains/iris.svg';
 import uptickIcon from '../../../assets/chains/uptick.svg';
 import stargazeIcon from '../../../assets/chains/stargaze.svg';
 import junoIcon from '../../../assets/chains/juno.svg';
-import osmoIcon from '../../../assets/chains/osmo.svg';
 
 const AccountPopover = (props) => {
     let balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
@@ -61,11 +60,9 @@ const AccountPopover = (props) => {
                                                 ? <img alt="logo" src={stargazeIcon}/>
                                                 : item.chain === 'uptick'
                                                     ? <img alt="logo" src={uptickIcon}/>
-                                                    : item.chain === 'osmosis'
-                                                        ? <img alt="logo" src={osmoIcon}/>
-                                                        : item.chain === 'juno'
-                                                            ? <img alt="logo" src={junoIcon}/>
-                                                            : null}
+                                                    : item.chain === 'juno'
+                                                        ? <img alt="logo" src={junoIcon}/>
+                                                        : null}
                                         <span>{item.chain}</span>
                                     </div>
                                     <div className="row2 address_section">
