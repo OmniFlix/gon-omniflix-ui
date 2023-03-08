@@ -2,7 +2,6 @@ import IrisIcon from '../assets/chains/iris.svg';
 import OmniIcon from '../assets/chains/omniflix.svg';
 import UpTickIcon from '../assets/chains/uptick.svg';
 import StargazeIcon from '../assets/chains/stargaze.svg';
-import OsmoIcon from '../assets/chains/osmo.svg';
 import JunoIcon from '../assets/chains/juno.svg';
 
 export const list = [{
@@ -26,12 +25,6 @@ export const list = [{
     icon: JunoIcon,
     name: 'Juno',
     value: 'juno',
-    cosmwasm: true,
-}, {
-    icon: OsmoIcon,
-    name: 'Osmosis',
-    value: 'osmosis',
-    disabled: true,
     cosmwasm: true,
 }];
 

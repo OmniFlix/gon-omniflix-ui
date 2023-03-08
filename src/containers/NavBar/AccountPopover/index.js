@@ -11,7 +11,6 @@ import irisIcon from '../../../assets/chains/iris.svg';
 import uptickIcon from '../../../assets/chains/uptick.svg';
 import stargazeIcon from '../../../assets/chains/stargaze.svg';
 import junoIcon from '../../../assets/chains/juno.svg';
-import osmoIcon from '../../../assets/chains/osmo.svg';
 import { Button } from '@mui/material';
 import { ReactComponent as DisconnectIcon } from '../../../assets/disconnect.svg';
 import { setDisconnect } from '../../../actions/account/wallet';
@@ -69,11 +68,9 @@ const AccountPopover = (props) => {
                                                 ? <img alt="logo" src={stargazeIcon}/>
                                                 : item.chain === 'uptick'
                                                     ? <img alt="logo" src={uptickIcon}/>
-                                                    : item.chain === 'osmosis'
-                                                        ? <img alt="logo" src={osmoIcon}/>
-                                                        : item.chain === 'juno'
-                                                            ? <img alt="logo" src={junoIcon}/>
-                                                            : null}
+                                                    : item.chain === 'juno'
+                                                        ? <img alt="logo" src={junoIcon}/>
+                                                        : null}
                                         <span>{item.chain}</span>
                                     </div>
                                     <div className="row2 address_section">
