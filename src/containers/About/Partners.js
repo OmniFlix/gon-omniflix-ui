@@ -24,7 +24,6 @@ import judge9 from '../../assets/judges/0xUncleLee.Lalaland.b43d0694.png';
 import judge10 from '../../assets/judges/JeffreyHu.da363099.jpg';
 import judge11 from '../../assets/judges/Johanna.95945a5c.jpg';
 import shadow from '../../assets/judges/shadow.png';
-import bgIcon from '../../assets/about/bg.svg';
 
 const Partners = (props) => {
     const ecosystem = [{
