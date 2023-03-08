@@ -23,7 +23,12 @@ import TransferDialog from './TransferDialog';
 import BurnDialog from './BurnDialog';
 import { ibcName, ibcSymbol } from '../../utils/ibcData';
 import { setRpcClient } from '../../actions/query';
-import { fetchWasmCollection, fetchWasmCollectionNFTS, fetchWasmNFTInfo } from '../../actions/collection/wasm';
+import {
+    fetchWasmCollection,
+    fetchWasmCollectionHash,
+    fetchWasmCollectionNFTS,
+    fetchWasmNFTInfo,
+} from '../../actions/collection/wasm';
 import { ChainsList } from '../../chains';
 import WasmInfo from './WasmInfo';
 import WasmNFTsTable from '../Dashboard/Tables/WasmNFTsTable';
@@ -71,6 +76,14 @@ class SingleCollection extends Component {
                     const config = ChainsList && ChainsList[item] && ChainsList[item];
                     if (config && config.CHANNELS && (item !== (this.props.router && this.props.router.params && this.props.router.params.chain)) &&
                         this.props.rpcClient && this.props.rpcClient[item]) {
+                        if (item === 'stargaze' || item === 'juno') {
+                            const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
+                            config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
+                            this.props.fetchWasmCollectionHash(config, item, hash);
+
+                            return null;
+                        }
+
                         const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                         config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
                         this.props.fetchCollectionHash(this.props.rpcClient, item, hash);
@@ -118,6 +131,14 @@ class SingleCollection extends Component {
                     const config = ChainsList && ChainsList[item] && ChainsList[item];
                     if (config && config.CHANNELS && (item !== (this.props.router && this.props.router.params && this.props.router.params.chain)) &&
                         this.props.rpcClient && this.props.rpcClient[item]) {
+                        if (item === 'stargaze' || item === 'juno') {
+                            const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
+                            config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
+                            this.props.fetchWasmCollectionHash(config, item, hash);
+
+                            return null;
+                        }
+
                         const hash = `nft-transfer/${config.CHANNELS && config.CHANNELS[this.props.router.params.chain] &&
                         config.CHANNELS[this.props.router.params.chain][0]}/${this.props.router.params.id}`;
                         this.props.fetchCollectionHash(this.props.rpcClient, item, hash);
@@ -249,6 +270,7 @@ SingleCollection.propTypes = {
     fetchCollectionNFTS: PropTypes.func.isRequired,
     fetchCollectionTrace: PropTypes.func.isRequired,
     fetchWasmCollection: PropTypes.func.isRequired,
+    fetchWasmCollectionHash: PropTypes.func.isRequired,
     fetchWasmCollectionNFTS: PropTypes.func.isRequired,
     fetchWasmNFTInfo: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
@@ -297,6 +319,7 @@ const stateToProps = (state) => {
 const actionToProps = {
     fetchCollectionNFTS,
     fetchWasmCollection,
+    fetchWasmCollectionHash,
     fetchWasmCollectionNFTS,
     fetchWasmNFTInfo,
     setTabValue,
