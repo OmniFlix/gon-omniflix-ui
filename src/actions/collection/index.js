@@ -304,11 +304,12 @@ const fetchCollectionHashInProgress = () => {
     };
 };
 
-const fetchCollectionHashSuccess = (value, chain) => {
+const fetchCollectionHashSuccess = (value, chain, id) => {
     return {
         type: COLLECTION_HASH_FETCH_SUCCESS,
         value,
         chain,
+        id,
     };
 };
 
@@ -320,16 +321,16 @@ const fetchCollectionHashError = (message) => {
     };
 };
 
-export const fetchCollectionHash = (rpcClient, chain, trace, cb) => (dispatch) => {
+export const fetchCollectionHash = (rpcClient, chain, trace, id, cb) => (dispatch) => {
     dispatch(fetchCollectionHashInProgress());
 
     const client = rpcClient && rpcClient[chain];
 
-    (async () => {
+    return (async () => {
         const queryService = new QueryClientImpl(client);
 
         queryService.ClassHash({ trace }).then((queryResult) => {
-            dispatch(fetchCollectionHashSuccess(queryResult && queryResult.hash, chain));
+            dispatch(fetchCollectionHashSuccess(queryResult && queryResult.hash, chain, id));
             if (cb) {
                 cb(queryResult && queryResult.hash);
             }
