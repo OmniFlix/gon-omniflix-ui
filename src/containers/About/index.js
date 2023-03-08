@@ -11,6 +11,7 @@ import ConnectButton from '../NavBar/ConnectButton';
 import '../NavBar/index.css';
 import omniflixIcon from '../../assets/omniFlix.svg';
 import Partners from './Partners';
+import bgIcon from '../../assets/about/bg.svg';
 
 const About = (props) => {
     return (
@@ -50,6 +51,7 @@ const About = (props) => {
                 </div>
             </div>
             <div className="partners_sponsors">
+                <img alt="bg" className="partner_bg_img" src={bgIcon}/>
                 <h2>{variables[props.lang]['partners_sponsors']}</h2>
                 <Partners/>
             </div>

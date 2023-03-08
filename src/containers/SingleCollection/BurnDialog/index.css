@@ -111,7 +111,7 @@
     display: flex;
     align-items: center;
     text-align: right;
-    color: #FFFFFF;
+    color: #000000;
 }
 
 .burn_dialog .transfer_dialog_content .tx_hash > p {

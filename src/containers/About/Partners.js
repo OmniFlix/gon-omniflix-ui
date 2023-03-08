@@ -24,6 +24,7 @@ import judge9 from '../../assets/judges/0xUncleLee.Lalaland.b43d0694.png';
 import judge10 from '../../assets/judges/JeffreyHu.da363099.jpg';
 import judge11 from '../../assets/judges/Johanna.95945a5c.jpg';
 import shadow from '../../assets/judges/shadow.png';
+import bgIcon from '../../assets/about/bg.svg';
 
 const Partners = (props) => {
     const ecosystem = [{
@@ -94,38 +95,32 @@ const Partners = (props) => {
 
     return (
         <div className="partners">
-            <div className="header">
-                <span/>
-                <p>{variables[props.lang]['ecosystem_partners']}</p>
-                <span/>
-            </div>
-            <div className="list">
-                {ecosystem.map((item, index) => (
-                    <img key={index} alt={index + 'index'} src={item.image}/>
-                ))}
-            </div>
-            <div className="header">
-                <span/>
-                <p>{variables[props.lang]['institution_partner']}</p>
-                <span/>
-            </div>
-            <div className="list">
-                {institution.map((item, index) => (
-                    <img key={index} alt={index + 'index'} src={item.image}/>
-                ))}
-            </div>
-            <div className="header">
-                <span/>
-                <p>{variables[props.lang]['tech_initiator']}</p>
-                <span/>
-            </div>
-            <div className="list">
-                <img alt="bianjie" src={bianjie}/>
+            <div className="partner_bg">
+                <div className="header">
+                    <p>{variables[props.lang]['ecosystem_partners']}</p>
+                </div>
+                <div className="list">
+                    {ecosystem.map((item, index) => (
+                        <img key={index} alt={index + 'index'} src={item.image}/>
+                    ))}
+                </div>
+                <div className="header">
+                    <p>{variables[props.lang]['institution_partner']}</p>
+                </div>
+                <div className="list">
+                    {institution.map((item, index) => (
+                        <img key={index} alt={index + 'index'} src={item.image}/>
+                    ))}
+                </div>
+                <div className="header">
+                    <p>{variables[props.lang]['tech_initiator']}</p>
+                </div>
+                <div className="list">
+                    <img alt="bianjie" src={bianjie}/>
+                </div>
             </div>
             <div className="header">
-                <span/>
                 <p>{variables[props.lang]['judges_mentors']}</p>
-                <span/>
             </div>
             <div className="list judges_list">
                 {judges.map((item, index) => (

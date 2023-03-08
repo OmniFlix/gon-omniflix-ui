@@ -8,9 +8,9 @@ const variables = {
         about: 'About',
         dashboard: 'Dashboard',
         claim_faucet: 'Claim Faucet',
-        nft_collection: 'NFT Collection',
+        nft_collection: 'Collection',
         nft_collection_info: 'create a collection of NFTs',
-        asset_via_upload: 'Asset via File Upload',
+        asset_via_upload: 'NFT',
         asset_via_upload_info: 'create audio, video, document NFTs by uploading files',
         faucet: 'Faucet',
         claim_test_tokens: 'Claim Test Tokens',
@@ -20,6 +20,7 @@ const variables = {
         tokens: 'Tokens',
 
         // Home
+        marketplace: 'Marketplace',
         all_collections: 'All Collections',
         my_collections: 'My Collections',
         my_nfts: 'My NFTs',

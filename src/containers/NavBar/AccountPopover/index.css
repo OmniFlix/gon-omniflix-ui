@@ -148,3 +148,21 @@
 .account_popover .section2 .left_section .address_section {
     margin-top: 0;
 }
+
+.account_popover .disconnect_button {
+    background: #EB5757;
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 22px;
+    color: #FFFFFF;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.account_popover .disconnect_button svg {
+    margin-right: 10px;
+    fill: #F2F2F2;
+}

@@ -26,13 +26,13 @@ p {
 .dialog .primary_button,
 .side_panel .primary_button,
 .app .primary_button {
-    background: linear-gradient(90deg, #d61d6a, #7645ff);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     border-radius: 5px;
     font-family: "Quantico", sans-serif;
     font-weight: 700;
     font-size: 18px;
     line-height: 23px;
-    color: #e7e7e7;
+    color: #000000;
     padding: 10px 15px;
     text-transform: capitalize;
 }
@@ -40,7 +40,7 @@ p {
 .dialog .primary_button:disabled,
 .side_panel .primary_button:disabled,
 .app .primary_button:disabled {
-    color: #e7e7e7;
+    color: #000000;
     opacity: 0.5;
 }
 

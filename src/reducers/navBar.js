@@ -16,6 +16,7 @@ import {
     NAV_TABS_SET,
     SHOW_SIDE_BAR_SET,
 } from '../constants/navBar';
+import { DISCONNECT_SET } from '../constants/wallet';
 
 const tabValue = (state = {
     value: 'dashboard',
@@ -149,6 +150,11 @@ const tokenBalance = (state = {
         return {
             ...state,
             inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            value: [],
         };
     default:
         return state;

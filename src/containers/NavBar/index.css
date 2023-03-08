@@ -15,17 +15,17 @@
 }
 
 .navbar .right_section .claim_button {
-    background: #2D9CDB;
+    background: #9B51E0;
     border-radius: 50px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 18px;
     display: flex;
     align-items: center;
     color: #FFFFFF;
-    padding: 10px;
+    padding: 10px 12px;
     height: 40px;
 }
 
@@ -38,23 +38,24 @@
 }
 
 .navbar .right_section .create_button {
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     border-radius: 50px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 18px;
     display: flex;
     align-items: center;
-    color: #FFFFFF;
+    color: #000000;
     padding: 10px 12px;
     height: 40px;
     margin-left: 20px;
 }
 
 .navbar .right_section .create_button svg {
-    margin-left: 10px;
+    margin-right: 10px;
+    fill: #000000;
 }
 
 .navbar .right_section .connect_account {
@@ -66,24 +67,24 @@
 }
 
 .app .main_content .connect_button {
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     border-radius: 50px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 14px;
+    line-height: 18px;
     display: flex;
     align-items: center;
-    color: #FFFFFF;
+    color: #000000;
     text-transform: uppercase;
     padding: 10px 12px;
     height: 40px;
 }
 
 .navbar .right_section .connected_account {
-    background: #1B1B1B;
-    border-radius: 28px;
+    background: linear-gradient(123.89deg, rgba(250, 192, 30, 0.1) 8.56%, rgba(252, 118, 42, 0.1) 86.47%);
+    border-radius: 30px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -95,6 +96,32 @@
     padding: 6px 14px;
     display: flex;
     align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.navbar .right_section .connected_account:before {
+    content: "";
+    position: absolute;
+    background: linear-gradient(180deg,#0e151b,#000);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 100px;
+}
+
+.navbar .right_section .connected_account:after {
+    content: "";
+    background: linear-gradient(91.79deg,#fac01e 3.15%,#fc762a 85.66%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -2;
+    border-radius: 100px;
 }
 
 .connected_account > div {
@@ -139,13 +166,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: -1px;
-}
-
-.connected_account .disconnect_button {
-    max-width: unset;
-    min-width: unset;
-    margin-left: 10px;
-    padding: 0;
 }
 
 /* Tabs */
@@ -231,7 +251,7 @@
 
 .create_popover .tab_section:hover:after {
     content: '';
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -2px;
     left: -2px;
@@ -343,5 +363,12 @@
 
     .navbar .show_nav_expansion .horizontal_tabs .tabs_content .tab {
         border-bottom: unset;
+    }
+}
+
+@media (max-width: 530px) {
+    .home .header .left_section {
+        overflow-x: auto;
+        padding: 2px;
     }
 }
