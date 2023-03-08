@@ -131,6 +131,7 @@
     align-items: center;
     justify-content: center;
     padding: 30px 10%;
+    position: relative;
 }
 
 .about_page .partners_sponsors > h2 {
@@ -262,6 +263,12 @@
 
 .about_page .partners_sponsors .partners .list.judges_list .judge_info .shadow img {
     margin: 0;
+    width: 100%;
+}
+
+.about_page .partners_sponsors .partner_bg_img {
+    position: absolute;
+    top: 0;
     width: 100%;
 }
 
