@@ -20,7 +20,7 @@ import withRouter from '../../../../components/WithRouter';
 const DeListButton = (props) => {
     const handleClick = () => {
         const data = {
-            id: props.value && props.value.id,
+            id: props.value && props.value.listID,
             owner: props.address,
         };
 
@@ -78,6 +78,7 @@ const DeListButton = (props) => {
             Tx.fee.granter = granterInfo.granter;
         }
 
+        console.log('55555555', Tx);
         props.sign(Tx, props.address, (result, txBytes) => {
             if (result) {
                 const data = {

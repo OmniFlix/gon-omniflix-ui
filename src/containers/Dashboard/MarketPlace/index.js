@@ -47,7 +47,7 @@ class MarketPlace extends Component {
                 pp.marketplaceNFTs[this.props.chainValue])) {
             if (this.props.marketplaceNFTs[this.props.chainValue].value && this.props.marketplaceNFTs[this.props.chainValue].value.length) {
                 this.props.marketplaceNFTs[this.props.chainValue].value.map((value, index) => {
-                    this.handleNFTFetch(index, value.nftId, value.denomId);
+                    this.handleNFTFetch(index, value.nftId, value.denomId, value.id);
 
                     return null;
                 });
@@ -55,8 +55,8 @@ class MarketPlace extends Component {
         }
     }
 
-    handleNFTFetch (index, data, denom) {
-        this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, data);
+    handleNFTFetch (index, data, denom, listID) {
+        this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, data, listID);
     }
 
     render () {
@@ -79,7 +79,7 @@ class MarketPlace extends Component {
                                 );
                             })}
                         </div>}
-                    <DeListDialog />
+                    <DeListDialog/>
                 </div>
             </div>
         );

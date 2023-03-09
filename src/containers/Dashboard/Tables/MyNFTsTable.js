@@ -163,7 +163,9 @@ const MyNFTsTable = (props) => {
                     convertedAddress === owner && <div className="table_actions center_actions">
                         {props.router && props.router.params && props.router.params.chain &&
                         props.router.params.chain === 'omniflix'
-                            ? <Button className="primary_button list_button" onClick={() => props.showListNFTDialog(value)}>
+                            ? <Button
+                                className="primary_button list_button"
+                                onClick={() => props.showListNFTDialog(value)}>
                                 {variables[props.lang].list}
                             </Button> : null}
                         <Button
