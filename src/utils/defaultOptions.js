@@ -3,6 +3,13 @@ import OmniIcon from '../assets/chains/omniflix.svg';
 import UpTickIcon from '../assets/chains/uptick.svg';
 import StargazeIcon from '../assets/chains/stargaze.svg';
 import JunoIcon from '../assets/chains/juno.svg';
+import { config } from '../config';
+
+export const tokensList = [{
+    network: config,
+    value: 'uflix',
+    label: 'FLIX',
+}];
 
 export const list = [{
     icon: OmniIcon,

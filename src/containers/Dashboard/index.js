@@ -9,7 +9,7 @@ import NFTsTable from './Tables/NFTsTable';
 import IBCNFTsTable from './Tables/IBCNFTsTable';
 import { fetchAllCollections, fetchCollections } from '../../actions/collections';
 import withRouter from '../../components/WithRouter';
-import { setTabValue } from '../../actions/dashboard';
+import { fetchMarketplaceNFTsInfo, setTabValue } from '../../actions/dashboard';
 import { setRpcClient } from '../../actions/query';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
 import { list } from '../../utils/defaultOptions';
@@ -24,6 +24,7 @@ import TransferDialog from '../SingleCollection/TransferDialog';
 import BurnDialog from '../SingleCollection/BurnDialog';
 import { fetchCollectionHash } from '../../actions/collection';
 import { fetchWasmCollectionHash } from '../../actions/collection/wasm';
+import ListNFTDialog from './MarketPlace/ListNFTDialog';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -33,6 +34,7 @@ class Dashboard extends Component {
         this.handleFetch = this.handleFetch.bind(this);
         this.handleNFTFetch = this.handleNFTFetch.bind(this);
         this.handleFetchHash = this.handleFetchHash.bind(this);
+        this.handleMarketPlaceNFTFetch = this.handleMarketPlaceNFTFetch.bind(this);
     }
 
     componentDidMount () {
@@ -111,6 +113,18 @@ class Dashboard extends Component {
                 });
             }
         }
+        if ((this.props.chainValue && this.props.marketplaceNFTs && pp.marketplaceNFTs &&
+                !pp.marketplaceNFTs[this.props.chainValue] && this.props.marketplaceNFTs[this.props.chainValue]) ||
+            (this.props.chainValue && this.props.marketplaceNFTs && pp.marketplaceNFTs &&
+                pp.marketplaceNFTs[this.props.chainValue] && !this.props.marketplaceNFTsInfo[this.props.chainValue])) {
+            if (this.props.marketplaceNFTs[this.props.chainValue].value && this.props.marketplaceNFTs[this.props.chainValue].value.length) {
+                this.props.marketplaceNFTs[this.props.chainValue].value.map((value) => {
+                    this.handleMarketPlaceNFTFetch(0, value.onftIds, value.denomId);
+
+                    return null;
+                });
+            }
+        }
         if (this.props.collections && this.props.chainValue && this.props.collections[this.props.chainValue] &&
             pp.collections && pp.collections[this.props.chainValue] && pp.collections[this.props.chainValue].value &&
             this.props.collections[this.props.chainValue].value && this.props.collections[this.props.chainValue].value.length &&
@@ -140,6 +154,26 @@ class Dashboard extends Component {
         Promise.all(array).then(() => {
             if (index + 3 < data.length) {
                 this.handleNFTFetch(index + 3, data, denom);
+            }
+        });
+    }
+
+    handleMarketPlaceNFTFetch (index, data, denom) {
+        const array = [];
+        for (let i = 0; i < 3; i++) {
+            if (data[index + i]) {
+                const value = data[index + i];
+                if (value) {
+                    array.push(this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, value));
+                }
+            } else {
+                break;
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 3 < data.length) {
+                this.handleMarketPlaceNFTFetch(index + 3, data, denom);
             }
         });
     }
@@ -238,6 +272,7 @@ class Dashboard extends Component {
                         <div className="data_table nfts_table"><IBCNFTsTable/></div>}
                     <TransferDialog/>
                     <BurnDialog/>
+                    <ListNFTDialog />
                 </div>
             </div>
         );
@@ -257,12 +292,16 @@ Dashboard.propTypes = {
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollectionHash: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     fetchMyNFTsInfo: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
     fetchWasmCollectionHash: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
+    marketplaceNFTs: PropTypes.object.isRequired,
+    marketplaceNFTsInProgress: PropTypes.bool.isRequired,
+    marketplaceNFTsInfo: PropTypes.object.isRequired,
     myNFTs: PropTypes.object.isRequired,
     myNFTsInProgress: PropTypes.bool.isRequired,
     myNFTsInfo: PropTypes.object.isRequired,
@@ -297,6 +336,9 @@ const stateToProps = (state) => {
         myNFTs: state.nfts.myNFTs.value,
         myNFTsInProgress: state.nfts.myNFTs.inProgress,
         myNFTsInfo: state.nfts.myNFTsInfo.value,
+        marketplaceNFTs: state.dashboard.marketplaceNFTs.value,
+        marketplaceNFTsInProgress: state.dashboard.marketplaceNFTs.inProgress,
+        marketplaceNFTsInfo: state.dashboard.marketplaceNFTsInfo.value,
     };
 };
 
@@ -306,6 +348,7 @@ const actionsToProps = {
     fetchAllCollections,
     fetchWasmAllCollections,
     fetchWasmCollectionHash,
+    fetchMarketplaceNFTsInfo,
     fetchMyNFTs,
     fetchMyNFTsInfo,
     setTabValue,

@@ -48,6 +48,10 @@
     padding: 8px 30px;
 }
 
+.data_table .table_actions .primary_button.list_button {
+    margin-right: 10px;
+}
+
 .data_table .nft_id {
     display: flex;
     align-items: center;
@@ -195,6 +199,10 @@
     background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.data_table .market_actions .arrow_button .left_section .lsr_value {
+    text-transform: uppercase;
 }
 
 .data_table .market_actions .arrow_button .right_section {

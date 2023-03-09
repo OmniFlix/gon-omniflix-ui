@@ -44,6 +44,28 @@ p {
     opacity: 0.5;
 }
 
+.dialog .secondary_button,
+.side_panel .secondary_button,
+.app .secondary_button {
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-radius: 5px;
+    font-family: "Quantico", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 23px;
+    padding: 10px 15px;
+    text-transform: capitalize;
+}
+
+.dialog .secondary_button:disabled,
+.side_panel .secondary_button:disabled,
+.app .secondary_button:disabled {
+    color: #000000;
+    opacity: 0.5;
+}
+
 /* scroll bar */
 .scroll_bar {
     overflow: auto;

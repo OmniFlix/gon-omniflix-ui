@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './index.css';
-import {fetchMarketplaceNFTs, setTabValue} from '../../../actions/dashboard';
+import { fetchMarketplaceNFTs, setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
@@ -60,8 +60,9 @@ class HeaderTabs extends Component {
             this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
-        if(newValue === 'marketplace') {
-            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT)
+        if (newValue === 'marketplace' && !this.props.marketplaceNFTsInProgress && this.props.chainValue &&
+            this.props.marketplaceNFTs && !this.props.marketplaceNFTs[this.props.chainValue] && this.props.address) {
+            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
 
@@ -119,14 +120,14 @@ class HeaderTabs extends Component {
                             value="my_collections"
                             onClick={() => this.handleChange('my_nfts')}
                             {...a11yProps(2)} />}
-                     {this.props.address && this.props.chainValue === 'omniflix' &&
+                    {this.props.address && this.props.chainValue === 'omniflix' &&
                         <Tab
                             className={'tab ' + (this.props.tabValue === 'marketplace' ? 'active_tab' : '')}
                             label={<p className="text">
                                 {variables[this.props.lang].marketplace}
                                 {this.props.chainValue === 'omniflix' && this.props.myNFTs &&
-                                this.props.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue].total
-                                    ? ` (${this.props.myNFTs[this.props.chainValue].total})`
+                                this.props.marketplaceNFTs[this.props.chainValue] && this.props.marketplaceNFTs[this.props.chainValue].total
+                                    ? ` (${this.props.marketplaceNFTs[this.props.chainValue].total})`
                                     : null}
                             </p>}
                             value="marketplace"
@@ -152,6 +153,8 @@ HeaderTabs.propTypes = {
     fetchMarketplaceNFTs: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    marketplaceNFTs: PropTypes.object.isRequired,
+    marketplaceNFTsInProgress: PropTypes.bool.isRequired,
     myNFTs: PropTypes.object.isRequired,
     myNFTsInProgress: PropTypes.bool.isRequired,
     rpcClient: PropTypes.any.isRequired,
@@ -180,6 +183,8 @@ const stateToProps = (state) => {
         tabValue: state.dashboard.tabValue.value,
         myNFTs: state.nfts.myNFTs.value,
         myNFTsInProgress: state.nfts.myNFTs.inProgress,
+        marketplaceNFTs: state.dashboard.marketplaceNFTs.value,
+        marketplaceNFTsInProgress: state.dashboard.marketplaceNFTs.inProgress,
     };
 };
 
