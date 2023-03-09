@@ -91,7 +91,7 @@ const AccountPopover = (props) => {
                 </div>
                 : null}
             <Button className="disconnect_button" onClick={setDisconnect}>
-                <DisconnectIcon />
+                <DisconnectIcon/>
                 {variables[props.lang].disconnect}
             </Button>
         </div>

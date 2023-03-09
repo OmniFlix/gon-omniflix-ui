@@ -103,7 +103,7 @@
 .navbar .right_section .connected_account:before {
     content: "";
     position: absolute;
-    background: linear-gradient(180deg,#0e151b,#000);
+    background: linear-gradient(180deg, #0e151b, #000);
     top: 0;
     left: 0;
     width: 100%;
@@ -114,7 +114,7 @@
 
 .navbar .right_section .connected_account:after {
     content: "";
-    background: linear-gradient(91.79deg,#fac01e 3.15%,#fc762a 85.66%);
+    background: linear-gradient(91.79deg, #fac01e 3.15%, #fc762a 85.66%);
     position: absolute;
     top: -2px;
     left: -2px;
