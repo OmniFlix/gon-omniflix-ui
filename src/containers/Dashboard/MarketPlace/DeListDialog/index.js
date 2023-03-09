@@ -15,8 +15,8 @@ import failedIcon from '../../../../assets/failed.svg';
 import DeListButton from './DeListButton';
 
 const DeListDialog = (props) => {
-    const data = props.value && props.value.data && JSON.parse(props.value.data);
-
+    const data = props.value;
+    // && props.value.data && JSON.parse(props.value.data);
     return (
         <Dialog
             aria-describedby="verify-twitter-dialog-description"
@@ -86,7 +86,7 @@ const DeListDialog = (props) => {
                         </div>
                         <div className="actions">
                             <Button className="primary_button" onClick={props.handleClose}>
-                                {variables[props.lang].yay}
+                                {variables[props.lang].okay}
                             </Button>
                         </div>
                     </DialogContent>
@@ -107,7 +107,7 @@ const DeListDialog = (props) => {
                             mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                             <div>
                                 <p className="collection">
-                                    {props.collection && props.collection.denom && props.collection.denom.name} skhdfjhdbfjhsdfj
+                                    {props.collection && props.collection.denom && props.collection.denom.name}
                                 </p>
                                 <p className="nft">
                                     {props.value && props.value.metadata && props.value.metadata.name}

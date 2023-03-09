@@ -160,24 +160,7 @@ const marketplaceNFTsInfo = (state = {
 
 const listNFTDialog = (state = {
     open: false,
-    value: {
-        // id: 'onft6d6e84e3c14145c887dfc067f3972e1f',
-        // metadata: {
-        //     name: 'N8Fury - 5',
-        //     description: '',
-        //     mediaUri: 'https://ipfs.omniflix.studio/ipfs/QmUfVfu7SLy5DnBNCawiqR9Zitn1HNjMLm6Za7exkuh7Td',
-        //     previewUri: 'https://ipfs.omniflix.studio/ipfs/QmTBcktQrq6tMYNJ3cNG3YKkSvRUJ6XKeztFs98MHZ7GDL',
-        //     uriHash: '',
-        // },
-        // data: '{}',
-        // owner: 'omniflix1rh3t2ptfpzm75tcfcp46vnkk992hqrt2z50glp',
-        // transferable: true,
-        // extensible: true,
-        // createdAt: '2023-02-21T05:12:22.378Z',
-        // nsfw: true,
-        // royaltyShare: '0',
-        // denom: 'onftdenom4ce508e776f64d9e8dd4af7367d65844',
-    },
+    value: {},
     chain: 'omniflix',
     success: false,
     fail: false,
@@ -218,24 +201,7 @@ const listNFTDialog = (state = {
 
 const deListNFTDialog = (state = {
     open: false,
-    value: {
-        // id: 'onft6d6e84e3c14145c887dfc067f3972e1f',
-        // metadata: {
-        //     name: 'N8Fury - 5',
-        //     description: '',
-        //     mediaUri: 'https://ipfs.omniflix.studio/ipfs/QmUfVfu7SLy5DnBNCawiqR9Zitn1HNjMLm6Za7exkuh7Td',
-        //     previewUri: 'https://ipfs.omniflix.studio/ipfs/QmTBcktQrq6tMYNJ3cNG3YKkSvRUJ6XKeztFs98MHZ7GDL',
-        //     uriHash: '',
-        // },
-        // data: '{}',
-        // owner: 'omniflix1rh3t2ptfpzm75tcfcp46vnkk992hqrt2z50glp',
-        // transferable: true,
-        // extensible: true,
-        // createdAt: '2023-02-21T05:12:22.378Z',
-        // nsfw: true,
-        // royaltyShare: '0',
-        // denom: 'onftdenom4ce508e776f64d9e8dd4af7367d65844',
-    },
+    value: {},
     success: false,
     fail: false,
     hash: '',
@@ -244,7 +210,7 @@ const deListNFTDialog = (state = {
     case DE_LIST_DIALOG_SHOW:
         return {
             open: true,
-            value: {},
+            value: action.value,
         };
     case DE_LIST_NFT_SUCCESS_SET:
         return {
@@ -286,15 +252,6 @@ const tokenValue = (state = {
             value: state.default || {},
         };
     }
-    // else if (action.type === IBC_TOKENS_LIST_FETCH_SUCCESS) {
-    //     if (action.value && action.value.length && action.value[0]) {
-    //         return {
-    //             ...state,
-    //             default: action.value[0],
-    //             value: action.value[0],
-    //         };
-    //     }
-    // }
 
     return state;
 };
@@ -361,6 +318,65 @@ const deList = (state = {
     }
 };
 
+const marketplaceInfo = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case MARKETPLACE_NFT_S_INFO_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case MARKETPLACE_NFT_S_INFO_FETCH_SUCCESS: {
+        if (action.chain) {
+            return {
+                ...state,
+                inProgress: false,
+                value: {
+                    ...state.value,
+                    [action.chain]: {
+                        ...state.value && state.value[action.chain],
+                        [action.nft]: action.value,
+                    },
+                },
+            };
+        }
+
+        return {
+            ...state,
+            inProgress: false,
+        };
+    }
+    case MARKETPLACE_NFT_S_FETCH_SUCCESS: {
+        if (action.chain) {
+            const obj = state.value;
+            if (obj && obj[action.chain]) {
+                delete obj[action.chain];
+            }
+
+            return {
+                ...state,
+                inProgress: false,
+                value: obj,
+            };
+        }
+
+        return {
+            ...state,
+            inProgress: false,
+        };
+    }
+    case MARKETPLACE_NFT_S_INFO_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     chainValue,
     tabValue,
@@ -372,4 +388,5 @@ export default combineReducers({
     priceValue,
     newListNFT,
     deList,
+    marketplaceInfo,
 });

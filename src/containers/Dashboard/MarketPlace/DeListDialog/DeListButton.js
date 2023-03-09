@@ -132,7 +132,7 @@ const DeListButton = (props) => {
     return (
         <Button
             aria-label="de-list"
-            className={props.primaryButton ? 'primary_button' : 'secondary_button'}
+            className="primary_button"
             disabled={inProgress}
             onClick={handleClick}>
             {inProgress
