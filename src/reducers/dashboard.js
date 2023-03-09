@@ -180,6 +180,7 @@ const deListNFTDialog = (state = {
     case DE_LIST_DIALOG_SHOW:
         return {
             open: true,
+            value: {},
         };
     case DE_LIST_NFT_SUCCESS_SET:
         return {

@@ -60,7 +60,8 @@ class HeaderTabs extends Component {
             this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
-        if (newValue === 'marketplace') {
+        if (newValue === 'marketplace' && !this.props.marketplaceNFTsInProgress && this.props.chainValue &&
+            this.props.marketplaceNFTs && !this.props.marketplaceNFTs[this.props.chainValue] && this.props.address) {
             this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
     }
@@ -125,8 +126,8 @@ class HeaderTabs extends Component {
                             label={<p className="text">
                                 {variables[this.props.lang].marketplace}
                                 {this.props.chainValue === 'omniflix' && this.props.myNFTs &&
-                                this.props.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue].total
-                                    ? ` (${this.props.myNFTs[this.props.chainValue].total})`
+                                this.props.marketplaceNFTs[this.props.chainValue] && this.props.marketplaceNFTs[this.props.chainValue].total
+                                    ? ` (${this.props.marketplaceNFTs[this.props.chainValue].total})`
                                     : null}
                             </p>}
                             value="marketplace"
@@ -152,6 +153,8 @@ HeaderTabs.propTypes = {
     fetchMarketplaceNFTs: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    marketplaceNFTs: PropTypes.object.isRequired,
+    marketplaceNFTsInProgress: PropTypes.bool.isRequired,
     myNFTs: PropTypes.object.isRequired,
     myNFTsInProgress: PropTypes.bool.isRequired,
     rpcClient: PropTypes.any.isRequired,
@@ -180,6 +183,8 @@ const stateToProps = (state) => {
         tabValue: state.dashboard.tabValue.value,
         myNFTs: state.nfts.myNFTs.value,
         myNFTsInProgress: state.nfts.myNFTs.inProgress,
+        marketplaceNFTs: state.dashboard.marketplaceNFTs.value,
+        marketplaceNFTsInProgress: state.dashboard.marketplaceNFTs.inProgress,
     };
 };
 

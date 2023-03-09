@@ -201,6 +201,10 @@
     -webkit-text-fill-color: transparent;
 }
 
+.data_table .market_actions .arrow_button .left_section .lsr_value {
+    text-transform: uppercase;
+}
+
 .data_table .market_actions .arrow_button .right_section {
     /*background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);*/
     border-radius: 0 5px 5px 0;

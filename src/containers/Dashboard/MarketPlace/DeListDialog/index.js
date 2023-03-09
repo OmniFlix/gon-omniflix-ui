@@ -102,7 +102,7 @@ const DeListDialog = (props) => {
                                 preview={(props.value && props.value.metadata && props.value.metadata.previewUri && mediaReference(props.value.metadata.previewUri)) ||
                             (props.value && props.value.metadata && props.value.metadata.uri && mediaReference(props.value.metadata.uri)) ||
                             (props.value && props.value.metadata && props.value.metadata.uriHash && mediaReference(props.value.metadata.uriHash)) ||
-                            (data && ibcPreview(data)) || (props.value.info && props.value.info.token_uri && mediaReference(props.value.info.token_uri))}
+                            (data && ibcPreview(data)) || (props.value && props.value.info && props.value.info.token_uri && mediaReference(props.value.info.token_uri))}
                                 src={(props.value && props.value.metadata && props.value.metadata.mediaUri &&
                             mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                             <div>

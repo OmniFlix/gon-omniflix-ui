@@ -7,14 +7,14 @@ import CircularProgress from '../../../components/CircularProgress';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
-import { setTransferAddress, showBurnDialog, showTransferDialog } from '../../../actions/collection';
 import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
 import { mediaReference } from '../../../utils/ipfs';
-import { config } from '../../../config';
-import { bech32 } from 'bech32';
 import withRouter from '../../../components/WithRouter';
-import { fetchMyNFTs } from '../../../actions/nfts';
 import NetworkImages from '../../../components/NetworkImages';
+import { fetchMarketplaceNFTs, showDeListNFTDialog } from '../../../actions/dashboard';
+import variables from '../../../utils/variables';
+import { config } from '../../../config';
+import denomIcon from '../../../assets/tokens/flix.svg';
 
 const MarketplaceTable = (props) => {
     const options = {
@@ -40,13 +40,7 @@ const MarketplaceTable = (props) => {
             }
 
             if (props.list[props.chainValue] && props.list[props.chainValue].limit) {
-                const address = props.address && bech32.decode(props.address);
-                let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
-                if (props.chainValue === 'uptick') {
-                    convertedAddress = props.addressIBC && props.addressIBC.uptick;
-                }
-
-                props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress, props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit);
+                props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit);
             }
         },
         onChangeRowsPerPage: (numberOfRows) => {
@@ -59,13 +53,7 @@ const MarketplaceTable = (props) => {
             }
 
             if (props.list[props.chainValue] && props.list[props.chainValue].skip) {
-                const address = props.address && bech32.decode(props.address);
-                let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
-                if (props.chainValue === 'uptick') {
-                    convertedAddress = props.addressIBC && props.addressIBC.uptick;
-                }
-
-                props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress, props.list[props.chainValue].skip, numberOfRows);
+                props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, props.list[props.chainValue].skip, numberOfRows);
             }
         },
         responsive: 'standard',
@@ -79,9 +67,9 @@ const MarketplaceTable = (props) => {
         search: false,
     };
 
-    if (props.chainValue && props.chainValue === 'omniflix' && props.myNFTs && props.myNFTs[props.chainValue]) {
-        options.page = (props.myNFTs[props.chainValue].skip / 10);
-        options.count = props.myNFTs[props.chainValue].total;
+    if (props.chainValue && props.chainValue === 'omniflix' && props.list && props.list[props.chainValue]) {
+        options.page = (props.list[props.chainValue].skip / 10);
+        options.count = props.list[props.chainValue].total;
     }
 
     const columns = [{
@@ -115,7 +103,8 @@ const MarketplaceTable = (props) => {
         label: 'NFT ID',
         options: {
             sort: false,
-            customBodyRender: function (address) {
+            customBodyRender: function (value) {
+                const address = value && value.nftId;
                 return (
                     <div className="nft_id">
                         <div className="hash_text">
@@ -132,7 +121,8 @@ const MarketplaceTable = (props) => {
         label: 'Collection ID',
         options: {
             sort: false,
-            customBodyRender: function (address) {
+            customBodyRender: function (value) {
+                const address = value && value.denomId;
                 return (
                     <div className="nft_id">
                         <div className="hash_text">
@@ -150,56 +140,104 @@ const MarketplaceTable = (props) => {
         options: {
             sort: false,
             customBodyRender: function (value) {
-                // const address = value.owner && bech32.decode(value.owner);
-                // let convertedAddress = address && address.words && bech32.encode(config.PREFIX, address.words);
-                // let owner = props.address;
-                // if (props.chainValue === 'uptick') {
-                //     convertedAddress = value.owner;
-                //     owner = props.addressIBC && props.addressIBC.uptick;
-                // }
+                const address = (value.owner === props.address);
+                const price = (value.price && value.price.amount) / (10 ** config.COIN_DECIMALS);
+                const denom = value.price && value.price.denom;
 
                 return (
                     <div className="table_actions center_actions market_actions">
-                        <div className="arrow_button">
-                            <div className="left_section">
-                                <NetworkImages name="FLIX"/>
-                                <div className="lsr_value">
-                                    299259.256489 FLIX
+                        {props.router && props.router.params && props.router.params.chain &&
+                         props.router.params.chain === 'omniflix' && address
+                            ? <Button className="primary_button" onClick={() => props.showDeListNFTDialog(value)}>
+                                {variables[props.lang]['delist_nft_header']}
+                            </Button>
+                            : (denom || price) &&
+                            <div className="arrow_button">
+                                <div className="left_section">
+                                    {denom === 'uflix'
+                                        ? <img alt="denom" src={denomIcon} /> : null}
+                                    <div className="lsr_value">
+                                        {price}{' '}{denom === 'uflix' ? 'FLIX' : denom}
+                                    </div>
                                 </div>
-                            </div>
-                            <p className="arrow_right"/>
-                            <div className="right_section">
-                                <Button>Collect Now</Button>
-                            </div>
-                        </div>
-                        {/* {props.router && props.router.params && props.router.params.chain && */}
-                        {/* props.router.params.chain === 'omniflix' */}
-                        {/*    ? <Button className="burn_button" onClick={() => props.showBurnDialog(value)}> */}
-                        {/*        {variables[props.lang].burn} */}
-                        {/*    </Button> : null} */}
+                                <p className="arrow_right"/>
+                                <div className="right_section">
+                                    <Button>Collect Now</Button>
+                                </div>
+                            </div>}
                     </div>
                 );
             },
         },
     }];
 
-    // const handleTransfer = (value) => {
-    //     if (value && value.owner && (value.owner !== props.address)) {
-    //         props.setTransferAddress(props.address);
-    //     }
-    //
-    //     props.showTransferDialog(value, props.chainValue);
-    // };
-
-    const list = props.list && props.list[props.chainValue];
-    const tableData = list && Object.keys(list) && Object.keys(list).length
-        ? Object.keys(list).map((key, index) => [
-            list[key],
-            key,
-            list[key] && list[key].denom,
-            list[key],
+    const list = props.list && props.list[props.chainValue] && props.list[props.chainValue].value;
+    console.log('asdkgasdsad', list);
+    const tableData = props.list && props.list[props.chainValue] &&
+    props.list[props.chainValue].value && (props.list[props.chainValue].value).length
+        ? props.list[props.chainValue].value.map((item, index) => [
+            item,
+            item,
+            item,
+            item,
         ]) : [];
-
+    // [
+    //     {
+    //         id: 'list44b048631ee74d179f5ffef93c6cba03',
+    //         nftId: 'irisnft001',
+    //         denomId: 'ibc/F993C0A059D4CB58EC779095C0F3E3EDC8454B0CA605CB5C8C840CB972B747AD',
+    //         price: {
+    //             denom: 'uflix',
+    //             amount: '1000000',
+    //         },
+    //         owner: 'omniflix1g46urfdmslh3lv0xw4v06a47x3jwletq99ywyc',
+    //         splitShares: [],
+    //     },
+    //     {
+    //         id: 'list46c9c656aca347fa8a4cc6b210d21f5b',
+    //         nftId: 'onftc22037a3e2b0435d8e546716f9f4adc0',
+    //         denomId: 'onftdenom28e31c304aed4ae391b8e0138a1bbea8',
+    //         price: {
+    //             denom: 'uflix',
+    //             amount: '1000000',
+    //         },
+    //         owner: 'omniflix1fgs9gudt8ltlnv5yymzjhcafycltw2tz85rx0t',
+    //         splitShares: [],
+    //     },
+    //     {
+    //         id: 'list9ce760986c814df5aacfb5b8951b1c76',
+    //         nftId: 'onft6d6e84e3c14145c887dfc067f3972e1f',
+    //         denomId: 'onftdenom4ce508e776f64d9e8dd4af7367d65844',
+    //         price: {
+    //             denom: 'uflix',
+    //             amount: '100000000',
+    //         },
+    //         owner: 'omniflix1rh3t2ptfpzm75tcfcp46vnkk992hqrt2z50glp',
+    //         splitShares: [],
+    //     },
+    //     {
+    //         id: 'listc689a92c7d7d4ba1b64dd2b7b3a4f80b',
+    //         nftId: 'onftb6daed38178b4b258dd3d42845a6ca0c',
+    //         denomId: 'onftdenomb8d3862e81d14c3d8961b88331b3dd6d',
+    //         price: {
+    //             denom: 'uflix',
+    //             amount: '1000000',
+    //         },
+    //         owner: 'omniflix1fgs9gudt8ltlnv5yymzjhcafycltw2tz85rx0t',
+    //         splitShares: [],
+    //     },
+    //     {
+    //         id: 'listfac4e61da42b48d9bc56c076bda2b937',
+    //         nftId: 'onftcf8cef519bea472fad8f99871157a714',
+    //         denomId: 'onftdenom4ce508e776f64d9e8dd4af7367d65844',
+    //         price: {
+    //             denom: 'uflix',
+    //             amount: '1000000',
+    //         },
+    //         owner: 'omniflix1jpudqpydw26r3297dlaj3whecvatyayklk4k9e',
+    //         splitShares: [],
+    //     },
+    // ];
     return (
         <>
             <DataTable
@@ -215,20 +253,17 @@ MarketplaceTable.propTypes = {
     address: PropTypes.string.isRequired,
     addressIBC: PropTypes.object.isRequired,
     chainValue: PropTypes.string.isRequired,
-    fetchMyNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTs: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     list: PropTypes.object.isRequired,
-    myNFTs: PropTypes.object.isRequired,
     router: PropTypes.shape({
         params: PropTypes.shape({
             chain: PropTypes.string,
         }).isRequired,
     }).isRequired,
     rpcClient: PropTypes.any.isRequired,
-    setTransferAddress: PropTypes.func.isRequired,
-    showBurnDialog: PropTypes.func.isRequired,
-    showTransferDialog: PropTypes.func.isRequired,
+    showDeListNFTDialog: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -236,19 +271,16 @@ const stateToProps = (state) => {
         address: state.account.wallet.connection.address,
         addressIBC: state.account.wallet.connectionIBC.address,
         chainValue: state.dashboard.chainValue.value,
-        list: state.nfts.myNFTsInfo.value,
-        inProgress: state.nfts.myNFTsInfo.inProgress,
+        list: state.dashboard.marketplaceNFTs.value,
+        inProgress: state.dashboard.marketplaceNFTs.inProgress,
         lang: state.language,
         rpcClient: state.query.rpcClient.value,
-        myNFTs: state.nfts.myNFTs.value,
     };
 };
 
 const actionToProps = {
-    fetchMyNFTs,
-    showBurnDialog,
-    showTransferDialog,
-    setTransferAddress,
+    fetchMarketplaceNFTs,
+    showDeListNFTDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(MarketplaceTable));

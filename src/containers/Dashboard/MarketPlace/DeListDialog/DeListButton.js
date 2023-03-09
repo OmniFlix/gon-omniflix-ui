@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import variables from '../../../../utils/variables';
-import { config } from '../../../../config';
+import { config, DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../../config';
 import { fetchBalance } from '../../../../actions/account/BCDetails';
 import {
     aminoSignTx,
@@ -20,7 +20,7 @@ import withRouter from '../../../../components/WithRouter';
 const DeListButton = (props) => {
     const handleClick = () => {
         const data = {
-            id: (props.info && props.info.list && props.info.list.id) || props.info.id,
+            id: props.value && props.value.id,
             owner: props.address,
         };
 
@@ -89,16 +89,19 @@ const DeListButton = (props) => {
                         let counter = 0;
                         const time = setInterval(() => {
                             props.fetchTxHash(res1.txhash, (hashResult) => {
+                                console.log('askdjgkasddsa', hashResult);
                                 if (hashResult) {
                                     if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
                                         props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
                                         props.setTxHashInProgressFalse();
+                                        props.setDeListNFTFail();
                                         clearInterval(time);
 
                                         return;
                                     }
 
                                     props.setDeListNFTSuccess(res1.txhash);
+                                    this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
                                     props.fetchBalance(props.address);
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
@@ -135,7 +138,7 @@ const DeListButton = (props) => {
             onClick={handleClick}>
             {inProgress
                 ? variables[props.lang]['approval_pending'] + '....'
-                : variables[props.lang]['de_list']}
+                : variables[props.lang]['delist_nft_header']}
         </Button>
     );
 };

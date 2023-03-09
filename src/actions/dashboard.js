@@ -1,7 +1,9 @@
 import {
     CHAIN_VALUE_SET,
     DE_LIST_DIALOG_HIDE,
-    DE_LIST_DIALOG_SHOW, DE_LIST_NFT_FAIL_SET, DE_LIST_NFT_SUCCESS_SET,
+    DE_LIST_DIALOG_SHOW,
+    DE_LIST_NFT_FAIL_SET,
+    DE_LIST_NFT_SUCCESS_SET,
     DE_LISTED_ERROR,
     DE_LISTED_IN_PROGRESS,
     DE_LISTED_SUCCESS,
@@ -15,12 +17,21 @@ import {
     MARKETPLACE_NFT_S_FETCH_ERROR,
     MARKETPLACE_NFT_S_FETCH_IN_PROGRESS,
     MARKETPLACE_NFT_S_FETCH_SUCCESS,
+    MARKETPLACE_NFT_S_INFO_FETCH_ERROR,
+    MARKETPLACE_NFT_S_INFO_FETCH_IN_PROGRESS,
+    MARKETPLACE_NFT_S_INFO_FETCH_SUCCESS,
     PRICE_VALUE_SET,
     TAB_VALUE_SET,
     TOKEN_VALUE_SET,
 } from '../constants/dashboard';
 import Axios from 'axios';
 import { QueryClientImpl } from '../registry/omniflix_custom_ts_types/marketplace/v1beta1/query';
+import {
+    MY_NFT_S_INFO_FETCH_ERROR,
+    MY_NFT_S_INFO_FETCH_IN_PROGRESS,
+    MY_NFT_S_INFO_FETCH_SUCCESS,
+} from '../constants/nfts';
+import { ChainsList } from '../chains';
 
 export const setChainValue = (value) => {
     return {
@@ -162,6 +173,77 @@ export const fetchMarketplaceNFTs = (rpcClient, chain, address, skip, limit, cb)
                 error.response &&
                 error.response.data &&
                 error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            if (cb) {
+                cb(null);
+            }
+        });
+    })();
+};
+
+const fetchMarketplaceNFTsInfoInProgress = () => {
+    return {
+        type: MARKETPLACE_NFT_S_INFO_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchMarketplaceNFTsInfoSuccess = (value, chain, nft) => {
+    return {
+        type: MARKETPLACE_NFT_S_INFO_FETCH_SUCCESS,
+        value,
+        chain,
+        nft,
+    };
+};
+
+const fetchMarketplaceNFTsInfoError = (message) => {
+    return {
+        type: MARKETPLACE_NFT_S_INFO_FETCH_ERROR,
+        message,
+        variant: 'error',
+    };
+};
+
+export const fetchMarketplaceNFTsInfo = (rpcClient, chain, denom, nft, cb) => (dispatch) => {
+    dispatch(fetchMarketplaceNFTsInfoInProgress());
+
+    const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
+    const client = rpcClient && rpcClient[chain];
+    if (!QueryClientImpl) {
+        dispatch(fetchMarketplaceNFTsInfoError('Failed!'));
+        return;
+    }
+
+    (async () => {
+        let queryService = new QueryClientImpl(client);
+        if (ChainsList[chain] && ChainsList[chain].service) {
+            queryService = new QueryClientImpl(client, { service: ChainsList[chain].service });
+        }
+        const request = {
+            denomId: denom,
+            id: nft,
+        };
+
+        console.log('askdjagsdkjasd', request);
+
+        queryService.ContractInfo(request).then((queryResult) => {
+            console.log('asdkjgaksjdsad', queryResult);
+            const data = {
+                ...queryResult && queryResult.onft,
+                denom,
+            };
+
+            dispatch(fetchMarketplaceNFTsInfoSuccess(data, chain, nft));
+            if (cb) {
+                cb(data);
+            }
+        }).catch((error) => {
+            dispatch(fetchMarketplaceNFTsInfoError(
+                error.response &&
+                    error.response.data &&
+                    error.response.data.message
                     ? error.response.data.message
                     : 'Failed!',
             ));

@@ -7,48 +7,26 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchCollections } from '../../../actions/collections';
 import withRouter from '../../../components/WithRouter';
-import { setTabValue } from '../../../actions/dashboard';
+import { fetchMarketplaceNFTs, fetchMarketplaceNFTsInfo, setTabValue } from '../../../actions/dashboard';
 import { setRpcClient } from '../../../actions/query';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { list } from '../../../utils/defaultOptions';
-import { fetchWasmAllCollections } from '../../../actions/collections/wasm';
-import { ChainsList } from '../../../chains';
-import { fetchMyNFTs, fetchMyNFTsInfo } from '../../../actions/nfts';
-import { bech32 } from 'bech32';
+import { fetchMyNFTsInfo } from '../../../actions/nfts';
 import MarketplaceTable from '../Tables/MarketplaceTable';
-import ListNFTDialog from './ListNFTDialog';
 import DeListDialog from './DeListDialog';
 
 class MarketPlace extends Component {
-    constructor (props) {
-        super(props);
-
-        this.handleCreateCollection = this.handleCreateCollection.bind(this);
-        this.handleFetch = this.handleFetch.bind(this);
-        this.handleNFTFetch = this.handleNFTFetch.bind(this);
-    }
-
     componentDidMount () {
-        if (this.props.tabValue === 'marketplace' && !this.props.myNFTsInProgress && this.props.chainValue &&
-            !this.props.myNFTs[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
-            const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
-            let convertedAddress = this.props.address;
-            if (prefix && prefix !== 'omniflix') {
-                const address = this.props.address && bech32.decode(this.props.address);
-                convertedAddress = address && address.words && bech32.encode(prefix, address.words);
-            }
-            if (prefix === 'uptick') {
-                convertedAddress = this.props.addressIBC && this.props.addressIBC.uptick;
-            }
-
-            this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
+        if (this.props.tabValue === 'marketplace' && !this.props.marketplaceNFTsInProgress && this.props.chainValue &&
+            !this.props.marketplaceNFTs[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
+            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
         }
 
-        if (this.props.contracts && this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
-            !this.props.contractsInProgress && this.props.wasmAllCollections && !this.props.wasmAllCollections[this.props.chainValue]) {
-            const config = ChainsList && ChainsList[this.props.chainValue];
-            this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
-        }
+        // if (this.props.contracts && this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value &&
+        //     !this.props.contractsInProgress && this.props.wasmAllCollections && !this.props.wasmAllCollections[this.props.chainValue]) {
+        //     const config = ChainsList && ChainsList[this.props.chainValue];
+        //     this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
+        // }
     }
 
     componentDidUpdate (pp, ps, ss) {
@@ -59,87 +37,78 @@ class MarketPlace extends Component {
         if (this.props.rpcClient && pp.rpcClient && !pp.rpcClient[this.props.chainValue] &&
             this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
             if (this.props.tabValue === 'marketplace' && this.props.chainValue) {
-                const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
-                let convertedAddress = this.props.address;
-                if (prefix && prefix !== 'omniflix') {
-                    const address = this.props.address && bech32.decode(this.props.address);
-                    convertedAddress = address && address.words && bech32.encode(prefix, address.words);
-                }
-                if (prefix === 'uptick') {
-                    convertedAddress = this.props.addressIBC && this.props.addressIBC.uptick;
-                }
-
-                this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
+                this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
             }
         }
-        if (this.props.chainValue && this.props.contracts && pp.contracts && !pp.contracts[this.props.chainValue] &&
-            this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value) {
-            const config = ChainsList && ChainsList[this.props.chainValue];
-            this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
-        }
-        if ((this.props.chainValue && this.props.myNFTs && pp.myNFTs &&
-                !pp.myNFTs[this.props.chainValue] && this.props.myNFTs[this.props.chainValue]) ||
-            (this.props.chainValue && this.props.myNFTs && pp.myNFTs &&
-                pp.myNFTs[this.props.chainValue] && !this.props.myNFTsInfo[this.props.chainValue])) {
-            if (this.props.myNFTs[this.props.chainValue].value && this.props.myNFTs[this.props.chainValue].value.length) {
-                this.props.myNFTs[this.props.chainValue].value.map((value) => {
-                    if (this.props.chainValue === 'omniflix') {
-                        this.handleNFTFetch(0, value.onftIds, value.denomId);
-                    } else {
-                        this.handleNFTFetch(0, value.tokenIds, value.denomId);
-                    }
-
-                    return null;
-                });
-            }
-        }
+        // if (this.props.chainValue && this.props.contracts && pp.contracts && !pp.contracts[this.props.chainValue] &&
+        //     this.props.contracts[this.props.chainValue] && this.props.contracts[this.props.chainValue].value) {
+        //     const config = ChainsList && ChainsList[this.props.chainValue];
+        //     this.handleFetch(0, config, this.props.contracts[this.props.chainValue].value);
+        // }
+        // if ((this.props.chainValue && this.props.marketplaceNFTs && pp.marketplaceNFTs &&
+        //         !pp.marketplaceNFTs[this.props.chainValue] && this.props.marketplaceNFTs[this.props.chainValue]) ||
+        //     (this.props.chainValue && this.props.marketplaceNFTs && pp.marketplaceNFTs &&
+        //         pp.marketplaceNFTs[this.props.chainValue])) {
+        //     if (this.props.marketplaceNFTs[this.props.chainValue].value && this.props.marketplaceNFTs[this.props.chainValue].value.length) {
+        //         this.props.marketplaceNFTs[this.props.chainValue].value.map((value) => {
+        //             if (this.props.chainValue === 'omniflix') {
+        //                 this.handleNFTFetch(0, value.onftIds, value.denomId);
+        //             } else {
+        //                 this.handleNFTFetch(0, value.tokenIds, value.denomId);
+        //             }
+        //
+        //             return null;
+        //         });
+        //     }
+        // }
     }
 
-    handleCreateCollection () {
-        this.props.router.navigate('/' + this.props.chainValue + '/create-collection');
-    }
+    // handleCreateCollection () {
+    //     this.props.router.navigate('/' + this.props.chainValue + '/create-collection');
+    // }
 
-    handleNFTFetch (index, data, denom) {
-        const array = [];
-        for (let i = 0; i < 3; i++) {
-            if (data[index + i]) {
-                const value = data[index + i];
-                if (value) {
-                    array.push(this.props.fetchMyNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, value));
-                }
-            } else {
-                break;
-            }
-        }
+    // handleNFTFetch (index, data, denom) {
+    //     const array = [];
+    //     for (let i = 0; i < 3; i++) {
+    //         if (data[index + i]) {
+    //             const value = data[index + i];
+    //             if (value) {
+    //                 array.push(this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, value));
+    //             }
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //
+    //     Promise.all(array).then(() => {
+    //         if (index + 3 < data.length) {
+    //             this.handleNFTFetch(index + 3, data, denom);
+    //         }
+    //     });
+    // }
 
-        Promise.all(array).then(() => {
-            if (index + 3 < data.length) {
-                this.handleNFTFetch(index + 3, data, denom);
-            }
-        });
-    }
-
-    handleFetch (index, config, data) {
-        const array = [];
-        for (let i = 0; i < 3; i++) {
-            if (data[index + i]) {
-                const value = data[index + i];
-                if (value) {
-                    array.push(this.props.fetchWasmAllCollections(config, this.props.chainValue, value));
-                }
-            } else {
-                break;
-            }
-        }
-
-        Promise.all(array).then(() => {
-            if (index + 3 < data.length) {
-                this.handleFetch(index + 3, config, data);
-            }
-        });
-    }
+    // handleFetch (index, config, data) {
+    //     const array = [];
+    //     for (let i = 0; i < 3; i++) {
+    //         if (data[index + i]) {
+    //             const value = data[index + i];
+    //             if (value) {
+    //                 array.push(this.props.fetchWasmAllCollections(config, this.props.chainValue, value));
+    //             }
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    //
+    //     Promise.all(array).then(() => {
+    //         if (index + 3 < data.length) {
+    //             this.handleFetch(index + 3, config, data);
+    //         }
+    //     });
+    // }
 
     render () {
+        console.log('asdkjbaksdsad', this.props.marketplaceNFTs);
         return (
             <div className="home scroll_bar">
                 <ChainPopover/>
@@ -159,7 +128,6 @@ class MarketPlace extends Component {
                                 );
                             })}
                         </div>}
-                    <ListNFTDialog />
                     <DeListDialog />
                 </div>
             </div>
@@ -178,14 +146,13 @@ MarketPlace.propTypes = {
     contracts: PropTypes.object.isRequired,
     contractsInProgress: PropTypes.bool.isRequired,
     fetchCollections: PropTypes.func.isRequired,
-    fetchMyNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     fetchMyNFTsInfo: PropTypes.func.isRequired,
-    fetchWasmAllCollections: PropTypes.func.isRequired,
     keys: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
-    myNFTs: PropTypes.object.isRequired,
-    myNFTsInProgress: PropTypes.bool.isRequired,
-    myNFTsInfo: PropTypes.object.isRequired,
+    marketplaceNFTs: PropTypes.object.isRequired,
+    marketplaceNFTsInProgress: PropTypes.bool.isRequired,
     rpcClient: PropTypes.any.isRequired,
     rpcClientInProgress: PropTypes.bool.isRequired,
     setRpcClient: PropTypes.func.isRequired,
@@ -214,19 +181,18 @@ const stateToProps = (state) => {
         rpcClientInProgress: state.query.rpcClient.inProgress,
         tabValue: state.dashboard.tabValue.value,
         wasmAllCollections: state.collections._wasm.allCollectionSList.value,
-        myNFTs: state.nfts.myNFTs.value,
-        myNFTsInProgress: state.nfts.myNFTs.inProgress,
-        myNFTsInfo: state.nfts.myNFTsInfo.value,
+        marketplaceNFTs: state.dashboard.marketplaceNFTs.value,
+        marketplaceNFTsInProgress: state.dashboard.marketplaceNFTs.inProgress,
     };
 };
 
 const actionsToProps = {
     fetchCollections,
-    fetchWasmAllCollections,
-    fetchMyNFTs,
+    fetchMarketplaceNFTs,
     fetchMyNFTsInfo,
     setTabValue,
     setRpcClient,
+    fetchMarketplaceNFTsInfo,
 };
 
 export default withRouter(connect(stateToProps, actionsToProps)(MarketPlace));
