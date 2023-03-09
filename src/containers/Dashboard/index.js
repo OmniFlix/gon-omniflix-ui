@@ -46,7 +46,6 @@ class Dashboard extends Component {
             this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
         } else if (this.props.tabValue === 'my_nfts' && !this.props.myNFTsInProgress && this.props.chainValue &&
             !this.props.myNFTs[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
-            console.log('232323232323');
             const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
             let convertedAddress = this.props.address;
             if (prefix && prefix !== 'omniflix') {
