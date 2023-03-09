@@ -2,7 +2,9 @@ import { combineReducers } from 'redux';
 import {
     CHAIN_VALUE_SET,
     DE_LIST_DIALOG_HIDE,
-    DE_LIST_DIALOG_SHOW, DE_LIST_NFT_FAIL_SET, DE_LIST_NFT_SUCCESS_SET,
+    DE_LIST_DIALOG_SHOW,
+    DE_LIST_NFT_FAIL_SET,
+    DE_LIST_NFT_SUCCESS_SET,
     DE_LISTED_ERROR,
     DE_LISTED_IN_PROGRESS,
     DE_LISTED_SUCCESS,
@@ -16,6 +18,9 @@ import {
     MARKETPLACE_NFT_S_FETCH_ERROR,
     MARKETPLACE_NFT_S_FETCH_IN_PROGRESS,
     MARKETPLACE_NFT_S_FETCH_SUCCESS,
+    MARKETPLACE_NFT_S_INFO_FETCH_ERROR,
+    MARKETPLACE_NFT_S_INFO_FETCH_IN_PROGRESS,
+    MARKETPLACE_NFT_S_INFO_FETCH_SUCCESS,
     PRICE_VALUE_SET,
     TAB_VALUE_SET,
     TOKEN_VALUE_SET,
@@ -85,6 +90,65 @@ const marketplaceNFTs = (state = {
         };
     }
     case MARKETPLACE_NFT_S_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
+const marketplaceNFTsInfo = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case MARKETPLACE_NFT_S_INFO_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case MARKETPLACE_NFT_S_INFO_FETCH_SUCCESS: {
+        if (action.chain) {
+            return {
+                ...state,
+                inProgress: false,
+                value: {
+                    ...state.value,
+                    [action.chain]: {
+                        ...state.value && state.value[action.chain],
+                        [action.nft]: action.value,
+                    },
+                },
+            };
+        }
+
+        return {
+            ...state,
+            inProgress: false,
+        };
+    }
+    case MARKETPLACE_NFT_S_FETCH_SUCCESS: {
+        if (action.chain) {
+            const obj = state.value;
+            if (obj && obj[action.chain]) {
+                delete obj[action.chain];
+            }
+
+            return {
+                ...state,
+                inProgress: false,
+                value: obj,
+            };
+        }
+
+        return {
+            ...state,
+            inProgress: false,
+        };
+    }
+    case MARKETPLACE_NFT_S_INFO_FETCH_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -180,6 +244,7 @@ const deListNFTDialog = (state = {
     case DE_LIST_DIALOG_SHOW:
         return {
             open: true,
+            value: {},
         };
     case DE_LIST_NFT_SUCCESS_SET:
         return {
@@ -300,6 +365,7 @@ export default combineReducers({
     chainValue,
     tabValue,
     marketplaceNFTs,
+    marketplaceNFTsInfo,
     listNFTDialog,
     deListNFTDialog,
     tokenValue,

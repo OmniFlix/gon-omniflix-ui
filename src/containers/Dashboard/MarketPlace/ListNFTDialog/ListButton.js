@@ -121,6 +121,7 @@ const ListButton = (props) => {
                                     if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
                                         props.showMessage(hashResult.logs || hashResult.raw_log, 'error', hashResult && hashResult.hash);
                                         props.setTxHashInProgressFalse();
+                                        props.setListNFTFail();
                                         clearInterval(time);
 
                                         return;
