@@ -14,6 +14,7 @@ import { fetchMarketplaceNFTs, showDeListNFTDialog } from '../../../actions/dash
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import denomIcon from '../../../assets/tokens/flix.svg';
+import CollectNowButton from './CollectNowButton';
 
 const MarketplaceTable = (props) => {
     const options = {
@@ -166,7 +167,7 @@ const MarketplaceTable = (props) => {
                                 </div>
                                 <p className="arrow_right"/>
                                 <div className="right_section">
-                                    <Button>Collect Now</Button>
+                                    <CollectNowButton price={price} value={value}/>
                                 </div>
                             </div>}
                     </div>

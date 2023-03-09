@@ -78,7 +78,6 @@ const DeListButton = (props) => {
             Tx.fee.granter = granterInfo.granter;
         }
 
-        console.log('55555555', Tx);
         props.sign(Tx, props.address, (result, txBytes) => {
             if (result) {
                 const data = {
