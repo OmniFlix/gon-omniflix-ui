@@ -24,6 +24,7 @@ import TransferDialog from '../SingleCollection/TransferDialog';
 import BurnDialog from '../SingleCollection/BurnDialog';
 import { fetchCollectionHash } from '../../actions/collection';
 import { fetchWasmCollectionHash } from '../../actions/collection/wasm';
+import ListNFTDialog from './MarketPlace/ListNFTDialog';
 
 class Dashboard extends Component {
     constructor (props) {
@@ -45,6 +46,7 @@ class Dashboard extends Component {
             this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
         } else if (this.props.tabValue === 'my_nfts' && !this.props.myNFTsInProgress && this.props.chainValue &&
             !this.props.myNFTs[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
+            console.log('232323232323');
             const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
             let convertedAddress = this.props.address;
             if (prefix && prefix !== 'omniflix') {
@@ -77,6 +79,7 @@ class Dashboard extends Component {
             } else if (this.props.tabValue === 'my_collections' && this.props.address !== '' && this.props.chainValue === 'omniflix') {
                 this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
             } else if (this.props.tabValue === 'my_nfts' && this.props.chainValue) {
+                console.log('asdkhbajshbdjahbsd');
                 const prefix = this.props.chainValue && ChainsList[this.props.chainValue] && ChainsList[this.props.chainValue].PREFIX;
                 let convertedAddress = this.props.address;
                 if (prefix && prefix !== 'omniflix') {
@@ -238,6 +241,7 @@ class Dashboard extends Component {
                         <div className="data_table nfts_table"><IBCNFTsTable/></div>}
                     <TransferDialog/>
                     <BurnDialog/>
+                    <ListNFTDialog />
                 </div>
             </div>
         );

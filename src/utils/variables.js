@@ -193,6 +193,7 @@ const variables = {
         select_token: 'Select Token',
         list_success: 'Listed Successfully',
         list_fail: 'Listing Cancelled',
+        list: 'List',
 
         delist_nft_header: 'De-List ',
         delist_success: 'De-Listed Successfully',

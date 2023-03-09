@@ -1,15 +1,24 @@
 import {
     CHAIN_VALUE_SET,
     DE_LIST_DIALOG_HIDE,
-    DE_LIST_DIALOG_SHOW, DE_LISTED_ERROR, DE_LISTED_IN_PROGRESS, DE_LISTED_SUCCESS,
+    DE_LIST_DIALOG_SHOW, DE_LIST_NFT_FAIL_SET, DE_LIST_NFT_SUCCESS_SET,
+    DE_LISTED_ERROR,
+    DE_LISTED_IN_PROGRESS,
+    DE_LISTED_SUCCESS,
     LIST_NFT_DIALOG_HIDE,
-    LIST_NFT_DIALOG_SHOW, LIST_NFT_ERROR, LIST_NFT_IN_PROGRESS, LIST_NFT_SUCCESS,
+    LIST_NFT_DIALOG_SHOW,
+    LIST_NFT_ERROR,
+    LIST_NFT_FAIL_SET,
+    LIST_NFT_IN_PROGRESS,
+    LIST_NFT_SUCCESS,
+    LIST_NFT_SUCCESS_SET,
     MARKETPLACE_NFT_S_FETCH_ERROR,
     MARKETPLACE_NFT_S_FETCH_IN_PROGRESS,
-    MARKETPLACE_NFT_S_FETCH_SUCCESS, PRICE_VALUE_SET,
-    TAB_VALUE_SET, TOKEN_VALUE_SET,
+    MARKETPLACE_NFT_S_FETCH_SUCCESS,
+    PRICE_VALUE_SET,
+    TAB_VALUE_SET,
+    TOKEN_VALUE_SET,
 } from '../constants/dashboard';
-import { ChainsList } from '../chains';
 import Axios from 'axios';
 import { QueryClientImpl } from '../registry/omniflix_custom_ts_types/marketplace/v1beta1/query';
 
@@ -38,6 +47,32 @@ export const setPriceValue = (value) => {
     return {
         type: PRICE_VALUE_SET,
         value,
+    };
+};
+
+export const setListNFTSuccess = (hash) => {
+    return {
+        type: LIST_NFT_SUCCESS_SET,
+        hash,
+    };
+};
+
+export const setListNFTFail = () => {
+    return {
+        type: LIST_NFT_FAIL_SET,
+    };
+};
+
+export const setDeListNFTSuccess = (hash) => {
+    return {
+        type: DE_LIST_NFT_SUCCESS_SET,
+        hash,
+    };
+};
+
+export const setDeListNFTFail = () => {
+    return {
+        type: DE_LIST_NFT_FAIL_SET,
     };
 };
 
@@ -116,6 +151,7 @@ export const fetchMarketplaceNFTs = (rpcClient, chain, address, skip, limit, cb)
         };
 
         queryService.Listings(request).then((queryResult) => {
+            console.log('111111111111111', queryResult);
             dispatch(fetchMarketplaceNFTsSuccess(queryResult && queryResult.listings, chain,
                 skip, limit, (queryResult.pagination && queryResult.pagination.total)));
             if (cb) {

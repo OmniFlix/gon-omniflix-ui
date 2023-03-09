@@ -12,6 +12,7 @@ import { hideDeListNFTDialog } from '../../../../actions/dashboard';
 import CopyButton from '../../../../components/CopyButton';
 import successIcon from '../../../../assets/success.svg';
 import failedIcon from '../../../../assets/failed.svg';
+import DeListButton from './DeListButton';
 
 const DeListDialog = (props) => {
     const data = props.value && props.value.data && JSON.parse(props.value.data);
@@ -125,9 +126,7 @@ const DeListDialog = (props) => {
                             <Button className="secondary_button" onClick={props.handleClose}>
                                 {variables[props.lang].cancel}
                             </Button>
-                            <Button className="primary_button">
-                                {variables[props.lang]['delist_nft_header']}
-                            </Button>
+                            <DeListButton />
                         </div>
                     </DialogContent>}
         </Dialog>

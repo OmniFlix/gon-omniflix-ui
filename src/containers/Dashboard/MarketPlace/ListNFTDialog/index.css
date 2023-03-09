@@ -1,3 +1,11 @@
+.dialog > div:nth-child(3) > div {
+    background: #101010;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    width: 450px;
+}
+
 .list_dialog .list_dialog_content {
     padding: 20px 0;
 }

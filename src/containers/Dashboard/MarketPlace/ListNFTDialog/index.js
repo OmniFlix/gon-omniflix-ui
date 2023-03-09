@@ -14,6 +14,7 @@ import SelectTokenSelectField from './SelectTokenSelectField';
 import PriceTextField from './PriceTextField';
 import successIcon from '../../../../assets/success.svg';
 import failedIcon from '../../../../assets/failed.svg';
+import ListButton from './ListButton';
 
 const ListNFTDialog = (props) => {
     const data = props.value && props.value.data && JSON.parse(props.value.data);
@@ -131,9 +132,7 @@ const ListNFTDialog = (props) => {
                             <Button className="secondary_button" onClick={props.handleClose}>
                                 {variables[props.lang].cancel}
                             </Button>
-                            <Button className="primary_button">
-                                {variables[props.lang]['create_listing']}
-                            </Button>
+                            <ListButton />
                         </div>
                     </DialogContent>}
         </Dialog>
