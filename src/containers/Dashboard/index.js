@@ -34,7 +34,6 @@ class Dashboard extends Component {
         this.handleFetch = this.handleFetch.bind(this);
         this.handleNFTFetch = this.handleNFTFetch.bind(this);
         this.handleFetchHash = this.handleFetchHash.bind(this);
-        this.handleMarketPlaceNFTFetch = this.handleMarketPlaceNFTFetch.bind(this);
     }
 
     componentDidMount () {
@@ -113,18 +112,6 @@ class Dashboard extends Component {
                 });
             }
         }
-        if ((this.props.chainValue && this.props.marketplaceNFTs && pp.marketplaceNFTs &&
-                !pp.marketplaceNFTs[this.props.chainValue] && this.props.marketplaceNFTs[this.props.chainValue]) ||
-            (this.props.chainValue && this.props.marketplaceNFTs && pp.marketplaceNFTs &&
-                pp.marketplaceNFTs[this.props.chainValue] && !this.props.marketplaceNFTsInfo[this.props.chainValue])) {
-            if (this.props.marketplaceNFTs[this.props.chainValue].value && this.props.marketplaceNFTs[this.props.chainValue].value.length) {
-                this.props.marketplaceNFTs[this.props.chainValue].value.map((value) => {
-                    this.handleMarketPlaceNFTFetch(0, value.onftIds, value.denomId);
-
-                    return null;
-                });
-            }
-        }
         if (this.props.collections && this.props.chainValue && this.props.collections[this.props.chainValue] &&
             pp.collections && pp.collections[this.props.chainValue] && pp.collections[this.props.chainValue].value &&
             this.props.collections[this.props.chainValue].value && this.props.collections[this.props.chainValue].value.length &&
@@ -154,26 +141,6 @@ class Dashboard extends Component {
         Promise.all(array).then(() => {
             if (index + 3 < data.length) {
                 this.handleNFTFetch(index + 3, data, denom);
-            }
-        });
-    }
-
-    handleMarketPlaceNFTFetch (index, data, denom) {
-        const array = [];
-        for (let i = 0; i < 3; i++) {
-            if (data[index + i]) {
-                const value = data[index + i];
-                if (value) {
-                    array.push(this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, denom, value));
-                }
-            } else {
-                break;
-            }
-        }
-
-        Promise.all(array).then(() => {
-            if (index + 3 < data.length) {
-                this.handleMarketPlaceNFTFetch(index + 3, data, denom);
             }
         });
     }
@@ -272,7 +239,7 @@ class Dashboard extends Component {
                         <div className="data_table nfts_table"><IBCNFTsTable/></div>}
                     <TransferDialog/>
                     <BurnDialog/>
-                    <ListNFTDialog />
+                    <ListNFTDialog/>
                 </div>
             </div>
         );
