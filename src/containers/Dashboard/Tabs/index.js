@@ -66,7 +66,7 @@ class HeaderTabs extends Component {
                 DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
                     if (result && result.length) {
                         result.map((value) => {
-                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId);
+                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId, value.id);
 
                             return null;
                         });

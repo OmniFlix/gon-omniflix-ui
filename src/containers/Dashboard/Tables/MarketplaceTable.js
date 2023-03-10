@@ -2,7 +2,7 @@ import React from 'react';
 import DataTable from '../../../components/DataTable';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
-// import { Button } from '@mui/material';
+import { Button } from '@mui/material';
 import CircularProgress from '../../../components/CircularProgress';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
@@ -10,10 +10,11 @@ import ImageOnLoad from '../../../components/ImageOnLoad';
 import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
 import { mediaReference } from '../../../utils/ipfs';
 import withRouter from '../../../components/WithRouter';
+import { config } from '../../../config';
+import variables from '../../../utils/variables';
+import denomIcon from '../../../assets/tokens/flix.svg';
+import CollectNowButton from './CollectNowButton';
 import { fetchMarketplaceNFTs, fetchMarketplaceNFTsInfo, showDeListNFTDialog } from '../../../actions/dashboard';
-// import variables from '../../../utils/variables';
-// import { config } from '../../../config';
-// import denomIcon from '../../../assets/tokens/flix.svg';
 
 const MarketplaceTable = (props) => {
     const options = {
@@ -43,7 +44,7 @@ const MarketplaceTable = (props) => {
                     props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit, (result) => {
                         if (result && result.length) {
                             result.map((value) => {
-                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId);
+                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId, value.id);
 
                                 return null;
                             });
@@ -65,7 +66,7 @@ const MarketplaceTable = (props) => {
                     numberOfRows, (result) => {
                         if (result && result.length) {
                             result.map((value) => {
-                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId);
+                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId, value.id);
 
                                 return null;
                             });
@@ -149,49 +150,43 @@ const MarketplaceTable = (props) => {
                 );
             },
         },
-        // },
-        // {
-        // name: 'actions',
-        // label: 'Actions',
-        // options: {
-        //     sort: false,
-        //     customBodyRender: function (value) {
-        //         const data = props.list && props.list[props.chainValue] && props.list[props.chainValue].value &&
-        //             props.list[props.chainValue].value.find((item) => (item.nftId === value.id));
-        //         const address = (data.owner === props.address);
-        //         const price = (data.price && data.price.amount) / (10 ** config.COIN_DECIMALS);
-        //         const denom = data.price && data.price.denom;
-        //
-        //         // const delistData = {
-        //         //     ...data,
-        //         //     value,
-        //         // };
-        //
-        //         return (
-        //             <div className="table_actions center_actions market_actions">
-        //                 {props.router && props.router.params && props.router.params.chain &&
-        //                  props.router.params.chain === 'omniflix' && address
-        //                     ? <Button className="primary_button" onClick={() => props.showDeListNFTDialog(value)}>
-        //                         {variables[props.lang]['delist_nft_header']}
-        //                     </Button>
-        //                     : (denom || price) &&
-        //                     <div className="arrow_button">
-        //                         <div className="left_section">
-        //                             {denom === 'uflix'
-        //                                 ? <img alt="denom" src={denomIcon} /> : null}
-        //                             <div className="lsr_value">
-        //                                 {price}{' '}{denom === 'uflix' ? 'FLIX' : denom}
-        //                             </div>
-        //                         </div>
-        //                         <p className="arrow_right"/>
-        //                         <div className="right_section">
-        //                             <Button>Collect Now</Button>
-        //                         </div>
-        //                     </div>}
-        //             </div>
-        //         );
-        //     },
-        // },
+    }, {
+        name: 'actions',
+        label: 'Actions',
+        options: {
+            sort: false,
+            customBodyRender: function (value) {
+                const data = props.list && props.list[props.chainValue] && props.list[props.chainValue].value &&
+                    props.list[props.chainValue].value.find((item) => (item.nftId === value.id));
+                const address = ((data && data.owner ? data.owner : value.owner) === props.address);
+                const price = (data && data.price && data.price.amount) / (10 ** config.COIN_DECIMALS);
+                const denom = data && data.price && data.price.denom;
+
+                return (
+                    <div className="table_actions center_actions market_actions">
+                        {props.router && props.router.params && props.router.params.chain &&
+                        props.router.params.chain === 'omniflix' && address
+                            ? <Button className="primary_button" onClick={() => props.showDeListNFTDialog(value)}>
+                                {variables[props.lang]['delist_nft_header']}
+                            </Button>
+                            : (denom || price) &&
+                            <div className="arrow_button">
+                                <div className="left_section">
+                                    {denom === 'uflix'
+                                        ? <img alt="denom" src={denomIcon}/> : null}
+                                    <div className="lsr_value">
+                                        {price}{' '}{denom === 'uflix' ? 'FLIX' : denom}
+                                    </div>
+                                </div>
+                                <p className="arrow_right"/>
+                                <div className="right_section">
+                                    <CollectNowButton price={price} value={value}/>
+                                </div>
+                            </div>}
+                    </div>
+                );
+            },
+        },
     }];
 
     const list = props.info && props.info[props.chainValue];

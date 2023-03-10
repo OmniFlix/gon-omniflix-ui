@@ -200,7 +200,7 @@ const fetchMarketplaceNFTsInfoError = (message) => {
     };
 };
 
-export const fetchMarketplaceNFTsInfo = (rpcClient, chain, denom, nft, cb) => (dispatch) => {
+export const fetchMarketplaceNFTsInfo = (rpcClient, chain, denom, nft, listID, cb) => (dispatch) => {
     dispatch(fetchMarketplaceNFTsInfoInProgress());
 
     const QueryClientImpl = ChainsList[chain] && ChainsList[chain].QueryClientImpl;
@@ -223,6 +223,7 @@ export const fetchMarketplaceNFTsInfo = (rpcClient, chain, denom, nft, cb) => (d
         queryService.ONFT(request).then((queryResult) => {
             const data = {
                 ...queryResult && queryResult.onft,
+                listID: listID,
                 denom,
             };
 

@@ -23,7 +23,7 @@ class MarketPlace extends Component {
                 DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
                     if (result && result.length) {
                         result.map((value) => {
-                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId);
+                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId, value.id);
 
                             return null;
                         });
@@ -33,10 +33,6 @@ class MarketPlace extends Component {
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if (this.props.address !== '' && pp.address !== this.props.address && this.props.rpcClient &&
-            this.props.rpcClient[this.props.chainValue] && this.props.chainValue === 'omniflix') {
-            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
-        }
         if (this.props.rpcClient && pp.rpcClient && !pp.rpcClient[this.props.chainValue] &&
             this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
             if (this.props.tabValue === 'marketplace' && this.props.chainValue) {
@@ -44,7 +40,7 @@ class MarketPlace extends Component {
                     DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
                         if (result && result.length) {
                             result.map((value) => {
-                                this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId);
+                                this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId, value.id);
 
                                 return null;
                             });
