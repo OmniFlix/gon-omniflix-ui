@@ -12,7 +12,9 @@ import {
 import { fetchBalance } from '../../../actions/account/BCDetails';
 import { showMessage } from '../../../actions/snackbar';
 import variables from '../../../utils/variables';
-import { fetchMarketplaceNFTs } from '../../../actions/dashboard';
+import { fetchMarketplaceNFTs, fetchMarketplaceNFTsInfo } from '../../../actions/dashboard';
+import { fetchMyNFTs } from '../../../actions/nfts';
+import CircularProgress from '../../../components/CircularProgress';
 
 const CollectNowButton = (props) => {
     const handleClick = () => {
@@ -65,7 +67,17 @@ const CollectNowButton = (props) => {
                                         return;
                                     }
 
-                                    props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                    props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address,
+                                        DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                                            if (result && result.length) {
+                                                result.map((value) => {
+                                                    props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId, value.id);
+
+                                                    return null;
+                                                });
+                                            }
+                                        });
+                                    props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
                                     props.fetchBalance(props.address);
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
@@ -93,8 +105,14 @@ const CollectNowButton = (props) => {
         });
     };
 
+    const inProgress = props.signInProgress || props.broadCastInProgress || props.txHashInProgress || props.inProgress;
     return (
-        <Button onClick={handleClick}>Collect Now</Button>
+        <>
+            {inProgress && <CircularProgress className="full_screen"/>}
+            <Button onClick={handleClick}>
+                Collect Now
+            </Button>
+        </>
     );
 };
 
@@ -107,6 +125,8 @@ CollectNowButton.propTypes = {
     chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
@@ -140,10 +160,12 @@ const actionToProps = {
     fetchBalance,
     fetchTxHash,
     fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
     setTxHashInProgressFalse,
     showMessage,
     sign: protoBufSigning,
     txSignAndBroadCast,
+    fetchMyNFTs,
 };
 
 export default connect(stateToProps, actionToProps)(CollectNowButton);

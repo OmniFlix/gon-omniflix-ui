@@ -15,11 +15,14 @@ import {
 } from '../../../../actions/account/wallet';
 import withRouter from '../../../../components/WithRouter';
 import { showMessage } from '../../../../actions/snackbar';
-// import { decodeFromBech32 } from '../../../../utils/address';
 import { customTypes } from '../../../../registry';
-// import { fetchAssetCards } from '../../../../actions/createAssets';
 import { generateID } from '../../../../utils/generateID';
-import { setListNFTFail, setListNFTSuccess } from '../../../../actions/dashboard';
+import {
+    fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
+    setListNFTFail,
+    setListNFTSuccess,
+} from '../../../../actions/dashboard';
 import { fetchMyNFTs } from '../../../../actions/nfts';
 import { bech32 } from 'bech32';
 import { fetchCollectionNFTS } from '../../../../actions/collection';
@@ -136,14 +139,17 @@ const ListButton = (props) => {
                                         if (props.chainValue === 'uptick') {
                                             convertedAddress = props.addressIBC && props.addressIBC.uptick;
                                         }
-                                        props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress,
-                                            DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
-                                                if (result && props.chainID && (props.chainID === 'omniflix' ||
-                                                    props.chainID === 'iris' || props.chainID === 'uptick')) {
-                                                    props.fetchMyNFTs(props.rpcClient, props.chainID, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
-                                                }
-                                            });
+                                        props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
                                     }
+                                    props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                                        if (result && result.length) {
+                                            result.map((value) => {
+                                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId, value.id);
+
+                                                return null;
+                                            });
+                                        }
+                                    });
 
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
@@ -174,7 +180,6 @@ const ListButton = (props) => {
     const disable = props.tokenPrice === '' || !(props.tokenValue && (props.tokenValue.value || props.tokenValue.ibc_denom_hash));
 
     const inProgress = props.signInProgress || props.broadCastInProgress ||
-        // props.aminoBroadCastInProgress ||
         props.txHashInProgress || props.inProgress;
     return (
         <Button
@@ -194,7 +199,6 @@ ListButton.propTypes = {
     address: PropTypes.string.isRequired,
     addressIBC: PropTypes.string.isRequired,
     allowances: PropTypes.array.isRequired,
-    // aminoBroadCastInProgress: PropTypes.bool.isRequired,
     aminoSignTx: PropTypes.func.isRequired,
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
@@ -203,6 +207,8 @@ ListButton.propTypes = {
     chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
+    fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
@@ -241,22 +247,12 @@ const stateToProps = (state) => {
         allowances: state.account.bc.allowances.value,
         balance: state.account.bc.balance.value,
         broadCastInProgress: state.account.wallet.broadCast.inProgress,
-        // aminoBroadCastInProgress: state.account.connection.inProgress,
         inProgress: state.dashboard.newListNFT.inProgress,
         lang: state.language,
 
-        // nftListOwnedSearch: state.createAssets.nft.nftListOwned.search,
-        // nftListOwnedSkip: state.createAssets.nft.nftListOwned.skip,
-        // nftListOwnedTotal: state.createAssets.nft.nftListOwned.total,
-        // nonListedNFTsTotal: state.createAssets.nft.nonListedCollectionNFTs.total,
-        // nonListedNFTsSkip: state.createAssets.nft.nonListedCollectionNFTs.skip,
-        // priceRangeValue: state.filters.priceRange.value,
-        // priceRange: state.filters.priceRange.range,
         tokenValue: state.dashboard.tokenValue.value,
         tokenPrice: state.dashboard.priceValue,
         value: state.dashboard.listNFTDialog.value,
-        // splitInfo: state.createAssets.listing.splitInfo.value,
-        // splitInfoStatus: state.createAssets.listing.splitInfo.status,
         signInProgress: state.account.bc.protoBufSign.inProgress,
         txHashInProgress: state.account.bc.txHash.inProgress,
 
@@ -271,6 +267,8 @@ const actionToProps = {
     aminoSignTx,
     fetchBalance,
     fetchTxHash,
+    fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
     setTxHashInProgressFalse,
     showMessage,
     sign: protoBufSigning,

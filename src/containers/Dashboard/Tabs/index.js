@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './index.css';
-import { fetchMarketplaceNFTs, setTabValue } from '../../../actions/dashboard';
+import { fetchMarketplaceNFTs, fetchMarketplaceNFTsInfo, setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
@@ -62,7 +62,16 @@ class HeaderTabs extends Component {
 
         if (newValue === 'marketplace' && !this.props.marketplaceNFTsInProgress && this.props.chainValue &&
             this.props.marketplaceNFTs && !this.props.marketplaceNFTs[this.props.chainValue] && this.props.address) {
-            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address,
+                DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                    if (result && result.length) {
+                        result.map((value) => {
+                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId, value.id);
+
+                            return null;
+                        });
+                    }
+                });
         }
     }
 
@@ -151,6 +160,7 @@ HeaderTabs.propTypes = {
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
     fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     marketplaceNFTs: PropTypes.object.isRequired,
@@ -192,6 +202,7 @@ const actionsToProps = {
     fetchAllCollections,
     fetchCollections,
     fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
     fetchMyNFTs,
     setTabValue,
 };

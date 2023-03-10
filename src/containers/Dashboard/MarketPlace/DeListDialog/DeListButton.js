@@ -14,8 +14,14 @@ import {
 } from '../../../../actions/account/wallet';
 import { showMessage } from '../../../../actions/snackbar';
 import { customTypes } from '../../../../registry';
-import { fetchMarketplaceNFTs, setDeListNFTFail, setDeListNFTSuccess } from '../../../../actions/dashboard';
+import {
+    fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
+    setDeListNFTFail,
+    setDeListNFTSuccess,
+} from '../../../../actions/dashboard';
 import withRouter from '../../../../components/WithRouter';
+import { fetchMyNFTs } from '../../../../actions/nfts';
 
 const DeListButton = (props) => {
     const handleClick = () => {
@@ -100,7 +106,17 @@ const DeListButton = (props) => {
                                     }
 
                                     props.setDeListNFTSuccess(res1.txhash);
-                                    this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                    props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address,
+                                        DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                                            if (result && result.length) {
+                                                result.map((value) => {
+                                                    props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId, value.id);
+
+                                                    return null;
+                                                });
+                                            }
+                                        });
+                                    props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
                                     props.fetchBalance(props.address);
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
@@ -148,8 +164,12 @@ DeListButton.propTypes = {
     aminoSignTx: PropTypes.func.isRequired,
     balance: PropTypes.array.isRequired,
     broadCastInProgress: PropTypes.bool.isRequired,
+    chainValue: PropTypes.string.isRequired,
     denomValue: PropTypes.object.isRequired,
     fetchBalance: PropTypes.func.isRequired,
+    fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     hideListQuickView: PropTypes.func.isRequired,
     hideMenuPopover: PropTypes.func.isRequired,
@@ -159,6 +179,7 @@ DeListButton.propTypes = {
     lang: PropTypes.string.isRequired,
     priceRange: PropTypes.array.isRequired,
     priceRangeValue: PropTypes.object.isRequired,
+    rpcClient: PropTypes.any.isRequired,
     setDeListNFTFail: PropTypes.func.isRequired,
     setDeListNFTSuccess: PropTypes.func.isRequired,
     setTxHashInProgressFalse: PropTypes.func.isRequired,
@@ -191,6 +212,8 @@ const stateToProps = (state) => {
         inProgress: state.dashboard.deList.inProgress,
         signInProgress: state.account.bc.protoBufSign.inProgress,
         txHashInProgress: state.account.bc.txHash.inProgress,
+        rpcClient: state.query.rpcClient.value,
+        chainValue: state.dashboard.chainValue.value,
     };
 };
 
@@ -206,6 +229,8 @@ const actionToProps = {
     setDeListNFTSuccess,
     setDeListNFTFail,
     fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
+    fetchMyNFTs,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(DeListButton));
