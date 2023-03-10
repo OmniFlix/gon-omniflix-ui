@@ -16,16 +16,19 @@ import MarketplaceTable from '../Tables/MarketplaceTable';
 import DeListDialog from './DeListDialog';
 
 class MarketPlace extends Component {
-    constructor (props) {
-        super(props);
-
-        this.handleNFTFetch = this.handleNFTFetch.bind(this);
-    }
-
     componentDidMount () {
         if (this.props.tabValue === 'marketplace' && !this.props.marketplaceNFTsInProgress && this.props.chainValue &&
             !this.props.marketplaceNFTs[this.props.chainValue] && this.props.rpcClient && this.props.rpcClient[this.props.chainValue]) {
-            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address,
+                DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                    if (result && result.length) {
+                        result.map((value) => {
+                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId);
+
+                            return null;
+                        });
+                    }
+                });
         }
     }
 
@@ -37,7 +40,16 @@ class MarketPlace extends Component {
         if (this.props.rpcClient && pp.rpcClient && !pp.rpcClient[this.props.chainValue] &&
             this.props.rpcClient[this.props.chainValue] && !this.props.rpcClientInProgress) {
             if (this.props.tabValue === 'marketplace' && this.props.chainValue) {
-                this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address,
+                    DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                        if (result && result.length) {
+                            result.map((value) => {
+                                this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId);
+
+                                return null;
+                            });
+                        }
+                    });
             }
         }
 

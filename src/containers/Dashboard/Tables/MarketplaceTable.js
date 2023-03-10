@@ -10,11 +10,11 @@ import ImageOnLoad from '../../../components/ImageOnLoad';
 import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
 import { mediaReference } from '../../../utils/ipfs';
 import withRouter from '../../../components/WithRouter';
-import { fetchMarketplaceNFTs, showDeListNFTDialog } from '../../../actions/dashboard';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import denomIcon from '../../../assets/tokens/flix.svg';
 import CollectNowButton from './CollectNowButton';
+import { fetchMarketplaceNFTs, fetchMarketplaceNFTsInfo, showDeListNFTDialog } from '../../../actions/dashboard';
 
 const MarketplaceTable = (props) => {
     const options = {
@@ -35,12 +35,21 @@ const MarketplaceTable = (props) => {
                 return;
             }
 
-            if (props.chainValue && !props.info[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
+            if (props.chainValue && !props.list[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
                 return;
             }
 
-            if (props.info[props.chainValue] && props.info[props.chainValue].limit) {
-                props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, props.info[props.chainValue].limit * currentPage, props.list[props.chainValue].limit);
+            if (props.list[props.chainValue] && props.list[props.chainValue].limit) {
+                props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address,
+                    props.list[props.chainValue].limit * currentPage, props.list[props.chainValue].limit, (result) => {
+                        if (result && result.length) {
+                            result.map((value) => {
+                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId);
+
+                                return null;
+                            });
+                        }
+                    });
             }
         },
         onChangeRowsPerPage: (numberOfRows) => {
@@ -48,12 +57,21 @@ const MarketplaceTable = (props) => {
                 return;
             }
 
-            if (props.chainValue && !props.info[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
+            if (props.chainValue && !props.list[props.chainValue] && props.rpcClient && props.rpcClient[props.chainValue]) {
                 return;
             }
 
-            if (props.info[props.chainValue] && props.info[props.chainValue].skip) {
-                props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, props.info[props.chainValue].skip, numberOfRows);
+            if (props.list[props.chainValue] && props.list[props.chainValue].skip) {
+                props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, props.list[props.chainValue].skip,
+                    numberOfRows, (result) => {
+                        if (result && result.length) {
+                            result.map((value) => {
+                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId);
+
+                                return null;
+                            });
+                        }
+                    });
             }
         },
         responsive: 'standard',
@@ -201,6 +219,7 @@ MarketplaceTable.propTypes = {
     addressIBC: PropTypes.object.isRequired,
     chainValue: PropTypes.string.isRequired,
     fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     info: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
@@ -229,6 +248,7 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
     showDeListNFTDialog,
 };
 
