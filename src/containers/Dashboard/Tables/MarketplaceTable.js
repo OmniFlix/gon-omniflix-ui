@@ -158,9 +158,9 @@ const MarketplaceTable = (props) => {
             customBodyRender: function (value) {
                 const data = props.list && props.list[props.chainValue] && props.list[props.chainValue].value &&
                     props.list[props.chainValue].value.find((item) => (item.nftId === value.id));
-                const address = (data.owner === props.address);
-                const price = (data.price && data.price.amount) / (10 ** config.COIN_DECIMALS);
-                const denom = data.price && data.price.denom;
+                const address = ((data && data.owner ? data.owner : value.owner) === props.address);
+                const price = (data && data.price && data.price.amount) / (10 ** config.COIN_DECIMALS);
+                const denom = data && data.price && data.price.denom;
 
                 // const delistData = {
                 //     ...data,

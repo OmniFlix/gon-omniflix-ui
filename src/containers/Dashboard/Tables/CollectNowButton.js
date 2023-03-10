@@ -13,6 +13,7 @@ import { fetchBalance } from '../../../actions/account/BCDetails';
 import { showMessage } from '../../../actions/snackbar';
 import variables from '../../../utils/variables';
 import { fetchMarketplaceNFTs } from '../../../actions/dashboard';
+import { fetchMyNFTs } from '../../../actions/nfts';
 
 const CollectNowButton = (props) => {
     const handleClick = () => {
@@ -66,6 +67,7 @@ const CollectNowButton = (props) => {
                                     }
 
                                     props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                    props.fetchMyNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
                                     props.fetchBalance(props.address);
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
@@ -107,6 +109,7 @@ CollectNowButton.propTypes = {
     chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
@@ -144,6 +147,7 @@ const actionToProps = {
     showMessage,
     sign: protoBufSigning,
     txSignAndBroadCast,
+    fetchMyNFTs,
 };
 
 export default connect(stateToProps, actionToProps)(CollectNowButton);
