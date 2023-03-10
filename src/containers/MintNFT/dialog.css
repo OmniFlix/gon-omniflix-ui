@@ -153,7 +153,7 @@
     line-height: 17px;
     display: flex;
     align-items: center;
-    color: #000000;
+    color: #F2F2F2;
     background: #1B1B1B;
     width: 49%;
     height: 40px;
@@ -161,4 +161,5 @@
 
 .confirm_mint_dialog .confirm_mint_action .primary_button {
     background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
+    color: #000000;
 }
