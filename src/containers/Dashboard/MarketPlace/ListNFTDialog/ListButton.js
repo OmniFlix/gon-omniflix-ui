@@ -19,7 +19,12 @@ import { showMessage } from '../../../../actions/snackbar';
 import { customTypes } from '../../../../registry';
 // import { fetchAssetCards } from '../../../../actions/createAssets';
 import { generateID } from '../../../../utils/generateID';
-import { setListNFTFail, setListNFTSuccess } from '../../../../actions/dashboard';
+import {
+    fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
+    setListNFTFail,
+    setListNFTSuccess,
+} from '../../../../actions/dashboard';
 import { fetchMyNFTs } from '../../../../actions/nfts';
 import { bech32 } from 'bech32';
 import { fetchCollectionNFTS } from '../../../../actions/collection';
@@ -144,6 +149,15 @@ const ListButton = (props) => {
                                                 }
                                             });
                                     }
+                                    props.fetchMarketplaceNFTs(props.rpcClient, props.chainValue, props.address, DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                                        if (result && result.length) {
+                                            result.map((value) => {
+                                                props.fetchMarketplaceNFTsInfo(props.rpcClient, props.chainValue, value.denomId, value.nftId);
+
+                                                return null;
+                                            });
+                                        }
+                                    });
 
                                     props.setTxHashInProgressFalse();
                                     clearInterval(time);
@@ -203,6 +217,8 @@ ListButton.propTypes = {
     chainValue: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired,
     fetchCollectionNFTS: PropTypes.func.isRequired,
+    fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     fetchTxHash: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
@@ -271,6 +287,8 @@ const actionToProps = {
     aminoSignTx,
     fetchBalance,
     fetchTxHash,
+    fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
     setTxHashInProgressFalse,
     showMessage,
     sign: protoBufSigning,

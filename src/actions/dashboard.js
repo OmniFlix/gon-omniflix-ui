@@ -160,7 +160,7 @@ export const fetchMarketplaceNFTs = (rpcClient, chain, address, skip, limit, cb)
             dispatch(fetchMarketplaceNFTsSuccess(queryResult && queryResult.listings, chain,
                 skip, limit, (queryResult.pagination && queryResult.pagination.total)));
             if (cb) {
-                cb(queryResult && queryResult.listings && queryResult.owner.idCollections);
+                cb(queryResult && queryResult.listings);
             }
         }).catch((error) => {
             dispatch(fetchMarketplaceNFTsError(

@@ -92,19 +92,19 @@ const DeListDialog = (props) => {
                     </DialogContent>
                     : <DialogContent className="delist_dialog_content">
                         <h2>
-                            {variables[props.lang]['delist_nft_header']} {'  '}  “
-                            {props.value && props.value.metadata && props.value.metadata.name}  “
+                            {variables[props.lang]['delist_nft_header']} {'  '} “
+                            {props.value && props.value.metadata && props.value.metadata.name} “
                         </h2>
                         <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose}/>
                         <div className="card">
                             <ImageOnLoad
                                 alt="nft"
                                 preview={(props.value && props.value.metadata && props.value.metadata.previewUri && mediaReference(props.value.metadata.previewUri)) ||
-                            (props.value && props.value.metadata && props.value.metadata.uri && mediaReference(props.value.metadata.uri)) ||
-                            (props.value && props.value.metadata && props.value.metadata.uriHash && mediaReference(props.value.metadata.uriHash)) ||
-                            (data && ibcPreview(data)) || (props.value && props.value.info && props.value.info.token_uri && mediaReference(props.value.info.token_uri))}
+                                    (props.value && props.value.metadata && props.value.metadata.uri && mediaReference(props.value.metadata.uri)) ||
+                                    (props.value && props.value.metadata && props.value.metadata.uriHash && mediaReference(props.value.metadata.uriHash)) ||
+                                    (data && ibcPreview(data)) || (props.value && props.value.info && props.value.info.token_uri && mediaReference(props.value.info.token_uri))}
                                 src={(props.value && props.value.metadata && props.value.metadata.mediaUri &&
-                            mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
+                                    mediaReference(props.value.metadata.mediaUri)) || (data && ibcMedia(data))}/>
                             <div>
                                 <p className="collection">
                                     {props.collection && props.collection.denom && props.collection.denom.name}
@@ -116,7 +116,7 @@ const DeListDialog = (props) => {
                                     <div className="hash_text">
                                         <p>{props.value && props.value.id}</p>
                                         <span>{props.value && props.value.id &&
-                                    props.value.id.slice(props.value.id.length - 6, props.value.id.length)}</span>
+                                            props.value.id.slice(props.value.id.length - 6, props.value.id.length)}</span>
                                     </div>
                                     <CopyButton data={(props.value && props.value.id)}/>
                                 </div>
@@ -126,7 +126,7 @@ const DeListDialog = (props) => {
                             <Button className="secondary_button" onClick={props.handleClose}>
                                 {variables[props.lang].cancel}
                             </Button>
-                            <DeListButton />
+                            <DeListButton/>
                         </div>
                     </DialogContent>}
         </Dialog>

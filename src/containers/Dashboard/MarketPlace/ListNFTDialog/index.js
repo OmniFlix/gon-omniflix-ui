@@ -94,8 +94,8 @@ const ListNFTDialog = (props) => {
                     </DialogContent>
                     : <DialogContent className="list_dialog_content">
                         <h2>
-                            {variables[props.lang]['list_nft_header']} {'  '}  “
-                            {props.value && props.value.metadata && props.value.metadata.name}  “
+                            {variables[props.lang]['list_nft_header']} {'  '} “
+                            {props.value && props.value.metadata && props.value.metadata.name} “
                         </h2>
                         <img alt="close" className="close_button" src={closeIcon} onClick={props.handleClose}/>
                         <div className="card">
@@ -118,21 +118,21 @@ const ListNFTDialog = (props) => {
                                     <div className="hash_text">
                                         <p>{props.value && props.value.id}</p>
                                         <span>{props.value && props.value.id &&
-                                    props.value.id.slice(props.value.id.length - 6, props.value.id.length)}</span>
+                                            props.value.id.slice(props.value.id.length - 6, props.value.id.length)}</span>
                                     </div>
                                     <CopyButton data={(props.value && props.value.id)}/>
                                 </div>
                             </div>
                         </div>
                         <div className="fields">
-                            <SelectTokenSelectField />
-                            <PriceTextField />
+                            <SelectTokenSelectField/>
+                            <PriceTextField/>
                         </div>
                         <div className="actions">
                             <Button className="secondary_button" onClick={props.handleClose}>
                                 {variables[props.lang].cancel}
                             </Button>
-                            <ListButton />
+                            <ListButton/>
                         </div>
                     </DialogContent>}
         </Dialog>
