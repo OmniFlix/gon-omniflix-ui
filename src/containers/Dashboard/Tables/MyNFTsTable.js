@@ -170,7 +170,7 @@ const MyNFTsTable = (props) => {
                             </Button> : null}
                         <Button
                             className="primary_button"
-                            onClick={() => handleTransfer(value, convertedAddress)}>
+                            onClick={() => handleTransfer(value)}>
                             {variables[props.lang].transfer}
                         </Button>
                         {props.router && props.router.params && props.router.params.chain &&

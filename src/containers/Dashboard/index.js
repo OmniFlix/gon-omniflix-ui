@@ -82,8 +82,10 @@ class Dashboard extends Component {
 
     componentDidUpdate (pp, ps, ss) {
         if (this.props.address !== '' && pp.address !== this.props.address && this.props.rpcClient &&
-            this.props.rpcClient[this.props.chainValue] && this.props.chainValue === 'omniflix') {
-            this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+            this.props.rpcClient[this.props.chainValue]) {
+            if (this.props.chainValue === 'omniflix') {
+                this.props.fetchCollections(this.props.rpcClient, this.props.chainValue, this.props.address, DEFAULT_SKIP, DEFAULT_LIMIT);
+            }
             if (!this.props.rpcClientInProgress) {
                 if (this.props.tabValue === 'all_collections') {
                     this.props.fetchAllCollections(this.props.rpcClient, this.props.chainValue, DEFAULT_SKIP, DEFAULT_LIMIT);
@@ -339,6 +341,9 @@ Dashboard.propTypes = {
     wasmAllCollections: PropTypes.object.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
     }),
 };
 

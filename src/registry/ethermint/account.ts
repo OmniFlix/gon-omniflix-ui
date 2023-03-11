@@ -67,14 +67,14 @@ export const EthAccount = {
         return obj;
     },
 
-    fromPartial<I extends Exact<DeepPartial<EthAccount>, I>>(object: I): EthAccount {
-        const message = createBaseEthAccount();
-        message.baseAccount = (object.baseAccount !== undefined && object.baseAccount !== null)
-            ? BaseAccount.fromPartial(object.baseAccount)
-            : undefined;
-        message.codeHash = object.codeHash ?? "";
-        return message;
-    },
+    // fromPartial<I extends Exact<DeepPartial<EthAccount>, I>>(object: I): EthAccount {
+    //     const message = createBaseEthAccount();
+    //     message.baseAccount = (object.baseAccount !== undefined && object.baseAccount !== null)
+    //         ? BaseAccount.fromPartial(object.baseAccount)
+    //         : undefined;
+    //     message.codeHash = object.codeHash ?? "";
+    //     return message;
+    // },
 };
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

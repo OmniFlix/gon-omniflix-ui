@@ -8,7 +8,12 @@ import variables from '../../../utils/variables';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
-import { fetchCollectionNFTS, showBurnDialog, showTransferDialog } from '../../../actions/collection';
+import {
+    fetchCollectionNFTS,
+    setTransferAddress,
+    showBurnDialog,
+    showTransferDialog,
+} from '../../../actions/collection';
 import { ibcMedia, ibcName, ibcPreview } from '../../../utils/ibcData';
 import { mediaReference } from '../../../utils/ipfs';
 import { config } from '../../../config';
@@ -104,7 +109,7 @@ const NFTsTable = (props) => {
                     convertedAddress === owner && <div className="table_actions center_actions">
                         <Button
                             className="primary_button"
-                            onClick={() => props.showTransferDialog(value, props.router && props.router.params && props.router.params.chain)}>
+                            onClick={() => handleTransfer(value)}>
                             {variables[props.lang].transfer}
                         </Button>
                         {props.router && props.router.params && props.router.params.chain &&
@@ -117,6 +122,14 @@ const NFTsTable = (props) => {
             },
         },
     }];
+
+    const handleTransfer = (value) => {
+        if (value && value.owner && (value.owner !== props.address)) {
+            props.setTransferAddress(props.address);
+        }
+
+        props.showTransferDialog(value, props.chainValue);
+    };
 
     let list = props.collection && props.collection.onfts;
     if (props.chainValue === 'iris' || props.chainValue === 'uptick') {
@@ -155,6 +168,7 @@ NFTsTable.propTypes = {
         }).isRequired,
     }).isRequired,
     rpcClient: PropTypes.any.isRequired,
+    setTransferAddress: PropTypes.func.isRequired,
     showBurnDialog: PropTypes.func.isRequired,
     showTransferDialog: PropTypes.func.isRequired,
 };
@@ -173,6 +187,7 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     fetchCollectionNFTS,
+    setTransferAddress,
     showBurnDialog,
     showTransferDialog,
 };

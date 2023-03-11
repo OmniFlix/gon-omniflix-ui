@@ -24,6 +24,8 @@ import { fetchContracts } from '../../actions/cosmwasm';
 import { fetchWasmAllCollections } from '../../actions/collections/wasm';
 import { fetchCollectionHash } from '../../actions/collection';
 import { fetchWasmCollectionHash } from '../../actions/collection/wasm';
+import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../config';
+import { fetchMyNFTs } from '../../actions/nfts';
 
 class NavBar extends Component {
     constructor (props) {
@@ -109,6 +111,12 @@ class NavBar extends Component {
                         if (config && convertedAddress && (item !== 'omniflix')) {
                             if (this.props.rpcClient && this.props.rpcClient[item]) {
                                 this.props.fetchFaucetTokens(this.props.rpcClient[item], item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
+                                const tab = this.props.router.location && this.props.router.location.pathname &&
+                                    this.props.router.location.pathname.split('/');
+                                if (tab && tab.length && tab[3] && tab[3] === 'my_nfts' && tab[1] === 'uptick') {
+                                    this.props.fetchMyNFTs(this.props.rpcClient, item, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                }
+
                                 return;
                             }
 
@@ -208,6 +216,7 @@ NavBar.propTypes = {
     fetchCollectionHash: PropTypes.func.isRequired,
     fetchContracts: PropTypes.func.isRequired,
     fetchFaucetTokens: PropTypes.func.isRequired,
+    fetchMyNFTs: PropTypes.func.isRequired,
     fetchWasmAllCollections: PropTypes.func.isRequired,
     fetchWasmCollectionHash: PropTypes.func.isRequired,
     hideSideBar: PropTypes.func.isRequired,
@@ -249,6 +258,7 @@ const stateToProps = (state) => {
 const actionToProps = {
     fetchBalance,
     fetchContracts,
+    fetchMyNFTs,
     fetchWasmAllCollections,
     fetchWasmCollectionHash,
     initializeChain,
