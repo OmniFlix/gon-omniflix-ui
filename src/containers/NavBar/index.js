@@ -17,7 +17,7 @@ import ClaimFaucetDialog from './ClaimFaucetDialog';
 import { setEmptyValue } from '../../actions/account';
 import { setRpcClient } from '../../actions/query';
 import withRouter from '../../components/WithRouter';
-import { setChainValue } from '../../actions/dashboard';
+import { setChainValue, setTabValue } from '../../actions/dashboard';
 import { Close, MenuOutlined } from '@mui/icons-material';
 import { ChainsList } from '../../chains';
 import { fetchContracts } from '../../actions/cosmwasm';
@@ -34,6 +34,13 @@ class NavBar extends Component {
     }
 
     componentDidMount () {
+        const tab = this.props.router.location && this.props.router.location.pathname &&
+            this.props.router.location.pathname.split('/');
+        if (tab && tab.length && tab[3] &&
+            (tab[3] === 'all_collections' || tab[3] === 'my_collection' || tab[3] === 'my_nfts')) {
+            this.props.setTabValue(tab[3]);
+        }
+
         if (this.props.rpcClient && !this.props.rpcClient.omniflix && !this.props.rpcClientInProgress) {
             const route = this.props.router.location && this.props.router.location.pathname &&
                 this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
@@ -110,6 +117,9 @@ class NavBar extends Component {
                                     this.props.fetchFaucetTokens(client, item, convertedAddress, config.COIN_MINIMAL_DENOM, config);
                                     const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
                                         this.props.router.location.pathname.split('/');
+                                    if (route[2] && !route[2].includes('collection')) {
+                                        return null;
+                                    }
                                     if (route[3] && route[3].includes('ibc_')) {
                                         return null;
                                     }
@@ -118,7 +128,7 @@ class NavBar extends Component {
                                         if (item === 'stargaze' || item === 'juno') {
                                             const hash = `wasm.${config.CONTRACT_ADDRESS}/${config.CHANNELS && config.CHANNELS[route[1]] &&
                                             config.CHANNELS[route[1]][0]}/${route[3]}`;
-                                            this.props.fetchWasmCollectionHash(config, item, hash);
+                                            this.props.fetchWasmCollectionHash(config, item, hash, route[3]);
 
                                             return null;
                                         }
@@ -128,7 +138,7 @@ class NavBar extends Component {
                                         const obj = {};
                                         obj[item] = client;
 
-                                        this.props.fetchCollectionHash(obj, item, hash);
+                                        this.props.fetchCollectionHash(obj, item, hash, route[3]);
                                     }
                                 }
                             });
@@ -210,6 +220,7 @@ NavBar.propTypes = {
     setDisconnect: PropTypes.func.isRequired,
     setEmptyValue: PropTypes.func.isRequired,
     setRpcClient: PropTypes.func.isRequired,
+    setTabValue: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     showClaimFaucetDialog: PropTypes.func.isRequired,
     showSideBar: PropTypes.func.isRequired,
@@ -246,6 +257,7 @@ const actionToProps = {
     setDisconnect,
     setEmptyValue,
     setRpcClient,
+    setTabValue,
     showClaimFaucetDialog,
     showSideBar,
     hideSideBar,

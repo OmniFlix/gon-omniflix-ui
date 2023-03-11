@@ -32,20 +32,24 @@
 }
 
 .data_table .table_actions .primary_button {
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
-    border-radius: 50px;
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
+    border-radius: 5px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
     line-height: 18px;
-    color: #FFFFFF;
+    color: #000000;
     text-transform: capitalize;
     padding: 8px 20px;
 }
 
 .data_table .table_actions.ct_actions .primary_button {
     padding: 8px 30px;
+}
+
+.data_table .table_actions .primary_button.list_button {
+    margin-right: 10px;
 }
 
 .data_table .nft_id {
@@ -104,7 +108,7 @@
 
 .data_table .burn_button {
     border: 1px solid #EB5757;
-    border-radius: 50px;
+    border-radius: 5px;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -133,4 +137,126 @@
 .data_table .ibc_chain_type {
     background: rgba(186, 255, 39, 0.1);
     color: #BAFF27;
+}
+
+/* market_actions */
+.data_table .market_actions .arrow_button {
+    border-radius: 5px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    background: #161C21;
+    min-width: 340px;
+    position: relative;
+}
+
+.data_table .market_actions .arrow_button:after {
+    content: '';
+    background: linear-gradient(91.79deg, #FAC01E 3.15%, #FC762A 85.66%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -2;
+    border-radius: 10px;
+}
+
+.data_table .market_actions .arrow_button .arrow_right {
+    height: 40px;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 23px solid #161C21;
+}
+
+.data_table .market_actions .arrow_button .left_section {
+    width: max-content;
+    min-width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    background: #161C21;
+    height: 40px;
+    border-radius: 10px 0 0 10px;
+}
+
+.data_table .market_actions .arrow_button .left_section img,
+.data_table .market_actions .arrow_button .left_section svg {
+    width: 17px;
+    height: 17px;
+    margin-right: 8px;
+}
+
+.data_table .market_actions .arrow_button .left_section > div {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 17px;
+    text-align: center;
+    font-feature-settings: 'zero' on, 'ss02' on;
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.data_table .market_actions .arrow_button .left_section .lsr_value {
+    text-transform: uppercase;
+}
+
+.data_table .market_actions .arrow_button .right_section {
+    /*background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);*/
+    border-radius: 0 5px 5px 0;
+    /*padding: 8px 0;*/
+    width: 45%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.data_table .market_actions .arrow_button .right_section.notlisted_nft {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.data_table .market_actions .arrow_button .right_section button {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    font-feature-settings: 'zero' on, 'ss02' on;
+    background: linear-gradient(180deg, #0E151B 0%, #000000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: initial;
+    height: 100%;
+    min-height: 100%;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    border-radius: 5px;
+    padding: 0 2px 0 55%;
+}
+
+.data_table .market_actions .arrow_button .right_section.notlisted_nft button {
+    position: unset;
+    padding-left: unset;
+}
+
+.data_table .export_button {
+    min-width: max-content;
+    margin: 0 10px;
+}
+
+.data_table .table_actions.ibc_actions {
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.data_table .table_actions.ibc_actions .ibc {
+    margin-top: 10px;
 }

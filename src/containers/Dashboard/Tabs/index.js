@@ -3,13 +3,14 @@ import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './index.css';
-import { setTabValue } from '../../../actions/dashboard';
+import { fetchMarketplaceNFTs, fetchMarketplaceNFTsInfo, setTabValue } from '../../../actions/dashboard';
 import variables from '../../../utils/variables';
 import { fetchAllCollections, fetchCollections } from '../../../actions/collections';
 import { DEFAULT_LIMIT, DEFAULT_SKIP } from '../../../config';
 import { fetchMyNFTs } from '../../../actions/nfts';
 import { ChainsList } from '../../../chains';
 import { bech32 } from 'bech32';
+import withRouter from '../../../components/WithRouter';
 
 class HeaderTabs extends Component {
     constructor (props) {
@@ -18,12 +19,21 @@ class HeaderTabs extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentDidMount () {
+        const route = this.props.router.location && this.props.router.location.pathname &&
+            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[3];
+        if (route) {
+            this.props.setTabValue(route);
+        }
+    }
+
     handleChange (newValue) {
         if (newValue === this.props.tabValue) {
             return;
         }
 
         this.props.setTabValue(newValue);
+        this.props.router.navigate(`/${this.props.chainValue}/dashboard/${newValue}`);
 
         if (newValue === 'my_collections' && !this.props.collectionsInProgress && this.props.chainValue &&
             !this.props.collections[this.props.chainValue] && this.props.address !== '') {
@@ -48,6 +58,20 @@ class HeaderTabs extends Component {
             }
 
             this.props.fetchMyNFTs(this.props.rpcClient, this.props.chainValue, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
+        }
+
+        if (newValue === 'marketplace' && !this.props.marketplaceNFTsInProgress && this.props.chainValue &&
+            this.props.marketplaceNFTs && !this.props.marketplaceNFTs[this.props.chainValue] && this.props.address) {
+            this.props.fetchMarketplaceNFTs(this.props.rpcClient, this.props.chainValue, this.props.address,
+                DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                    if (result && result.length) {
+                        result.map((value) => {
+                            this.props.fetchMarketplaceNFTsInfo(this.props.rpcClient, this.props.chainValue, value.denomId, value.nftId, value.id);
+
+                            return null;
+                        });
+                    }
+                });
         }
     }
 
@@ -105,6 +129,19 @@ class HeaderTabs extends Component {
                             value="my_collections"
                             onClick={() => this.handleChange('my_nfts')}
                             {...a11yProps(2)} />}
+                    {this.props.address && this.props.chainValue === 'omniflix' &&
+                        <Tab
+                            className={'tab ' + (this.props.tabValue === 'marketplace' ? 'active_tab' : '')}
+                            label={<p className="text">
+                                {variables[this.props.lang].marketplace}
+                                {this.props.chainValue === 'omniflix' && this.props.myNFTs &&
+                                this.props.marketplaceNFTs[this.props.chainValue] && this.props.marketplaceNFTs[this.props.chainValue].total
+                                    ? ` (${this.props.marketplaceNFTs[this.props.chainValue].total})`
+                                    : null}
+                            </p>}
+                            value="marketplace"
+                            onClick={() => this.handleChange('marketplace')}
+                            {...a11yProps(3)} />}
                 </div>
             </AppBar>
         );
@@ -122,13 +159,23 @@ HeaderTabs.propTypes = {
     contracts: PropTypes.object.isRequired,
     fetchAllCollections: PropTypes.func.isRequired,
     fetchCollections: PropTypes.func.isRequired,
+    fetchMarketplaceNFTs: PropTypes.func.isRequired,
+    fetchMarketplaceNFTsInfo: PropTypes.func.isRequired,
     fetchMyNFTs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    marketplaceNFTs: PropTypes.object.isRequired,
+    marketplaceNFTsInProgress: PropTypes.bool.isRequired,
     myNFTs: PropTypes.object.isRequired,
     myNFTsInProgress: PropTypes.bool.isRequired,
     rpcClient: PropTypes.any.isRequired,
     setTabValue: PropTypes.func.isRequired,
     tabValue: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -146,14 +193,18 @@ const stateToProps = (state) => {
         tabValue: state.dashboard.tabValue.value,
         myNFTs: state.nfts.myNFTs.value,
         myNFTsInProgress: state.nfts.myNFTs.inProgress,
+        marketplaceNFTs: state.dashboard.marketplaceNFTs.value,
+        marketplaceNFTsInProgress: state.dashboard.marketplaceNFTs.inProgress,
     };
 };
 
 const actionsToProps = {
     fetchAllCollections,
     fetchCollections,
+    fetchMarketplaceNFTs,
+    fetchMarketplaceNFTsInfo,
     fetchMyNFTs,
     setTabValue,
 };
 
-export default connect(stateToProps, actionsToProps)(HeaderTabs);
+export default withRouter(connect(stateToProps, actionsToProps)(HeaderTabs));

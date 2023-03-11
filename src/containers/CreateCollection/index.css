@@ -50,7 +50,7 @@
 
 .create_collection .file_upload > button:after {
     content: '';
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -1px;
     left: -1px;
@@ -68,7 +68,7 @@
     font-family: 'Quantico', sans-serif;
     font-size: 14px;
     line-height: 20px;
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-left: 10px;
@@ -123,7 +123,7 @@
     font-family: 'Quantico', sans-serif;
     font-size: 14px;
     line-height: 20px;
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -155,7 +155,7 @@
     display: flex;
     align-items: center;
     color: #FFFFFF;
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     opacity: 0.3;
     border-radius: 5px;
     height: 50px;
@@ -200,7 +200,7 @@
 
 .collection_content .row .upload_schema_button:after {
     content: '';
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -1px;
     left: -1px;
@@ -289,7 +289,7 @@
 
 .collection_dialog .file_upload > button:after {
     content: '';
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -1px;
     left: -1px;
@@ -357,9 +357,9 @@
 }
 
 .collection_content .tab_switch button.active {
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     z-index: 1;
-    color: #E7E7E7;
+    color: #000000;
 }
 
 .collection_content .tab_switch button.active:before {
@@ -375,7 +375,7 @@
 
 .collection_content .tab_switch button.active:after {
     content: '';
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -1px;
     left: -1px;

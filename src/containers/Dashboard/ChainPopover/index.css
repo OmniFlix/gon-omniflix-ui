@@ -28,7 +28,7 @@
 
 .chain_popover div .select_popover:after {
     content: '';
-    background: linear-gradient(90deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -2px;
     left: -2px;
@@ -48,7 +48,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 18px;
-    color: #FFFFFF;
+    color: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,7 +124,7 @@
 .chain_popover .list_item:hover:after,
 .chain_popover .list_item.active_item:after {
     content: '';
-    background: linear-gradient(180deg, #D61D6A 0%, #7645FF 100%);
+    background: linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%);
     position: absolute;
     top: -2px;
     left: -2px;

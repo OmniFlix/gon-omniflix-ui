@@ -15,6 +15,7 @@ import {
     fetchTxHashIBC,
     initializeChainIBC,
     protoBufSigningIBC,
+    protoBufSigningIBCEth,
     setTxHashInProgressFalse,
     signContract,
     txSignAndBroadCastIBC,
@@ -174,6 +175,80 @@ const IBCButton = (props) => {
                     Tx.fee.granter = granterInfo.granter;
                 }
 
+                if (props.chain === 'uptick') {
+                    props.protoBufSigningIBCEth(chainConfig, Tx, ibcAddress, (result, txBytes) => {
+                        if (result) {
+                            const data = {
+                                tx_bytes: txBytes,
+                                mode: 'BROADCAST_MODE_SYNC',
+                            };
+                            props.txSignAndBroadCast(chainConfig, data, (res1) => {
+                                if (res1 && res1.txhash) {
+                                    let counter = 0;
+                                    const time = setInterval(() => {
+                                        props.fetchTxHash(chainConfig, res1.txhash, (hashResult) => {
+                                            if (hashResult) {
+                                                if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
+                                                    props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
+                                                    props.setTransferFail();
+                                                    props.setTxHashInProgressFalse();
+                                                    clearInterval(time);
+
+                                                    return;
+                                                }
+
+                                                props.setTransferSuccess(res1.txhash);
+                                                props.fetchBalance(props.address);
+                                                if (props.router && props.router.params && props.router.params.id) {
+                                                    props.fetchCollectionNFTS(props.rpcClient, props.chainValue, denomID);
+                                                } else {
+                                                    const address = props.address && bech32.decode(props.address);
+                                                    let convertedAddress = address && address.words && bech32.encode(chainConfig.PREFIX, address.words);
+                                                    if (props.chainValue === 'uptick') {
+                                                        convertedAddress = props.addressIBC && props.addressIBC.uptick;
+                                                    }
+                                                    props.fetchMyNFTs(props.rpcClient, props.chainValue, convertedAddress,
+                                                        DEFAULT_SKIP, DEFAULT_LIMIT, (result) => {
+                                                            if (result && props.chainID && (props.chainID === 'omniflix' ||
+                                                                props.chainID === 'iris' || props.chainID === 'uptick')) {
+                                                                props.fetchMyNFTs(props.rpcClient, props.chainID, convertedAddress, DEFAULT_SKIP, DEFAULT_LIMIT);
+                                                            }
+                                                        });
+                                                }
+                                                props.setTxHashInProgressFalse();
+                                                clearInterval(time);
+                                            }
+
+                                            counter++;
+                                            if (counter === 3) {
+                                                if (hashResult && hashResult.code !== undefined && hashResult.code !== 0) {
+                                                    props.showMessage(hashResult.raw_log || hashResult.logs, 'error', hashResult && hashResult.txhash);
+                                                    props.setTransferFail();
+                                                    props.setTxHashInProgressFalse();
+                                                    clearInterval(time);
+
+                                                    return;
+                                                }
+
+                                                props.handleClose();
+                                                props.showMessage(variables[props.lang]['check_later']);
+                                                props.setTxHashInProgressFalse();
+                                                clearInterval(time);
+                                            }
+                                        });
+                                    }, 5000);
+                                } else {
+                                    props.setTransferFail();
+                                }
+                            });
+                        } else {
+                            props.setTransferFail();
+                        }
+                    });
+
+                    return;
+                }
+
                 props.sign(chainConfig, Tx, ibcAddress, (result, txBytes) => {
                     if (result) {
                         const data = {
@@ -306,6 +381,7 @@ IBCButton.propTypes = {
     handleClose: PropTypes.func.isRequired,
     initializeChainIBC: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    protoBufSigningIBCEth: PropTypes.func.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
@@ -360,6 +436,7 @@ const actionToProps = {
     setTxHashInProgressFalse,
     showMessage,
     sign: protoBufSigningIBC,
+    protoBufSigningIBCEth,
     signContract,
     txSignAndBroadCast: txSignAndBroadCastIBC,
     initializeChainIBC,

@@ -8,9 +8,9 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() => ({
     root: {
         '& .MuiSwitch-switchBase.Mui-checked': {
-            color: '#7745FE',
+            color: '#fb9825',
             '& + .MuiSwitch-track': {
-                background: 'linear-gradient(90deg, #D61D6A 0%, #7645FF 100%)',
+                background: 'linear-gradient(123.89deg, #FAC01E 8.56%, #FC762A 86.47%)',
             },
         },
     },

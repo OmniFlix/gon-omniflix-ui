@@ -15,6 +15,7 @@ import { config } from '../../../config';
 import { bech32 } from 'bech32';
 import withRouter from '../../../components/WithRouter';
 import { fetchMyNFTs } from '../../../actions/nfts';
+import { showListNFTDialog } from '../../../actions/dashboard';
 
 const MyNFTsTable = (props) => {
     const options = {
@@ -160,6 +161,13 @@ const MyNFTsTable = (props) => {
 
                 return (
                     convertedAddress === owner && <div className="table_actions center_actions">
+                        {props.router && props.router.params && props.router.params.chain &&
+                        props.router.params.chain === 'omniflix'
+                            ? <Button
+                                className="primary_button list_button"
+                                onClick={() => props.showListNFTDialog(value)}>
+                                {variables[props.lang].list}
+                            </Button> : null}
                         <Button
                             className="primary_button"
                             onClick={() => handleTransfer(value, convertedAddress)}>
@@ -221,6 +229,7 @@ MyNFTsTable.propTypes = {
     rpcClient: PropTypes.any.isRequired,
     setTransferAddress: PropTypes.func.isRequired,
     showBurnDialog: PropTypes.func.isRequired,
+    showListNFTDialog: PropTypes.func.isRequired,
     showTransferDialog: PropTypes.func.isRequired,
 };
 
@@ -242,6 +251,7 @@ const actionToProps = {
     showBurnDialog,
     showTransferDialog,
     setTransferAddress,
+    showListNFTDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(MyNFTsTable));

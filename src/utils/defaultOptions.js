@@ -3,6 +3,13 @@ import OmniIcon from '../assets/chains/omniflix.svg';
 import UpTickIcon from '../assets/chains/uptick.svg';
 import StargazeIcon from '../assets/chains/stargaze.svg';
 import JunoIcon from '../assets/chains/juno.svg';
+import { config } from '../config';
+
+export const tokensList = [{
+    network: config,
+    value: 'uflix',
+    label: 'FLIX',
+}];
 
 export const list = [{
     icon: OmniIcon,
@@ -27,6 +34,36 @@ export const list = [{
     value: 'juno',
     cosmwasm: true,
 }];
+
+export const ListObject = {
+    omniflix: {
+        icon: OmniIcon,
+        name: 'OmniFlix',
+        value: 'omniflix',
+    },
+    iris: {
+        icon: IrisIcon,
+        name: 'IrisNet',
+        value: 'iris',
+    },
+    uptick: {
+        icon: UpTickIcon,
+        name: 'Uptick',
+        value: 'uptick',
+    },
+    stargaze: {
+        icon: StargazeIcon,
+        name: 'Stargaze',
+        value: 'stargaze',
+        cosmwasm: true,
+    },
+    juno: {
+        icon: JunoIcon,
+        name: 'Juno',
+        value: 'juno',
+        cosmwasm: true,
+    },
+};
 
 export const schemaList = [{
     name: 'Video Schema',

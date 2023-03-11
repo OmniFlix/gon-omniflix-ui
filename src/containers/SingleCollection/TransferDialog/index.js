@@ -89,7 +89,7 @@ const TransferDialog = (props) => {
                         </div>
                         <div className="actions">
                             <Button className="primary_button" onClick={props.handleClose}>
-                                {variables[props.lang].yay}
+                                {variables[props.lang].okay}
                             </Button>
                         </div>
                     </DialogContent>

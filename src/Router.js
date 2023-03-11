@@ -16,6 +16,18 @@ const routes = [{
     path: '/:chain/dashboard',
     component: Dashboard,
 }, {
+    path: '/:chain/dashboard/all_collections',
+    component: Dashboard,
+}, {
+    path: '/:chain/dashboard/my_collections',
+    component: Dashboard,
+}, {
+    path: '/:chain/dashboard/my_nfts',
+    component: Dashboard,
+}, {
+    path: '/:chain/dashboard/marketplace',
+    component: Dashboard,
+}, {
     path: '/:chain/collection/:id',
     component: SingleCollection,
 }, {

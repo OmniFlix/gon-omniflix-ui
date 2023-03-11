@@ -27,6 +27,16 @@ import {
 import { TX_HASH_IN_PROGRESS_FALSE_SET } from '../../constants/wallet';
 import { schemaList } from '../../utils/defaultOptions';
 import wasm from './wasm';
+import {
+    COLLECTION_HASH_FETCH_ERROR,
+    COLLECTION_HASH_FETCH_IN_PROGRESS,
+    COLLECTION_HASH_FETCH_SUCCESS,
+} from '../../constants/collection';
+import {
+    WASM_COLLECTION_HASH_FETCH_ERROR,
+    WASM_COLLECTION_HASH_FETCH_IN_PROGRESS,
+    WASM_COLLECTION_HASH_FETCH_SUCCESS,
+} from '../../constants/collection/wasm';
 
 const collectionSList = (state = {
     inProgress: false,
@@ -61,6 +71,52 @@ const collectionSList = (state = {
         };
     }
     case COLLECTIONS_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
+const collectionListHash = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case COLLECTION_HASH_FETCH_IN_PROGRESS:
+    case WASM_COLLECTION_HASH_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case COLLECTION_HASH_FETCH_SUCCESS:
+    case WASM_COLLECTION_HASH_FETCH_SUCCESS: {
+        if (action.chain && action.id) {
+            const obj = {};
+            obj[action.id] = {
+                ...state.value && state.value[action.id],
+                [action.chain]: action.value,
+            };
+
+            return {
+                ...state,
+                inProgress: false,
+                value: {
+                    ...state.value,
+                    ...obj,
+                },
+            };
+        }
+
+        return {
+            ...state,
+            inProgress: false,
+        };
+    }
+    case COLLECTION_HASH_FETCH_ERROR:
+    case WASM_COLLECTION_HASH_FETCH_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -220,7 +276,7 @@ const collectionConfirmDialog = (state = {
     }
 };
 
-const tabSwitch = (state = 'code', action) => {
+const tabSwitch = (state = 'visual', action) => {
     if (action.type === JSON_TAB_SWITCH_SET) {
         return action.value;
     }
@@ -277,6 +333,7 @@ const avatar = (state = {
 export default combineReducers({
     _wasm: wasm,
     collectionSList,
+    collectionListHash,
     allCollectionSList,
     singleCollection,
     createCollection,
