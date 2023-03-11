@@ -8,7 +8,7 @@ import variables from '../../../utils/variables';
 import './index.css';
 import CopyButton from '../../../components/CopyButton';
 import ImageOnLoad from '../../../components/ImageOnLoad';
-import { showBurnDialog, showTransferDialog } from '../../../actions/collection';
+import { setTransferAddress, showBurnDialog, showTransferDialog } from '../../../actions/collection';
 import { config } from '../../../config';
 import { bech32 } from 'bech32';
 import withRouter from '../../../components/WithRouter';
@@ -104,7 +104,7 @@ const WasmNFTsTable = (props) => {
                     convertedAddress === props.address && <div className="table_actions center_actions">
                         <Button
                             className="primary_button"
-                            onClick={() => props.showTransferDialog(obj, props.router && props.router.params && props.router.params.chain)}>
+                            onClick={() => handleTransfer(obj)}>
                             {variables[props.lang].transfer}
                         </Button>
                         {props.router && props.router.params && props.router.params.chain &&
@@ -117,6 +117,14 @@ const WasmNFTsTable = (props) => {
             },
         },
     }];
+
+    const handleTransfer = (value) => {
+        if (value && value.access && value.access.owner && (value.access.owner !== props.address)) {
+            props.setTransferAddress(props.address);
+        }
+
+        props.showTransferDialog(value, props.chainValue);
+    };
 
     const list = props.nftsInfo;
     const tableData = list && Object.keys(list) && Object.keys(list).length
@@ -150,6 +158,7 @@ WasmNFTsTable.propTypes = {
         }).isRequired,
     }).isRequired,
     rpcClient: PropTypes.any.isRequired,
+    setTransferAddress: PropTypes.func.isRequired,
     showBurnDialog: PropTypes.func.isRequired,
     showTransferDialog: PropTypes.func.isRequired,
     wasmAllCollections: PropTypes.object.isRequired,
@@ -167,6 +176,7 @@ const stateToProps = (state) => {
 };
 
 const actionToProps = {
+    setTransferAddress,
     showBurnDialog,
     showTransferDialog,
 };

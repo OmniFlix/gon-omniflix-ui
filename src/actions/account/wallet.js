@@ -37,6 +37,9 @@ import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx';
 import { fromBase64, toBase64 } from '@cosmjs/encoding';
 import { chainConfigIBC } from '../../chains';
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
+import { Any } from 'cosmjs-types/google/protobuf/any';
+import { PubKey } from 'cosmjs-types/cosmos/crypto/secp256k1/keys';
+import { EthAccount } from '../../registry/ethermint/account';
 
 const connectKeplrAccountInProgress = () => {
     return {
@@ -426,6 +429,147 @@ export const protoBufSigningIBC = (config, tx, address, cb) => (dispatch) => {
             pubkey = accounts && accounts.length && accounts[0] &&
                 accounts[0].pubkey && pubkey && pubkey.value &&
                 encodePubkey(pubkey);
+
+            let authInfo = {
+                signerInfos: [{
+                    publicKey: pubkey,
+                    modeInfo: {
+                        single: {
+                            mode: 1,
+                        },
+                    },
+                    sequence: account && account.sequence,
+                }],
+                fee: { ...tx.fee },
+            };
+            authInfo = AuthInfo.encode(AuthInfo.fromPartial(authInfo)).finish();
+
+            const messages = [];
+            if (tx.msgs && tx.msgs.length) {
+                tx.msgs.map((val) => {
+                    let msgValue = val.value;
+                    msgValue = msgValue && convertToCamelCase(msgValue);
+                    let typeUrl = val.typeUrl;
+
+                    if (tx.msgType) {
+                        const type = customTypes[tx.msgType].type;
+                        typeUrl = customTypes[tx.msgType].typeUrl;
+                        msgValue = type.encode(type.fromPartial(msgValue)).finish();
+                    } else if (typeUrl === '/ibc.applications.transfer.v1.MsgTransfer') {
+                        msgValue = MsgTransfer.encode(MsgTransfer.fromPartial(msgValue)).finish();
+                    }
+
+                    messages.push({
+                        typeUrl: typeUrl,
+                        value: msgValue,
+                    });
+
+                    return null;
+                });
+            } else {
+                let msgValue = tx.msg && tx.msg.value;
+                msgValue = msgValue && convertToCamelCase(msgValue);
+                let typeUrl = tx.msg && tx.msg.typeUrl;
+
+                if (tx.msgType) {
+                    const type = customTypes[tx.msgType].type;
+                    typeUrl = customTypes[tx.msgType].typeUrl;
+                    msgValue = type.encode(type.fromPartial(msgValue)).finish();
+                } else if (typeUrl === '/ibc.applications.transfer.v1.MsgTransfer') {
+                    msgValue = MsgTransfer.encode(MsgTransfer.fromPartial(msgValue)).finish();
+                }
+
+                messages.push({
+                    typeUrl: typeUrl,
+                    value: msgValue,
+                });
+            }
+
+            let bodyBytes = {
+                messages: messages,
+                memo: tx.memo,
+            };
+            bodyBytes = TxBody.encode(TxBody.fromPartial(bodyBytes)).finish();
+
+            const signDoc = makeSignDoc(
+                bodyBytes,
+                authInfo,
+                config.CHAIN_ID,
+                account && account.accountNumber,
+            );
+
+            offlineSigner.signDirect(address, signDoc).then((result) => {
+                const txRaw = TxRaw.fromPartial({
+                    bodyBytes: result.signed.bodyBytes,
+                    authInfoBytes: result.signed.authInfoBytes,
+                    signatures: [fromBase64(result.signature.signature)],
+                });
+                const txBytes = TxRaw.encode(txRaw).finish();
+                if (result && result.code !== undefined && result.code !== 0) {
+                    dispatch(protoBufSigningError(result.log || result.rawLog));
+                } else {
+                    dispatch(protoBufSigningSuccess(result));
+                    cb(result, toBase64(txBytes));
+                }
+            }).catch((error) => {
+                dispatch(protoBufSigningError(error && error.message));
+            });
+        } catch (e) {
+            dispatch(protoBufSigningError(e && e.message));
+        }
+    })();
+};
+
+export const protoBufSigningIBCEth = (config, tx, address, cb) => (dispatch) => {
+    dispatch(protoBufSigningInProgress());
+    (async () => {
+        await window.keplr && window.keplr.enable(config.CHAIN_ID);
+        const offlineSigner = window.getOfflineSigner && window.getOfflineSigner(config.CHAIN_ID);
+        const myRegistry = new Registry([...defaultRegistryTypes]);
+
+        try {
+            const accountParser = (data) => {
+                if (data.typeUrl !== '/ethermint.types.v1.EthAccount') {
+                    throw new Error(`Unexpected account type: ${data.typeUrl}`);
+                }
+                const acc = EthAccount.decode(data.value).baseAccount;
+                return {
+                    address: acc.address,
+                    pubkey: {
+                        type: acc.pubKey && acc.pubKey.typeUrl,
+                        value: acc.pubKey && acc.pubKey.value,
+                    },
+                    accountNumber: acc.accountNumber.toNumber(),
+                    sequence: acc.sequence.toNumber(),
+                };
+            };
+
+            const client = await SigningStargateClient.connectWithSigner(
+                config.RPC_URL,
+                offlineSigner,
+                {
+                    registry: myRegistry,
+                    accountParser,
+                },
+            );
+
+            let account = {};
+            try {
+                account = await client.getSequence(address);
+            } catch (e) {
+                account.accountNumber = 0;
+                account.sequence = 0;
+            }
+            const accounts = await offlineSigner.getAccounts();
+
+            let pubkey = accounts && accounts.length && accounts[0] &&
+                accounts[0].pubkey && encodeSecp256k1Pubkey(accounts[0].pubkey);
+            pubkey = Any.fromPartial({
+                typeUrl: '/ethermint.crypto.v1.ethsecp256k1.PubKey',
+                value: PubKey.encode({
+                    key: accounts && accounts.length && accounts[0] && accounts[0].pubkey,
+                }).finish(),
+            });
 
             let authInfo = {
                 signerInfos: [{
